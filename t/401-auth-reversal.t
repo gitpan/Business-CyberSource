@@ -5,6 +5,11 @@ use warnings;
 use Env qw( CYBS_ID CYBS_KEY );
 use Test::More;
 
+plan skip_all
+	=> 'You MUST set ENV variable CYBS_ID and CYBS_KEY to test this!'
+	unless $CYBS_ID and $CYBS_KEY
+	;
+
 use Business::CyberSource::Request::Authorization;
 use Business::CyberSource::Request::AuthReversal;
 #use SOAP::Lite +trace => [ 'debug' ] ;
@@ -55,5 +60,8 @@ is( $rev->reason_code, 100, 'check reason_code' );
 is( $rev->currency, 'USD', 'check currency' );
 is( $rev->amount, '5.00', 'check amount' );
 is( $rev->reversal_reason_code, 100, 'check capture_reason_code' );
+
+ok( $rev->datetime, 'datetime exists' );
+note( $rev->datetime );
 
 done_testing;

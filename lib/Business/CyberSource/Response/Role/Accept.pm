@@ -4,9 +4,10 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.0'; # VERSION
+	our $VERSION = 'v0.1.1'; # VERSION
 }
 use Moose::Role;
+use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
 
 has amount => (
 	required => 1,
@@ -23,7 +24,7 @@ has currency => (
 has datetime => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => DateTimeW3C,
 );
 
 has reference_code => (
@@ -45,7 +46,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version v0.1.0
+version v0.1.1
 
 =head1 BUGS
 

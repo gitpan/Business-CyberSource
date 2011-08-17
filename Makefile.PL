@@ -32,6 +32,7 @@ my %WriteMakefileArgs = (
     'Moose' => '0',
     'Moose::Role' => '0',
     'MooseX::Traits' => '0',
+    'MooseX::Types::DateTime::W3C' => '0',
     'MooseX::Types::Email' => '0',
     'MooseX::Types::Locale::Country' => '0',
     'MooseX::Types::URI' => '0',
@@ -39,7 +40,7 @@ my %WriteMakefileArgs = (
     'SOAP::Lite' => '0',
     'namespace::autoclean' => '0'
   },
-  'VERSION' => 'v0.1.0',
+  'VERSION' => 'v0.1.1',
   'test' => {
     'TESTS' => 't/*.t'
   }
