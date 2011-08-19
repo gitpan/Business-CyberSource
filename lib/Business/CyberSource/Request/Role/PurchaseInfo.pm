@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.1'; # VERSION
+	our $VERSION = 'v0.1.2'; # VERSION
 }
 use Moose::Role;
 
@@ -15,9 +15,13 @@ has currency => (
 );
 
 has total => (
-	required => 1,
 	is       => 'ro',
 	isa      => 'Num',
+);
+
+has foreign_currency => (
+	is  => 'ro',
+	isa => 'Str',
 );
 
 sub _build_purchase_info {
@@ -39,6 +43,14 @@ sub _build_purchase_info {
 		parent => $purchase_totals,
 	);
 
+	if ( $self->foreign_currency ) {
+		$sb->add_elem(
+			name   => 'foreignCurrency',
+			value  => $self->foreign_currency,
+			parent => $purchase_totals,
+		);
+	}
+
 	return $sb;
 }
 
@@ -55,7 +67,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.1.1
+version v0.1.2
 
 =head1 BUGS
 

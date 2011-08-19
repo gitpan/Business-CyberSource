@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.1'; # VERSION
+	our $VERSION = 'v0.1.2'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
@@ -78,21 +78,7 @@ sub _build_sdbo {
 
 	my $sb = $self->_build_sdbo_header;
 
-	my $purchase_totals = $sb->add_elem(
-		name => 'purchaseTotals',
-	);
-
-	$sb->add_elem(
-		name   => 'currency',
-		parent => $purchase_totals,
-		value  => $self->currency,
-	);
-
-	$sb->add_elem(
-		name   => 'grandTotalAmount',
-		value  => $self->total,
-		parent => $purchase_totals,
-	);
+	$sb = $self->_build_purchase_info( $sb );
 
 	my $capture_service = $sb->add_elem(
 		attributes => { run => 'true' },
@@ -122,7 +108,7 @@ Business::CyberSource::Request::Capture - CyberSource Capture Request Object
 
 =head1 VERSION
 
-version v0.1.1
+version v0.1.2
 
 =head1 ATTRIBUTES
 
@@ -182,8 +168,6 @@ Reader: total
 
 Type: Num
 
-This attribute is required.
-
 =head2 username
 
 Reader: username
@@ -194,17 +178,23 @@ This attribute is required.
 
 Additional documentation: your merchantID
 
-=head2 client_name
+=head2 foreign_currency
 
-Reader: client_name
+Reader: foreign_currency
+
+Type: Str
+
+=head2 reference_code
+
+Reader: reference_code
 
 Type: Str
 
 This attribute is required.
 
-=head2 reference_code
+=head2 client_name
 
-Reader: reference_code
+Reader: client_name
 
 Type: Str
 
@@ -265,6 +255,10 @@ Method originates in Business::CyberSource::Request::Capture.
 Method originates in Business::CyberSource::Request::Capture.
 
 =head2 client_name
+
+Method originates in Business::CyberSource::Request::Capture.
+
+=head2 foreign_currency
 
 Method originates in Business::CyberSource::Request::Capture.
 

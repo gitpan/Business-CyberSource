@@ -4,20 +4,24 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.1'; # VERSION
+	our $VERSION = 'v0.1.2'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
 with qw(
+	MooseX::Traits
 	Business::CyberSource::Request
-	Business::CyberSource::Request::Role::BillingInfo
 	Business::CyberSource::Request::Role::PurchaseInfo
-	Business::CyberSource::Request::Role::CreditCardInfo
 );
 
 use Business::CyberSource::Response;
 
 use SOAP::Lite; #+trace => [ 'debug' ] ;
+
+has request_id => (
+	is  => 'ro',
+	isa => 'Str',
+);
 
 sub submit {
 	my $self = shift;
@@ -77,15 +81,32 @@ sub _build_sdbo {
 	my $self = shift;
 
 	my $sb = $self->_build_sdbo_header;
-	$sb = $self->_build_bill_to_info    ( $sb );
-	$sb = $self->_build_purchase_info   ( $sb );
-	$sb = $self->_build_credit_card_info( $sb );
 
-	$sb->add_elem(
+	unless ( $self->request_id ) { # should probably introspec
+		$sb = $self->_build_bill_to_info    ( $sb );
+	}
+
+	$sb = $self->_build_purchase_info   ( $sb );
+
+	unless ( $self->request_id ) { # should probably introspec
+		$sb = $self->_build_credit_card_info( $sb );
+	}
+
+	my $value = $self->request_id ? undef : ' ';
+
+	my $credit = $sb->add_elem(
 		attributes => { run => 'true' },
 		name       => 'ccCreditService',
-		value      => ' ', # hack to prevent cs side unparseable xml
+		value      => $value, # hack to prevent cs side unparseable xml
 	);
+
+	if ( $self->request_id ) {
+		$sb->add_elem(
+			name   => 'captureRequestID',
+			value  => $self->request_id,
+			parent => $credit,
+		)
+	}
 
 	return $sb;
 }
@@ -104,23 +125,9 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.1.1
+version v0.1.2
 
 =head1 ATTRIBUTES
-
-=head2 street
-
-Reader: street
-
-Type: Str
-
-This attribute is required.
-
-=head2 ip
-
-Reader: ip
-
-Type: Str
 
 =head2 client_env
 
@@ -130,43 +137,9 @@ Type: Str
 
 This attribute is required.
 
-=head2 last_name
-
-Reader: last_name
-
-Type: Str
-
-This attribute is required.
-
-Additional documentation: Card Holder's last name
-
-=head2 state
-
-Reader: state
-
-Type: Str
-
-This attribute is required.
-
-=head2 email
-
-Reader: email
-
-Type: MooseX::Types::Email::EmailAddress
-
-This attribute is required.
-
 =head2 currency
 
 Reader: currency
-
-Type: Str
-
-This attribute is required.
-
-=head2 city
-
-Reader: city
 
 Type: Str
 
@@ -198,39 +171,17 @@ Type: MooseX::Types::URI::Uri
 
 This attribute is required.
 
-=head2 country
+=head2 request_id
 
-Reader: country
+Reader: request_id
 
-Type: MooseX::Types::Locale::Country::Alpha2Country
-
-This attribute is required.
-
-Additional documentation: ISO 2 character country code
+Type: Str
 
 =head2 total
 
 Reader: total
 
 Type: Num
-
-This attribute is required.
-
-=head2 cc_exp_month
-
-Reader: cc_exp_month
-
-Type: Str
-
-This attribute is required.
-
-=head2 cc_exp_year
-
-Reader: cc_exp_year
-
-Type: Str
-
-This attribute is required.
 
 =head2 username
 
@@ -242,21 +193,11 @@ This attribute is required.
 
 Additional documentation: your merchantID
 
-=head2 credit_card
+=head2 foreign_currency
 
-Reader: credit_card
-
-Type: Str
-
-This attribute is required.
-
-=head2 zip
-
-Reader: zip
+Reader: foreign_currency
 
 Type: Str
-
-This attribute is required.
 
 =head2 client_name
 
@@ -282,19 +223,9 @@ Type: Str
 
 This attribute is required.
 
-=head2 first_name
-
-Reader: first_name
-
-Type: Str
-
-This attribute is required.
-
-Additional documentation: Card Holder's first name
-
 =head1 METHODS
 
-=head2 street
+=head2 submit
 
 Method originates in Business::CyberSource::Request::Credit.
 
@@ -302,11 +233,7 @@ Method originates in Business::CyberSource::Request::Credit.
 
 Method originates in Business::CyberSource::Request::Credit.
 
-=head2 state
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 email
+=head2 currency
 
 Method originates in Business::CyberSource::Request::Credit.
 
@@ -314,7 +241,15 @@ Method originates in Business::CyberSource::Request::Credit.
 
 Method originates in Business::CyberSource::Request::Credit.
 
+=head2 production
+
+Method originates in Business::CyberSource::Request::Credit.
+
 =head2 server
+
+Method originates in Business::CyberSource::Request::Credit.
+
+=head2 request_id
 
 Method originates in Business::CyberSource::Request::Credit.
 
@@ -322,9 +257,13 @@ Method originates in Business::CyberSource::Request::Credit.
 
 Method originates in Business::CyberSource::Request::Credit.
 
-=head2 cc_exp_month
+=head2 with_traits
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in MooseX::Traits.
+
+=head2 new_with_traits
+
+Method originates in MooseX::Traits.
 
 =head2 total
 
@@ -334,47 +273,11 @@ Method originates in Business::CyberSource::Request::Credit.
 
 Method originates in Business::CyberSource::Request::Credit.
 
-=head2 credit_card
+=head2 apply_traits
 
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 zip
-
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in MooseX::Traits.
 
 =head2 reference_code
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 ip
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 submit
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 last_name
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 currency
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 city
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 country
-
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 cc_exp_year
 
 Method originates in Business::CyberSource::Request::Credit.
 
@@ -382,11 +285,11 @@ Method originates in Business::CyberSource::Request::Credit.
 
 Method originates in Business::CyberSource::Request::Credit.
 
-=head2 client_version
+=head2 foreign_currency
 
 Method originates in Business::CyberSource::Request::Credit.
 
-=head2 first_name
+=head2 client_version
 
 Method originates in Business::CyberSource::Request::Credit.
 

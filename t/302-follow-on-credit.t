@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Env qw( CYBS_ID CYBS_KEY );
 use Test::More;
+#use SOAP::Lite +trace => [ 'debug' ] ;
 
 plan skip_all
 	=> 'You MUST set ENV variable CYBS_ID and CYBS_KEY to test this!'
@@ -12,13 +13,13 @@ plan skip_all
 
 use Business::CyberSource::Request::Authorization;
 use Business::CyberSource::Request::Capture;
-#use SOAP::Lite +trace => [ 'debug' ] ;
+use Business::CyberSource::Request::Credit;
 
 my $req
 	= Business::CyberSource::Request::Authorization->new({
 		username       => $CYBS_ID,
 		password       => $CYBS_KEY,
-		reference_code => '84',
+		reference_code => '420',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street         => 'somewhere',
@@ -44,7 +45,7 @@ my $capture
 		password       => $req->password,
 		reference_code => $req->reference_code,
 		request_id     => $res->request_id,
-		total          => -1,
+		total          => $res->amount,
 		currency       => $res->currency,
 	})
 	;
@@ -53,9 +54,27 @@ my $cres = $capture->submit;
 
 ok( $cres, 'capture response exists' );
 
-is( $cres->decision, 'REJECT', 'check decision' );
-is( $cres->reason_code, 102, 'check reason_code' );
+my $credit_req
+	= Business::CyberSource::Request::Credit->new({
+		username       => $CYBS_ID,
+		password       => $CYBS_KEY,
+		reference_code => $req->reference_code,
+		total          => 5.00,
+		currency       => 'USD',
+		request_id     => $cres->request_id,
+	})
+	;
 
-ok( $cres->request_id, 'check request_id exists' );
+my $credit = $credit_req->submit;
 
+ok( $credit, 'credit response exists' );
+
+is( $credit->reference_code, '420', 'check response reference code' );
+is( $credit->decision,       'ACCEPT', 'check decision'       );
+is( $credit->reason_code,     100,     'check reason_code'    );
+is( $credit->currency,       'USD',    'check currency'       );
+is( $credit->amount,         '5.00',    'check amount'        );
+
+ok( $credit->request_id,    'check request_id exists'    );
+ok( $credit->datetime,      'check datetime exists'      );
 done_testing;
