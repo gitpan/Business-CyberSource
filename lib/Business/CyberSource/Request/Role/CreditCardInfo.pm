@@ -4,9 +4,10 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.2'; # VERSION
+	our $VERSION = 'v0.1.3'; # VERSION
 }
 use Moose::Role;
+use MooseX::Aliases;
 
 has credit_card => (
 	required => 1,
@@ -24,6 +25,13 @@ has cc_exp_year => (
 	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
+);
+
+has cvn => (
+	required => 0,
+	alias    => [ qw( cvv cvv2  cvc2 cid ) ],
+	is       => 'ro',
+	isa      => 'Num',
 );
 
 sub _build_credit_card_info {
@@ -51,6 +59,14 @@ sub _build_credit_card_info {
 		parent => $card,
 	);
 
+	if ( $self->cvn ) {
+		$sb->add_elem(
+			name   => 'cvNumber',
+			value  => $self->cvn,
+			parent => $card,
+		);
+	}
+
 	return $sb;
 }
 
@@ -67,7 +83,7 @@ Business::CyberSource::Request::Role::CreditCardInfo - credit card info role
 
 =head1 VERSION
 
-version v0.1.2
+version v0.1.3
 
 =head1 BUGS
 

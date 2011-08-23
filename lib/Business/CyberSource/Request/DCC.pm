@@ -1,4 +1,4 @@
-package Business::CyberSource::Request::Credit;
+package Business::CyberSource::Request::DCC;
 use 5.008;
 use strict;
 use warnings;
@@ -9,19 +9,14 @@ BEGIN {
 use Moose;
 use namespace::autoclean;
 with qw(
-	MooseX::Traits
 	Business::CyberSource::Request
 	Business::CyberSource::Request::Role::PurchaseInfo
+	Business::CyberSource::Request::Role::CreditCardInfo
 );
 
 use Business::CyberSource::Response;
 
-use SOAP::Lite; #+trace => [ 'debug' ] ;
-
-has request_id => (
-	is  => 'ro',
-	isa => 'Str',
-);
+use SOAP::Lite; # +trace => [ 'debug' ] ;
 
 sub submit {
 	my $self = shift;
@@ -40,19 +35,15 @@ sub submit {
 			= Business::CyberSource::Response
 			->with_traits(qw{
 				Business::CyberSource::Response::Role::Accept
-				Business::CyberSource::Response::Role::Credit
 			})
 			->new({
 				request_id     => $request_id,
 				decision       => $decision,
 				reason_code    => $reason_code,
-				reference_code => $ret->valueof('merchantReferenceCode'  ),
-				request_token  => $ret->valueof('requestToken'           ),
 				currency       => $ret->valueof('purchaseTotals/currency'),
-				amount         => $ret->valueof('ccCreditReply/amount'     ),
-				datetime       => $ret->valueof('ccCreditReply/requestDateTime'),
-				credit_reason_code => $ret->valueof('ccCreditReply/reasonCode'),
-				reconciliation_id  => $ret->valueof('ccCreditReply/reconciliationID'),
+				datetime       => $ret->valueof('ccCaptureReply/requestDateTime'),
+				amount         => $ret->valueof('ccCaptureReply/amount'  ),
+				reference_code => $ret->valueof('merchantReferenceCode'  ),
 			})
 			;
 	}
@@ -82,31 +73,14 @@ sub _build_sdbo {
 
 	my $sb = $self->_build_sdbo_header;
 
-	unless ( $self->request_id ) { # should probably introspec
-		$sb = $self->_build_bill_to_info    ( $sb );
-	}
-
 	$sb = $self->_build_purchase_info   ( $sb );
+	$sb = $self->_build_credit_card_info( $sb );
 
-	unless ( $self->request_id ) { # should probably introspec
-		$sb = $self->_build_credit_card_info( $sb );
-	}
-
-	my $value = $self->request_id ? undef : ' ';
-
-	my $credit = $sb->add_elem(
+	$sb->add_elem(
 		attributes => { run => 'true' },
-		name       => 'ccCreditService',
-		value      => $value, # hack to prevent cs side unparseable xml
+		name       => 'ccDCCService',
+		value      => ' ',
 	);
-
-	if ( $self->request_id ) {
-		$sb->add_elem(
-			name   => 'captureRequestID',
-			value  => $self->request_id,
-			parent => $credit,
-		)
-	}
 
 	return $sb;
 }
@@ -114,14 +88,14 @@ sub _build_sdbo {
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource Credit Request Object
+# ABSTRACT: CyberSource DCC Request Object
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Request::Credit - CyberSource Credit Request Object
+Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
@@ -171,17 +145,25 @@ Type: MooseX::Types::URI::Uri
 
 This attribute is required.
 
-=head2 request_id
+=head2 cvn
 
-Reader: request_id
+Reader: cvn
 
-Type: Str
+Type: Num
 
 =head2 total
 
 Reader: total
 
 Type: Num
+
+=head2 cc_exp_month
+
+Reader: cc_exp_month
+
+Type: Str
+
+This attribute is required.
 
 =head2 username
 
@@ -193,15 +175,17 @@ This attribute is required.
 
 Additional documentation: your merchantID
 
-=head2 foreign_currency
+=head2 cc_exp_year
 
-Reader: foreign_currency
+Reader: cc_exp_year
 
 Type: Str
 
-=head2 client_name
+This attribute is required.
 
-Reader: client_name
+=head2 credit_card
+
+Reader: credit_card
 
 Type: Str
 
@@ -215,6 +199,20 @@ Type: Str
 
 This attribute is required.
 
+=head2 client_name
+
+Reader: client_name
+
+Type: Str
+
+This attribute is required.
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: Str
+
 =head2 client_version
 
 Reader: client_version
@@ -225,73 +223,89 @@ This attribute is required.
 
 =head1 METHODS
 
-=head2 submit
-
-Method originates in Business::CyberSource::Request::Credit.
-
 =head2 client_env
 
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 currency
-
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 password
 
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 server
 
-Method originates in Business::CyberSource::Request::Credit.
-
-=head2 request_id
-
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 new
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
-=head2 with_traits
+=head2 cvn
 
-Method originates in MooseX::Traits.
+Method originates in Business::CyberSource::Request::DCC.
 
-=head2 new_with_traits
+=head2 cc_exp_month
 
-Method originates in MooseX::Traits.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 total
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 username
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
-=head2 apply_traits
+=head2 credit_card
 
-Method originates in MooseX::Traits.
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 cid
+
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 reference_code
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 submit
+
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 currency
+
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 cvc2
+
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 production
+
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 cvv2
+
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 cc_exp_year
+
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 client_name
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 foreign_currency
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
 
 =head2 client_version
 
-Method originates in Business::CyberSource::Request::Credit.
+Method originates in Business::CyberSource::Request::DCC.
+
+=head2 cvv
+
+Method originates in Business::CyberSource::Request::DCC.
 
 =head1 BUGS
 

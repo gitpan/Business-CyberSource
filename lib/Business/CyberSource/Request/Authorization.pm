@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.2'; # VERSION
+	our $VERSION = 'v0.1.3'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
@@ -108,7 +108,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization reques
 
 =head1 VERSION
 
-version v0.1.2
+version v0.1.3
 
 =head1 ATTRIBUTES
 
@@ -211,6 +211,12 @@ Type: MooseX::Types::Locale::Country::Alpha2Country
 This attribute is required.
 
 Additional documentation: ISO 2 character country code
+
+=head2 cvn
+
+Reader: cvn
+
+Type: Num
 
 =head2 total
 
@@ -330,6 +336,10 @@ Method originates in Business::CyberSource::Request::Authorization.
 
 Method originates in Business::CyberSource::Request::Authorization.
 
+=head2 cvn
+
+Method originates in Business::CyberSource::Request::Authorization.
+
 =head2 cc_exp_month
 
 Method originates in Business::CyberSource::Request::Authorization.
@@ -350,6 +360,10 @@ Method originates in Business::CyberSource::Request::Authorization.
 
 Method originates in Business::CyberSource::Request::Authorization.
 
+=head2 cid
+
+Method originates in Business::CyberSource::Request::Authorization.
+
 =head2 reference_code
 
 Method originates in Business::CyberSource::Request::Authorization.
@@ -363,6 +377,10 @@ Method originates in Business::CyberSource::Request::Authorization.
 Method originates in Business::CyberSource::Request::Authorization.
 
 =head2 last_name
+
+Method originates in Business::CyberSource::Request::Authorization.
+
+=head2 cvc2
 
 Method originates in Business::CyberSource::Request::Authorization.
 
@@ -386,6 +404,10 @@ Method originates in Business::CyberSource::Request::Authorization.
 
 Method originates in Business::CyberSource::Request::Authorization.
 
+=head2 cvv2
+
+Method originates in Business::CyberSource::Request::Authorization.
+
 =head2 client_name
 
 Method originates in Business::CyberSource::Request::Authorization.
@@ -399,6 +421,10 @@ Method originates in Business::CyberSource::Request::Authorization.
 Method originates in Business::CyberSource::Request::Authorization.
 
 =head2 first_name
+
+Method originates in Business::CyberSource::Request::Authorization.
+
+=head2 cvv
 
 Method originates in Business::CyberSource::Request::Authorization.
 
