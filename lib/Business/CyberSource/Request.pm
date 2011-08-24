@@ -4,33 +4,26 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.1.4'; # VERSION
+our $VERSION = 'v0.1.5'; # VERSION
 
 use MooseX::AbstractFactory;
 use namespace::autoclean;
 
-has production => (
-	is       => 'ro',
-	isa      => 'Bool',
+with qw(
+	 Business::CyberSource::Request::Role::Credentials
 );
 
-has username => (
-	is       => 'ro',
-	isa      => 'Str',
-);
-
-has password => (
-	is       => 'ro',
-	isa      => 'Str', # actually I wonder if I can validate this more
-);
+has '+production' => ( required => 0 );
+has '+username'   => ( required => 0 );
+has '+password'   => ( required => 0 );
 
 around 'create' => sub {
 	my ( $orig, $self, $imp, $args ) = @_;
 
 	if ( ref($args) eq 'HASH' ) {
-		$args->{username}   = $self->username;
-		$args->{password}   = $self->password;
-		$args->{production} = $self->production;
+		$args->{username} ||= $self->username;
+		$args->{password} ||= $self->password;
+		$args->{production} = $self->production unless defined $args->{production};
 	}
 	else {
 		croak 'args not a hashref';
@@ -39,20 +32,102 @@ around 'create' => sub {
 	$self->$orig( $imp, $args );
 };
 
+__PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource request factory
+# ABSTRACT: CyberSource Request factory
+
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Request - CyberSource request factory
+Business::CyberSource::Request - CyberSource Request factory
 
 =head1 VERSION
 
-version v0.1.4
+version v0.1.5
+
+=head1 SYNOPSIS
+
+	my $CYBS_ID = 'myMerchantID';
+	my $CYBS_KEY = 'transaction key generated with cybersource';
+
+	use Business::CyberSource::Request;
+
+	my $request_factory
+		= Business::CyberSource::Request->new({
+			username       => $CYBS_ID,
+			password       => $CYBS_KEY,
+			production     => 0,
+		})
+		;
+
+	my $request_obj = $request_factory->create(
+		'Authorization',
+		{
+			reference_code => '42',
+			first_name     => 'Caleb',
+			last_name      => 'Cushing',
+			street         => 'somewhere',
+			city           => 'Houston',
+			state          => 'TX',
+			zip            => '77064',
+			country        => 'US',
+			email          => 'xenoterracide@gmail.com',
+			total          => 5.00,
+			currency       => 'USD',
+			credit_card    => '4111111111111111',
+			cc_exp_month   => '09',
+			cc_exp_year    => '2013',
+		}
+	);
+
+=head1 DESCRIPTION
+
+This library provides a generic factory interface to creating request objects.
+It also allows us to not repeat ourselves when specifying attributes that are
+common to all requests such as authentication, and server destination.
+
+=head1 METHODS
+
+=head2 new([{ hashref }])
+
+supports passing L<the attributes listed below|/ATTRIBUTES> as a hashref.
+
+=head2 create( $implementation, { hashref for new } )
+
+Create a new request object. C<create> takes a request implementation and a hashref to pass to the
+implementation's C<new> method. The implementation string accepts any
+implementation whose package name is prefixed by
+C<Business::CyberSource::Request::>.
+
+	my $req = $factory->create(
+			'Capture',
+			{
+				first_name => 'John',
+				last_name  => 'Smith',
+				...
+			}
+		);
+
+Please see the following C<Business::CyberSource::Request::> packages for
+implementation and required attributes:
+
+=over
+
+=item * L<Authorization|Business::CyberSource::Request::Authorization>
+
+=item * L<AuthReversal|Business::CyberSource::Request::AuthReversal>
+
+=item * L<Capture|Business::CyberSource::Request::Capture>
+
+=item * L<Credit|Business::CyberSource::Request::Credit>
+
+=item * L<DCC|Business::CyberSource::Request::DCC>
+
+=back
 
 =head1 ATTRIBUTES
 
@@ -62,17 +137,23 @@ Reader: password
 
 Type: Str
 
+Additional documentation: your SOAP transaction key
+
 =head2 production
 
 Reader: production
 
 Type: Bool
 
+Additional documentation: 0: test server. 1: production server
+
 =head2 username
 
 Reader: username
 
 Type: Str
+
+Additional documentation: your merchantID
 
 =head1 METHODS
 
@@ -84,6 +165,10 @@ Method originates in Business::CyberSource::Request.
 
 Method originates in Business::CyberSource::Request.
 
+=head2 new
+
+Method originates in Business::CyberSource::Request.
+
 =head2 create
 
 Method originates in MooseX::AbstractFactory::Role.
@@ -91,6 +176,14 @@ Method originates in MooseX::AbstractFactory::Role.
 =head2 username
 
 Method originates in Business::CyberSource::Request.
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<MooseX::AbstractFactory>
+
+=back
 
 =head1 BUGS
 

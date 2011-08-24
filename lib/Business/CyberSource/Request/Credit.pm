@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.4'; # VERSION
+	our $VERSION = 'v0.1.5'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
@@ -125,7 +125,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.1.4
+version v0.1.5
 
 =head1 ATTRIBUTES
 
@@ -162,6 +162,8 @@ Reader: production
 Type: Bool
 
 This attribute is required.
+
+Additional documentation: 0: test server. 1: production server
 
 =head2 server
 
