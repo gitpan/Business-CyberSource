@@ -33,6 +33,7 @@ my $req
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '09',
 		cc_exp_year    => '2025',
+		production     => 0,
 	})
 	;
 
@@ -46,6 +47,7 @@ my $capture
 		request_id     => $res->request_id,
 		total          => -1,
 		currency       => $res->currency,
+		production     => 0,
 	})
 	;
 

@@ -1,32 +1,43 @@
-package Business::CyberSource::Response::Role::Capture;
+package Business::CyberSource::Request::Role::Credentials;
 use 5.008;
 use strict;
 use warnings;
-BEGIN {
-	our $VERSION = 'v0.1.4'; # VERSION
-}
-use Moose::Role;
 
-has reconciliation_id => (
+our $VERSION = 'v0.1.4'; # VERSION
+
+use Moose::Role;
+use namespace::autoclean;
+
+has production => (
+	required => 1,
+	is       => 'ro',
+	isa      => 'Bool',
+);
+
+has username => (
+	documentation => 'your merchantID',
+	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
 );
 
-has capture_reason_code => (
+has password => (
+	documentation => 'your SOAP transaction key',
+	required => 1,
 	is       => 'ro',
-	isa      => 'Num',
+	isa      => 'Str', # actually I wonder if I can validate this more
 );
 
 1;
 
-# ABSTRACT: CyberSource Capture Response Object
+# ABSTRACT: CyberSource login credentials
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Capture - CyberSource Capture Response Object
+Business::CyberSource::Request::Role::Credentials - CyberSource login credentials
 
 =head1 VERSION
 

@@ -4,11 +4,13 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.3'; # VERSION
+	our $VERSION = 'v0.1.4'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
-with 'Business::CyberSource::Request';
+with qw(
+	Business::CyberSource::Request::Role::Common
+);
 
 use Business::CyberSource::Response;
 
@@ -108,7 +110,7 @@ Business::CyberSource::Request::Capture - CyberSource Capture Request Object
 
 =head1 VERSION
 
-version v0.1.3
+version v0.1.4
 
 =head1 ATTRIBUTES
 
@@ -178,12 +180,6 @@ This attribute is required.
 
 Additional documentation: your merchantID
 
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: Str
-
 =head2 reference_code
 
 Reader: reference_code
@@ -191,6 +187,12 @@ Reader: reference_code
 Type: Str
 
 This attribute is required.
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: Str
 
 =head2 client_name
 

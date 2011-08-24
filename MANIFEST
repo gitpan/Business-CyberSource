@@ -14,6 +14,8 @@ lib/Business/CyberSource/Request/Capture.pm
 lib/Business/CyberSource/Request/Credit.pm
 lib/Business/CyberSource/Request/DCC.pm
 lib/Business/CyberSource/Request/Role/BillingInfo.pm
+lib/Business/CyberSource/Request/Role/Common.pm
+lib/Business/CyberSource/Request/Role/Credentials.pm
 lib/Business/CyberSource/Request/Role/CreditCardInfo.pm
 lib/Business/CyberSource/Request/Role/PurchaseInfo.pm
 lib/Business/CyberSource/Response.pm
@@ -27,8 +29,9 @@ perlcritic.rc
 t/00-compile.t
 t/101-authorization.t
 t/102-auth-bad-auth-credentials.t
-t/103-cvn.t
 t/103-rejected-request.t
+t/104-cvn.t
+t/105-factory.t
 t/201-capture.t
 t/202-capture-reject.t
 t/301-credit.t

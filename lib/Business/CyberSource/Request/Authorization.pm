@@ -4,14 +4,14 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.3'; # VERSION
+	our $VERSION = 'v0.1.4'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
 use Moose;
 use namespace::autoclean;
 with qw(
-	Business::CyberSource::Request
+	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::BillingInfo
 	Business::CyberSource::Request::Role::PurchaseInfo
 	Business::CyberSource::Request::Role::CreditCardInfo
@@ -108,7 +108,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization reques
 
 =head1 VERSION
 
-version v0.1.3
+version v0.1.4
 
 =head1 ATTRIBUTES
 
@@ -216,7 +216,7 @@ Additional documentation: ISO 2 character country code
 
 Reader: cvn
 
-Type: Num
+Type: Int
 
 =head2 total
 
@@ -228,7 +228,7 @@ Type: Num
 
 Reader: cc_exp_month
 
-Type: Str
+Type: Int
 
 This attribute is required.
 
@@ -236,7 +236,7 @@ This attribute is required.
 
 Reader: cc_exp_year
 
-Type: Str
+Type: Int
 
 This attribute is required.
 

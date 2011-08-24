@@ -4,14 +4,14 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.3'; # VERSION
+	our $VERSION = 'v0.1.4'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
 use Moose;
 use namespace::autoclean;
 with qw(
-	Business::CyberSource::Request
+	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::PurchaseInfo
 );
 
@@ -112,7 +112,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.1.3
+version v0.1.4
 
 =head1 ATTRIBUTES
 
@@ -182,12 +182,6 @@ This attribute is required.
 
 Additional documentation: your merchantID
 
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: Str
-
 =head2 client_name
 
 Reader: client_name
@@ -195,6 +189,12 @@ Reader: client_name
 Type: Str
 
 This attribute is required.
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: Str
 
 =head2 reference_code
 
