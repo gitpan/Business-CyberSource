@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.6'; # VERSION
+	our $VERSION = '0.1.7'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
@@ -103,6 +103,7 @@ __PACKAGE__->meta->make_immutable;
 
 # ABSTRACT: CyberSource Reverse Authorization request object
 
+
 __END__
 =pod
 
@@ -112,7 +113,38 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
+
+=head1 SYNOPSIS
+
+	my $req = Business::CyberSource::Request::AuthReversal->new({
+		username       => 'merchantID',
+		password       => 'transaction key',
+		production     => 0,
+		reference_code => 'orignal authorization merchant reference code',
+		request_id     => 'request id returned in original authorization response',
+		total          => 5.00, # same as original authorization amount
+		currency       => 'USD', # same as original currency
+	});
+
+	my $res = $req->submit;
+
+=head1 DESCRIPTION
+
+This allows you to reverse an authorization request.
+
+=head1 METHODS
+
+=head2 new
+
+Instantiates a authorization reversal request object, see
+L<the attributes listed below|/ATTRIBUTES> for which ones are required and
+which are optional.
+
+=head2 submit
+
+Actually sends the required data to CyberSource for processing and returns a
+L<Business::CyberSource::Response> object.
 
 =head1 ATTRIBUTES
 
@@ -214,63 +246,13 @@ Type: Str
 
 This attribute is required.
 
-=head1 METHODS
+=head1 SEE ALSO
 
-=head2 submit
+=over
 
-Method originates in Business::CyberSource::Request::AuthReversal.
+=item * L<Business::CyberSource::Request>
 
-=head2 client_env
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 currency
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 password
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 server
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 request_id
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 new
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 total
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 username
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 reference_code
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 client_name
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 foreign_currency
-
-Method originates in Business::CyberSource::Request::AuthReversal.
-
-=head2 client_version
-
-Method originates in Business::CyberSource::Request::AuthReversal.
+=back
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.6'; # VERSION
+	our $VERSION = '0.1.7'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
@@ -97,18 +97,61 @@ sub _build_sdbo {
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource Authorization request object
+# ABSTRACT: CyberSource Authorization Request object
+
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Request::Authorization - CyberSource Authorization request object
+Business::CyberSource::Request::Authorization - CyberSource Authorization Request object
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
+
+=head1 SYNOPSIS
+
+	use Business::CyberSource::Request::Authorization;
+
+	my $req = Business::CyberSource::Request::Authorization->new({
+		username       => 'merchantID',
+		password       => 'transaction key',
+		production     => 0,
+		reference_code => '42',
+		first_name     => 'Caleb',
+		last_name      => 'Cushing',
+		street         => '100 somewhere st',
+		city           => 'Houston',
+		state          => 'TX',
+		zip            => '77064',
+		country        => 'US',
+		email          => 'xenoterracide@gmail.com',
+		total          => 5.00,
+		currency       => 'USD',
+		credit_card    => '4111111111111111',
+		cc_exp_month   => '09',
+		cc_exp_year    => '2025',
+	});
+
+	my $response = $req->submit;
+
+=head1 DESCRIPTION
+
+This allows you to create an authorization request.
+
+=head1 METHODS
+
+=head2 new
+
+Instantiates a request object, see L<the attributes listed below|/ATTRIBUTES>
+for which ones are required and which are optional.
+
+=head2 submit
+
+Actually sends the required data to CyberSource for processing and returns a
+L<Business::CyberSource::Response> object.
 
 =head1 ATTRIBUTES
 
@@ -120,11 +163,15 @@ Type: Str
 
 This attribute is required.
 
+Additional documentation: Street address on credit card billing statement
+
 =head2 ip
 
 Reader: ip
 
 Type: Str
+
+Additional documentation: IP address that customer submitted transaction from
 
 =head2 client_env
 
@@ -152,6 +199,8 @@ Type: Str
 
 This attribute is required.
 
+Additional documentation: State on credit card billing statement
+
 =head2 email
 
 Reader: email
@@ -175,6 +224,8 @@ Reader: city
 Type: Str
 
 This attribute is required.
+
+Additional documentation: City on credit card billing statement
 
 =head2 password
 
@@ -212,7 +263,7 @@ Type: MooseX::Types::Locale::Country::Alpha2Country
 
 This attribute is required.
 
-Additional documentation: ISO 2 character country code
+Additional documentation: ISO 2 character country code (as it would apply to a credit card billing statement)
 
 =head2 cvn
 
@@ -268,6 +319,8 @@ Type: Str
 
 This attribute is required.
 
+Additional documentation: postal code on credit card billing statement
+
 =head2 foreign_currency
 
 Reader: foreign_currency
@@ -308,127 +361,13 @@ This attribute is required.
 
 Additional documentation: Card Holder's first name
 
-=head1 METHODS
+=head1 SEE ALSO
 
-=head2 street
+=over
 
-Method originates in Business::CyberSource::Request::Authorization.
+=item * L<Business::CyberSource::Request>
 
-=head2 client_env
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 state
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 email
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 password
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 server
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 new
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cvn
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cc_exp_month
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 total
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 username
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 credit_card
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 zip
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cid
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 reference_code
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 ip
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 submit
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 last_name
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cvc2
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 currency
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 city
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 country
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cc_exp_year
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cvv2
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 client_name
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 foreign_currency
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 client_version
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 first_name
-
-Method originates in Business::CyberSource::Request::Authorization.
-
-=head2 cvv
-
-Method originates in Business::CyberSource::Request::Authorization.
+=back
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.6'; # VERSION
+	our $VERSION = '0.1.7'; # VERSION
 }
 use Moose::Role;
 use MooseX::Types::Email qw( EmailAddress );
@@ -28,18 +28,21 @@ has street => (
 	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
+	documentation => 'Street address on credit card billing statement',
 );
 
 has city => (
 	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
+	documentation => 'City on credit card billing statement',
 );
 
 has state => (
 	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
+	documentation => 'State on credit card billing statement',
 );
 
 has country => (
@@ -47,13 +50,15 @@ has country => (
 	coerce   => 1,
 	is       => 'ro',
 	isa      => Alpha2Country,
-	documentation => 'ISO 2 character country code',
+	documentation => 'ISO 2 character country code '
+		. '(as it would apply to a credit card billing statement)',
 );
 
 has zip => (
 	required => 1,
 	is       => 'ro',
 	isa      => 'Str',
+	documentation => 'postal code on credit card billing statement',
 );
 
 has email => (
@@ -63,8 +68,10 @@ has email => (
 );
 
 has ip => (
+	required => 0,
 	is       => 'ro',
 	isa      => 'Str',
+	documentation => 'IP address that customer submitted transaction from',
 );
 
 sub _build_bill_to_info {
@@ -146,7 +153,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
 
 =head1 BUGS
 

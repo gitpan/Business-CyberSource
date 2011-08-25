@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.6'; # VERSION
+	our $VERSION = '0.1.7'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
@@ -136,7 +136,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
 
 =head1 ATTRIBUTES
 
@@ -171,40 +171,6 @@ Reader: reason_code
 Type: Int
 
 This attribute is required.
-
-=head1 METHODS
-
-=head2 new
-
-Method originates in Business::CyberSource::Response.
-
-=head2 reason_text
-
-Method originates in Business::CyberSource::Response.
-
-=head2 with_traits
-
-Method originates in MooseX::Traits.
-
-=head2 request_id
-
-Method originates in Business::CyberSource::Response.
-
-=head2 new_with_traits
-
-Method originates in MooseX::Traits.
-
-=head2 decision
-
-Method originates in Business::CyberSource::Response.
-
-=head2 reason_code
-
-Method originates in Business::CyberSource::Response.
-
-=head2 apply_traits
-
-Method originates in MooseX::Traits.
 
 =head1 BUGS
 

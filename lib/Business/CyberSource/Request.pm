@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.1.6'; # VERSION
+our $VERSION = '0.1.7'; # VERSION
 
 use MooseX::AbstractFactory;
 use namespace::autoclean;
@@ -47,7 +47,7 @@ Business::CyberSource::Request - CyberSource Request factory
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
 
 =head1 SYNOPSIS
 
@@ -154,28 +154,6 @@ Reader: username
 Type: Str
 
 Additional documentation: your merchantID
-
-=head1 METHODS
-
-=head2 password
-
-Method originates in Business::CyberSource::Request.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request.
-
-=head2 new
-
-Method originates in Business::CyberSource::Request.
-
-=head2 create
-
-Method originates in MooseX::AbstractFactory::Role.
-
-=head2 username
-
-Method originates in Business::CyberSource::Request.
 
 =head1 SEE ALSO
 

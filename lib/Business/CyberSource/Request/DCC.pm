@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.6'; # VERSION
+	our $VERSION = '0.1.7'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
@@ -90,6 +90,7 @@ __PACKAGE__->meta->make_immutable;
 
 # ABSTRACT: CyberSource DCC Request Object
 
+
 __END__
 =pod
 
@@ -99,7 +100,23 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.1.6
+version 0.1.7
+
+=head1 DESCRIPTION
+
+This object allows you to create a request for Direct Currency Conversion.
+
+=head1 METHODS
+
+=head2 new
+
+Instantiates a DCC request object, see L<the attributes listed below|/ATTRIBUTES>
+for which ones are required and which are optional.
+
+=head2 submit
+
+Actually sends the required data to CyberSource for processing and returns a
+L<Business::CyberSource::Response> object.
 
 =head1 ATTRIBUTES
 
@@ -223,91 +240,13 @@ Type: Str
 
 This attribute is required.
 
-=head1 METHODS
+=head1 SEE ALSO
 
-=head2 client_env
+=over
 
-Method originates in Business::CyberSource::Request::DCC.
+=item * L<Business::CyberSource::Request>
 
-=head2 password
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 server
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 new
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cvn
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cc_exp_month
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 total
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 username
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 credit_card
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cid
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 reference_code
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 submit
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 currency
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cvc2
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 production
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cvv2
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cc_exp_year
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 client_name
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 foreign_currency
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 client_version
-
-Method originates in Business::CyberSource::Request::DCC.
-
-=head2 cvv
-
-Method originates in Business::CyberSource::Request::DCC.
+=back
 
 =head1 BUGS
 
