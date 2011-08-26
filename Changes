@@ -1,5 +1,10 @@
 Revision history for Business-CyberSource
-0.1.7     2011-08-25
+v0.1.8    2011-08-26
+	- use MooseX::Types::CreditCard
+	  as this type is based on int the ->credit_card method will no longer
+	  return strings with '-' or ' ' in them
+
+v0.1.7     2011-08-25
 	- add basic documentation for requests
 	- disable method documentation generation
 	- change how traits are applied on credit requests

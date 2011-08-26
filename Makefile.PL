@@ -34,9 +34,11 @@ my %WriteMakefileArgs = (
     "MooseX::AbstractFactory" => 0,
     "MooseX::Aliases" => 0,
     "MooseX::Traits" => 0,
+    "MooseX::Types::CreditCard" => 0,
     "MooseX::Types::DateTime::W3C" => 0,
     "MooseX::Types::Email" => 0,
     "MooseX::Types::Locale::Country" => 0,
+    "MooseX::Types::Moose" => 0,
     "MooseX::Types::URI" => 0,
     "SOAP::Data::Builder" => 0,
     "SOAP::Lite" => 0,
@@ -44,7 +46,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.1.7",
+  "VERSION" => "v0.1.8",
   "test" => {
     "TESTS" => "t/*.t"
   }
