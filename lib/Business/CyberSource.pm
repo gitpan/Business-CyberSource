@@ -3,14 +3,14 @@ use 5.006;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
-}
+
+our $VERSION = 'v0.1.9'; # VERSION
+
 use Moose::Role;
 use namespace::autoclean;
 
 has client_version => (
-	required => 1,
+	required => 0,
 	lazy     => 1,
 	init_arg => undef,
 	is       => 'ro',
@@ -19,7 +19,7 @@ has client_version => (
 );
 
 has client_name => (
-	required => 1,
+	required => 0,
 	lazy     => 1,
 	init_arg => undef,
 	is       => 'ro',
@@ -28,7 +28,7 @@ has client_name => (
 );
 
 has client_env => (
-	required => 1,
+	required => 0,
 	lazy     => 1,
 	init_arg => undef,
 	is       => 'ro',
@@ -52,7 +52,7 @@ Business::CyberSource - Business::CyberSource
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 BUGS
 

@@ -3,30 +3,33 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.1.8'; # VERSION
+our $VERSION = 'v0.1.9'; # VERSION
 
 use Moose::Role;
 use namespace::autoclean;
+use MooseX::Types::Varchar qw( Varchar );
+use MooseX::Types::Moose   qw( Bool Str );
 
 has production => (
 	documentation => '0: test server. 1: production server',
 	required => 1,
 	is       => 'ro',
-	isa      => 'Bool',
+	isa      => Bool,
 );
 
 has username => (
-	documentation => 'your merchantID',
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[30],
+	documentation => 'Your CyberSource merchant ID. Use the same merchantID '
+		. 'for evaluation, testing, and production',
 );
 
 has password => (
 	documentation => 'your SOAP transaction key',
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str', # actually I wonder if I can validate this more
+	isa      => Str, # actually I wonder if I can validate this more
 );
 
 1;
@@ -42,7 +45,7 @@ Business::CyberSource::Request::Role::Credentials - CyberSource login credential
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 BUGS
 

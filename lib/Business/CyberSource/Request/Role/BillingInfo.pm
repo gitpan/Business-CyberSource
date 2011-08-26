@@ -3,45 +3,56 @@ use 5.008;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
-}
+
+our $VERSION = 'v0.1.9'; # VERSION
+
 use Moose::Role;
-use MooseX::Types::Email qw( EmailAddress );
+use namespace::autoclean;
+use MooseX::Aliases;
+use MooseX::Types::Varchar         qw( Varchar       );
+use MooseX::Types::Email           qw( EmailAddress  );
 use MooseX::Types::Locale::Country qw( Alpha2Country );
 
 has first_name => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[60],
 	documentation => 'Card Holder\'s first name',
 );
 
 has last_name => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[60],
 	documentation => 'Card Holder\'s last name',
 );
 
 has street => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[60],
+	alias    => 'street1',
 	documentation => 'Street address on credit card billing statement',
+);
+
+has street2 => (
+	required => 0,
+	is       => 'ro',
+	isa      => Varchar[60],
+	documentation => 'Second line of the billing street address.',
 );
 
 has city => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[50],
 	documentation => 'City on credit card billing statement',
 );
 
 has state => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[2],
 	documentation => 'State on credit card billing statement',
 );
 
@@ -57,7 +68,7 @@ has country => (
 has zip => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[10],
 	documentation => 'postal code on credit card billing statement',
 );
 
@@ -65,12 +76,14 @@ has email => (
 	required => 1,
 	is       => 'ro',
 	isa      => EmailAddress,
+	documentation => 'Customer\'s email address, including the full domain '
+		. 'name',
 );
 
 has ip => (
 	required => 0,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[15],
 	documentation => 'IP address that customer submitted transaction from',
 );
 
@@ -95,9 +108,17 @@ sub _build_bill_to_info {
 
 	$sb->add_elem(
 		name   => 'street1',
-		value  => $self->street,
+		value  => $self->street1,
 		parent => $bill_to,
 	);
+
+	if ( $self->street2 ) {
+		$sb->add_elem(
+			name   => 'street2',
+			value  => $self->street2,
+			parent => $bill_to,
+		);
+	}
 
 	$sb->add_elem(
 		name   => 'city',
@@ -153,7 +174,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 BUGS
 

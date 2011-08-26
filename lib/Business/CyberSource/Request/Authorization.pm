@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
+	our $VERSION = 'v0.1.9'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
@@ -109,7 +109,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 SYNOPSIS
 
@@ -159,7 +159,7 @@ L<Business::CyberSource::Response> object.
 
 Reader: street
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[60]
 
 This attribute is required.
 
@@ -169,7 +169,7 @@ Additional documentation: Street address on credit card billing statement
 
 Reader: ip
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[15]
 
 Additional documentation: IP address that customer submitted transaction from
 
@@ -179,13 +179,19 @@ Reader: client_env
 
 Type: Str
 
-This attribute is required.
+=head2 cv_indicator
+
+Reader: cv_indicator
+
+Type: MooseX::Types::Varchar::Varchar[1]
+
+Additional documentation: Flag that indicates whether a CVN code was sent
 
 =head2 last_name
 
 Reader: last_name
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[60]
 
 This attribute is required.
 
@@ -195,11 +201,19 @@ Additional documentation: Card Holder's last name
 
 Reader: state
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[2]
 
 This attribute is required.
 
 Additional documentation: State on credit card billing statement
+
+=head2 currency
+
+Reader: currency
+
+Type: MooseX::Types::Varchar::Varchar[5]
+
+This attribute is required.
 
 =head2 email
 
@@ -209,19 +223,13 @@ Type: MooseX::Types::Email::EmailAddress
 
 This attribute is required.
 
-=head2 currency
-
-Reader: currency
-
-Type: Str
-
-This attribute is required.
+Additional documentation: Customer's email address, including the full domain name
 
 =head2 city
 
 Reader: city
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
 
@@ -297,11 +305,11 @@ This attribute is required.
 
 Reader: username
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[30]
 
 This attribute is required.
 
-Additional documentation: your merchantID
+Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
 =head2 credit_card
 
@@ -311,27 +319,41 @@ Type: MooseX::Types::CreditCard::CreditCard
 
 This attribute is required.
 
+=head2 card_type
+
+Reader: card_type
+
+Type: MooseX::Types::Varchar::Varchar[3]
+
 =head2 zip
 
 Reader: zip
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[10]
 
 This attribute is required.
 
 Additional documentation: postal code on credit card billing statement
 
+=head2 street2
+
+Reader: street2
+
+Type: MooseX::Types::Varchar::Varchar[60]
+
+Additional documentation: Second line of the billing street address.
+
 =head2 foreign_currency
 
 Reader: foreign_currency
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[5]
 
 =head2 reference_code
 
 Reader: reference_code
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
 
@@ -341,21 +363,17 @@ Reader: client_name
 
 Type: Str
 
-This attribute is required.
-
 =head2 client_version
 
 Reader: client_version
 
 Type: Str
 
-This attribute is required.
-
 =head2 first_name
 
 Reader: first_name
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[60]
 
 This attribute is required.
 

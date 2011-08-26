@@ -2,26 +2,28 @@ package Business::CyberSource::Request::Role::PurchaseInfo;
 use 5.008;
 use strict;
 use warnings;
-use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
-}
+
+our $VERSION = 'v0.1.9'; # VERSION
+
 use Moose::Role;
+use namespace::autoclean;
+use MooseX::Types::Moose   qw( Num     );
+use MooseX::Types::Varchar qw( Varchar );
 
 has currency => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[5],
 );
 
 has total => (
 	is       => 'ro',
-	isa      => 'Num',
+	isa      => Num,
 );
 
 has foreign_currency => (
 	is  => 'ro',
-	isa => 'Str',
+	isa => Varchar[5],
 );
 
 sub _build_purchase_info {
@@ -67,7 +69,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 BUGS
 

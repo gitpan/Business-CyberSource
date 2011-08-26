@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
+	our $VERSION = 'v0.1.9'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
@@ -100,7 +100,7 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 DESCRIPTION
 
@@ -126,13 +126,19 @@ Reader: client_env
 
 Type: Str
 
-This attribute is required.
+=head2 cv_indicator
+
+Reader: cv_indicator
+
+Type: MooseX::Types::Varchar::Varchar[1]
+
+Additional documentation: Flag that indicates whether a CVN code was sent
 
 =head2 currency
 
 Reader: currency
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[5]
 
 This attribute is required.
 
@@ -170,12 +176,6 @@ Reader: cvn
 
 Type: Int
 
-=head2 total
-
-Reader: total
-
-Type: Num
-
 =head2 cc_exp_month
 
 Reader: cc_exp_month
@@ -184,15 +184,21 @@ Type: Int
 
 This attribute is required.
 
+=head2 total
+
+Reader: total
+
+Type: Num
+
 =head2 username
 
 Reader: username
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[30]
 
 This attribute is required.
 
-Additional documentation: your merchantID
+Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
 =head2 cc_exp_year
 
@@ -210,13 +216,11 @@ Type: MooseX::Types::CreditCard::CreditCard
 
 This attribute is required.
 
-=head2 reference_code
+=head2 card_type
 
-Reader: reference_code
+Reader: card_type
 
-Type: Str
-
-This attribute is required.
+Type: MooseX::Types::Varchar::Varchar[3]
 
 =head2 client_name
 
@@ -224,21 +228,25 @@ Reader: client_name
 
 Type: Str
 
+=head2 reference_code
+
+Reader: reference_code
+
+Type: MooseX::Types::Varchar::Varchar[50]
+
 This attribute is required.
 
 =head2 foreign_currency
 
 Reader: foreign_currency
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[5]
 
 =head2 client_version
 
 Reader: client_version
 
 Type: Str
-
-This attribute is required.
 
 =head1 SEE ALSO
 

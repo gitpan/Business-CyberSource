@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.8'; # VERSION
+	our $VERSION = 'v0.1.9'; # VERSION
 }
 
 use SOAP::Lite; # +trace => [ 'debug' ] ;
@@ -113,7 +113,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.1.8
+version v0.1.9
 
 =head1 SYNOPSIS
 
@@ -154,13 +154,11 @@ Reader: client_env
 
 Type: Str
 
-This attribute is required.
-
 =head2 currency
 
 Reader: currency
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[5]
 
 This attribute is required.
 
@@ -210,11 +208,11 @@ Type: Num
 
 Reader: username
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[30]
 
 This attribute is required.
 
-Additional documentation: your merchantID
+Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
 =head2 client_name
 
@@ -222,19 +220,17 @@ Reader: client_name
 
 Type: Str
 
-This attribute is required.
-
 =head2 foreign_currency
 
 Reader: foreign_currency
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[5]
 
 =head2 reference_code
 
 Reader: reference_code
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
 
@@ -243,8 +239,6 @@ This attribute is required.
 Reader: client_version
 
 Type: Str
-
-This attribute is required.
 
 =head1 SEE ALSO
 
