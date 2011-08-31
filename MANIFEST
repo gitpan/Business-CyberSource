@@ -25,8 +25,10 @@ lib/Business/CyberSource/Response/Role/Authorization.pm
 lib/Business/CyberSource/Response/Role/Capture.pm
 lib/Business/CyberSource/Response/Role/Credit.pm
 lib/Business/CyberSource/Response/Role/Reject.pm
+lib/MooseX/Types/CyberSource.pm
 perlcritic.rc
 t/00-compile.t
+t/000-report-versions-tiny.t
 t/101-authorization.t
 t/102-auth-bad-auth-credentials.t
 t/103-rejected-request.t
@@ -39,6 +41,7 @@ t/301-credit.t
 t/302-follow-on-credit.t
 t/401-auth-reversal.t
 t/402-auth-reversal-reject.t
+t/403-auth-reversal-factory.t
 t/author-critic.t
 t/author-pod-spell.t
 t/release-cpan-changes.t

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.1.9'; # VERSION
+our $VERSION = 'v0.1.10'; # VERSION
 
 use Moose::Role;
 use namespace::autoclean;
@@ -15,7 +15,13 @@ has client_version => (
 	init_arg => undef,
 	is       => 'ro',
 	isa      => 'Str',
-	default  => sub { return $Business::CyberSource::VERSION },
+	default  => sub {
+		my $version
+			= $Business::CyberSource::VERSION ? $Business::CyberSource::VERSION
+			                                  : 'v0.0.0'
+			;
+		return $version;
+	},
 );
 
 has client_name => (
@@ -52,7 +58,7 @@ Business::CyberSource - Business::CyberSource
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 BUGS
 

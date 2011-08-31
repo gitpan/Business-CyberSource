@@ -3,17 +3,17 @@ use 5.008;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.9'; # VERSION
-}
 
-use SOAP::Lite; # +trace => [ 'debug' ] ;
+our $VERSION = 'v0.1.10'; # VERSION
+
 use Moose;
 use namespace::autoclean;
 with qw(
 	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::PurchaseInfo
 );
+
+use Business::CyberSource::Response;
 
 sub submit {
 	my $self = shift;
@@ -113,7 +113,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 SYNOPSIS
 
@@ -158,7 +158,7 @@ Type: Str
 
 Reader: currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 This attribute is required.
 
@@ -224,7 +224,7 @@ Type: Str
 
 Reader: foreign_currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 =head2 reference_code
 

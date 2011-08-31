@@ -3,11 +3,9 @@ use 5.008;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.9'; # VERSION
-}
 
-use SOAP::Lite; # +trace => [ 'debug' ] ;
+our $VERSION = 'v0.1.10'; # VERSION
+
 use Moose;
 use namespace::autoclean;
 with qw(
@@ -109,7 +107,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 SYNOPSIS
 
@@ -211,7 +209,7 @@ Additional documentation: State on credit card billing statement
 
 Reader: currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 This attribute is required.
 
@@ -277,7 +275,7 @@ Additional documentation: ISO 2 character country code (as it would apply to a c
 
 Reader: cvn
 
-Type: Int
+Type: MooseX::Types::CreditCard::CardSecurityCode
 
 =head2 total
 
@@ -347,7 +345,7 @@ Additional documentation: Second line of the billing street address.
 
 Reader: foreign_currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 =head2 reference_code
 

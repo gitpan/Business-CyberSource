@@ -3,9 +3,9 @@ use 5.008;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.9'; # VERSION
-}
+
+our $VERSION = 'v0.1.10'; # VERSION
+
 use Moose;
 use namespace::autoclean;
 with qw(
@@ -15,8 +15,6 @@ with qw(
 );
 
 use Business::CyberSource::Response;
-
-use SOAP::Lite; # +trace => [ 'debug' ] ;
 
 sub submit {
 	my $self = shift;
@@ -100,7 +98,7 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 DESCRIPTION
 
@@ -138,7 +136,7 @@ Additional documentation: Flag that indicates whether a CVN code was sent
 
 Reader: currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 This attribute is required.
 
@@ -174,7 +172,7 @@ This attribute is required.
 
 Reader: cvn
 
-Type: Int
+Type: MooseX::Types::CreditCard::CardSecurityCode
 
 =head2 cc_exp_month
 
@@ -240,7 +238,7 @@ This attribute is required.
 
 Reader: foreign_currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 =head2 client_version
 

@@ -17,7 +17,7 @@ my %WriteMakefileArgs = (
     "File::Find" => 0,
     "File::Temp" => 0,
     "Test::Exception" => 0,
-    "Test::More" => 0
+    "Test::More" => "0.88"
   },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
@@ -34,20 +34,22 @@ my %WriteMakefileArgs = (
     "MooseX::AbstractFactory" => 0,
     "MooseX::Aliases" => 0,
     "MooseX::Traits" => 0,
-    "MooseX::Types::CreditCard" => 0,
+    "MooseX::Types" => 0,
+    "MooseX::Types::CreditCard" => "0.001001",
     "MooseX::Types::DateTime::W3C" => 0,
     "MooseX::Types::Email" => 0,
     "MooseX::Types::Locale::Country" => 0,
+    "MooseX::Types::Locale::Currency" => 0,
     "MooseX::Types::Moose" => 0,
     "MooseX::Types::URI" => 0,
     "MooseX::Types::Varchar" => 0,
     "SOAP::Data::Builder" => 0,
-    "SOAP::Lite" => 0,
+    "SOAP::Lite" => "0.714",
     "namespace::autoclean" => 0,
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v0.1.9",
+  "VERSION" => "v0.1.10",
   "test" => {
     "TESTS" => "t/*.t"
   }

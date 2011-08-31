@@ -3,17 +3,18 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.1.9'; # VERSION
+our $VERSION = 'v0.1.10'; # VERSION
 
 use Moose::Role;
 use namespace::autoclean;
 use MooseX::Types::Moose   qw( Num     );
 use MooseX::Types::Varchar qw( Varchar );
+use MooseX::Types::Locale::Currency qw( CurrencyCode );
 
 has currency => (
 	required => 1,
 	is       => 'ro',
-	isa      => Varchar[5],
+	isa      => CurrencyCode,
 );
 
 has total => (
@@ -23,7 +24,7 @@ has total => (
 
 has foreign_currency => (
 	is  => 'ro',
-	isa => Varchar[5],
+	isa => CurrencyCode,
 );
 
 sub _build_purchase_info {
@@ -69,7 +70,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 BUGS
 

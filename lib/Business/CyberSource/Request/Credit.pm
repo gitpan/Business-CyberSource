@@ -3,9 +3,9 @@ use 5.008;
 use strict;
 use warnings;
 use Carp;
-BEGIN {
-	our $VERSION = 'v0.1.9'; # VERSION
-}
+
+our $VERSION = 'v0.1.10'; # VERSION
+
 use Moose;
 use namespace::autoclean;
 with qw(
@@ -15,8 +15,6 @@ with qw(
 );
 
 use Business::CyberSource::Response;
-
-use SOAP::Lite; #+trace => [ 'debug' ] ;
 
 has '+_trait_namespace' => (
 	default => 'Business::CyberSource::Request::Role',
@@ -130,7 +128,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 SYNOPSIS
 
@@ -198,7 +196,7 @@ Type: Str
 
 Reader: currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 This attribute is required.
 
@@ -262,7 +260,7 @@ Type: Str
 
 Reader: foreign_currency
 
-Type: MooseX::Types::Varchar::Varchar[5]
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 =head2 reference_code
 

@@ -4,12 +4,14 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.1.9'; # VERSION
+	our $VERSION = 'v0.1.10'; # VERSION
 }
 use Moose;
 use namespace::autoclean;
 
 with qw( MooseX::Traits );
+
+use MooseX::Types::CyberSource qw( Decision );
 
 has request_id => (
 	required => 1,
@@ -20,7 +22,7 @@ has request_id => (
 has decision => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Decision,
 );
 
 has reason_code => (
@@ -136,7 +138,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.1.9
+version v0.1.10
 
 =head1 ATTRIBUTES
 
@@ -160,7 +162,7 @@ This attribute is required.
 
 Reader: decision
 
-Type: Str
+Type: MooseX::Types::CyberSource::Decision
 
 This attribute is required.
 
