@@ -3,12 +3,15 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.1.10'; # VERSION
+our $VERSION = 'v0.2.0'; # VERSION
 
 use Moose::Role;
 use namespace::autoclean;
-use MooseX::Types::Varchar qw( Varchar );
-use MooseX::Types::Moose   qw( Bool Str );
+use MooseX::Types::Varchar        qw( Varchar  );
+use MooseX::Types::Moose          qw( Bool Str Object );
+use MooseX::Types::Common::String qw( NonEmptyStr );
+
+use XML::Compile::SOAP::WSS;
 
 has production => (
 	documentation => '0: test server. 1: production server',
@@ -29,7 +32,7 @@ has password => (
 	documentation => 'your SOAP transaction key',
 	required => 1,
 	is       => 'ro',
-	isa      => Str, # actually I wonder if I can validate this more
+	isa      => NonEmptyStr,
 );
 
 1;
@@ -45,7 +48,7 @@ Business::CyberSource::Request::Role::Credentials - CyberSource login credential
 
 =head1 VERSION
 
-version v0.1.10
+version v0.2.0
 
 =head1 BUGS
 

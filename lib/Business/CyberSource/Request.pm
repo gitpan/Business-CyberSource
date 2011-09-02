@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.1.10'; # VERSION
+our $VERSION = 'v0.2.0'; # VERSION
 
 use MooseX::AbstractFactory;
 use namespace::autoclean;
@@ -47,7 +47,7 @@ Business::CyberSource::Request - CyberSource Request factory
 
 =head1 VERSION
 
-version v0.1.10
+version v0.2.0
 
 =head1 SYNOPSIS
 
@@ -135,7 +135,7 @@ implementation and required attributes:
 
 Reader: password
 
-Type: Str
+Type: MooseX::Types::Common::String::NonEmptyStr
 
 Additional documentation: your SOAP transaction key
 

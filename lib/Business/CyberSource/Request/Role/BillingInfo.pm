@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.1.10'; # VERSION
+our $VERSION = 'v0.2.0'; # VERSION
 
 use Moose::Role;
 use namespace::autoclean;
@@ -87,78 +87,23 @@ has ip => (
 	documentation => 'IP address that customer submitted transaction from',
 );
 
-sub _build_bill_to_info {
-	my ( $self, $sb ) = @_;
+sub _billing_info {
+	my $self = shift;
 
-	my $bill_to = $sb->add_elem(
-		name => 'billTo',
-	);
+	my $bi = {
+		firstName  => $self->first_name,
+		lastName   => $self->last_name,
+		street1    => $self->street1,
+		street2    => $self->street2,
+		city       => $self->city,
+		state      => $self->state,
+		postalCode => $self->zip,
+		country    => $self->country,
+		email      => $self->email,
+		ipAddress  => $self->ip,
+	};
 
-	$sb->add_elem(
-		name   => 'firstName',
-		value  => $self->first_name,
-		parent => $bill_to,
-	);
-
-	$sb->add_elem(
-		name   => 'lastName',
-		value  => $self->last_name,
-		parent => $bill_to,
-	);
-
-	$sb->add_elem(
-		name   => 'street1',
-		value  => $self->street1,
-		parent => $bill_to,
-	);
-
-	if ( $self->street2 ) {
-		$sb->add_elem(
-			name   => 'street2',
-			value  => $self->street2,
-			parent => $bill_to,
-		);
-	}
-
-	$sb->add_elem(
-		name   => 'city',
-		value  => $self->city,
-		parent => $bill_to,
-	);
-
-	$sb->add_elem(
-		name   => 'state',
-		parent => $bill_to,
-		value  => $self->state,
-	);
-
-	$sb->add_elem(
-		name   => 'postalCode',
-		parent => $bill_to,
-		value  => $self->zip,
-	);
-
-	$sb->add_elem(
-		name   => 'country',
-		parent => $bill_to,
-		value  => $self->country,
-	);
-
-	$sb->add_elem(
-		name   => 'email',
-		value  => $self->email,
-		parent => $bill_to,
-	);
-
-	if ( $self->ip ) {
-		$sb->add_elem(
-			name   => 'ipAddress',
-			value  => $self->ip,
-			parent => $bill_to,
-		);
-	}
-
-	return $sb;
+	return $bi;
 }
 
 1;
@@ -174,7 +119,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.1.10
+version v0.2.0
 
 =head1 BUGS
 
