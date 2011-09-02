@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.0'; # VERSION
+our $VERSION = 'v0.2.1'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -25,34 +25,10 @@ has request_id => (
 	isa => 'Str',
 );
 
-use XML::Compile::SOAP::WSS 0.12;
-
-use XML::Compile::WSDL11;
-use XML::Compile::SOAP11;
-use XML::Compile::Transport::SOAPHTTP;
-
 sub submit {
 	my $self = shift;
 
-    my $wss = XML::Compile::SOAP::WSS->new( version => '1.1' );
-
-    my $wsdl = XML::Compile::WSDL11->new( $self->cybs_wsdl->stringify );
-    $wsdl->importDefinitions( $self->cybs_xsd->stringify );
-
-    my $call = $wsdl->compileClient('runTransaction');
-
-    my $security = $wss->wsseBasicAuth( $self->username, $self->password );
-
 	my $payload = {
-		merchantID            => $self->username,
-		merchantReferenceCode => $self->reference_code,
-		clientEnvironment     => $self->client_env,
-		clientLibrary         => $self->client_name,
-		clientLibraryVersion  => $self->client_version,
-		purchaseTotals => {
-			currency         => $self->currency,
-			grandTotalAmount => $self->total,
-		},
 		ccCreditService => {
 			run => 'true',
 			captureRequestID => $self->request_id,
@@ -67,18 +43,7 @@ sub submit {
 		$payload->{card} = $self->_cc_info ;
 	}
 
-	my ( $answer, $trace ) = $call->(
-		wsse_Security         => $security,
-		%{ $payload },
-	);
-
-	$self->trace( $trace );
-
-	if ( $answer->{Fault} ) {
-		croak 'SOAP Fault: ' . $answer->{Fault}->{faultstring};
-	}
-
-	my $r = $answer->{result};
+	my $r = $self->_build_request( $payload );
 
 	my $res;
 	if ( $r->{decision} eq 'ACCEPT' ) {
@@ -138,7 +103,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.2.0
+version v0.2.1
 
 =head1 SYNOPSIS
 
