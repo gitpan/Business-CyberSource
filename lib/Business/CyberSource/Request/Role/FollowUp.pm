@@ -1,32 +1,27 @@
-package Business::CyberSource::Response::Role::Capture;
+package Business::CyberSource::Request::Role::FollowUp;
 use 5.008;
 use strict;
 use warnings;
-BEGIN {
-	our $VERSION = 'v0.2.2'; # VERSION
-}
+use Carp;
+use namespace::autoclean;
+
+our $VERSION = 'v0.2.2'; # VERSION
+
 use Moose::Role;
-
-has reconciliation_id => (
-	is       => 'ro',
-	isa      => 'Str',
-);
-
-has capture_reason_code => (
-	is       => 'ro',
-	isa      => 'Num',
+with qw(
+	Business::CyberSource::Role::RequestID
 );
 
 1;
 
-# ABSTRACT: CyberSource Capture Response Object
+# ABSTRACT: Role to apply to requests that are follow ups to a previous request
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Capture - CyberSource Capture Response Object
+Business::CyberSource::Request::Role::FollowUp - Role to apply to requests that are follow ups to a previous request
 
 =head1 VERSION
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.1'; # VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -20,18 +20,12 @@ has '+_trait_namespace' => (
 	default => 'Business::CyberSource::Request::Role',
 );
 
-has request_id => (
-	is  => 'ro',
-	isa => 'Str',
-);
-
 sub submit {
 	my $self = shift;
 
 	my $payload = {
 		ccCreditService => {
 			run => 'true',
-			captureRequestID => $self->request_id,
 		},
 	};
 
@@ -41,6 +35,10 @@ sub submit {
 
 	if ( $self->does('Business::CyberSource::Request::Role::CreditCardInfo') ) {
 		$payload->{card} = $self->_cc_info ;
+	}
+
+	if ( $self->does('Business::CyberSource::Request::Role::FollowUp') ) {
+		$payload->{ccCreditService}->{captureRequestID} = $self->request_id;
 	}
 
 	my $r = $self->_build_request( $payload );
@@ -67,22 +65,8 @@ sub submit {
 			})
 			;
 	}
-	elsif ( $r->{decision} eq 'REJECT' ) {
-		$res
-			= Business::CyberSource::Response
-			->with_traits(qw{
-				Business::CyberSource::Response::Role::Reject
-			})
-			->new({
-				decision      => $r->{decision},
-				request_id    => $r->{requestID},
-				reason_code   => "$r->{reasonCode}",
-				request_token => $r->{requestToken},
-			})
-			;
-	}
 	else {
-		croak 'decision defined, but not sane: ' . $r->{decision};
+		$res = $self->_handle_decision( $r );
 	}
 
 	return $res;
@@ -103,7 +87,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.2.1
+version v0.2.2
 
 =head1 SYNOPSIS
 
@@ -209,12 +193,6 @@ This attribute is required.
 
 Additional documentation: 0: test server. 1: production server
 
-=head2 request_id
-
-Reader: request_id
-
-Type: Str
-
 =head2 cybs_api_version
 
 Reader: cybs_api_version
@@ -243,13 +221,11 @@ Reader: cybs_xsd
 
 Type: MooseX::Types::Path::Class::File
 
-=head2 reference_code
+=head2 foreign_currency
 
-Reader: reference_code
+Reader: foreign_currency
 
-Type: MooseX::Types::Varchar::Varchar[50]
-
-This attribute is required.
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 =head2 client_name
 
@@ -257,11 +233,13 @@ Reader: client_name
 
 Type: Str
 
-=head2 foreign_currency
+=head2 reference_code
 
-Reader: foreign_currency
+Reader: reference_code
 
-Type: MooseX::Types::Locale::Currency::CurrencyCode
+Type: MooseX::Types::Varchar::Varchar[50]
+
+This attribute is required.
 
 =head2 client_version
 

@@ -17,6 +17,7 @@ lib/Business/CyberSource/Request/Role/BillingInfo.pm
 lib/Business/CyberSource/Request/Role/Common.pm
 lib/Business/CyberSource/Request/Role/Credentials.pm
 lib/Business/CyberSource/Request/Role/CreditCardInfo.pm
+lib/Business/CyberSource/Request/Role/FollowUp.pm
 lib/Business/CyberSource/Request/Role/PurchaseInfo.pm
 lib/Business/CyberSource/Response.pm
 lib/Business/CyberSource/Response/Role/Accept.pm
@@ -25,6 +26,7 @@ lib/Business/CyberSource/Response/Role/Authorization.pm
 lib/Business/CyberSource/Response/Role/Capture.pm
 lib/Business/CyberSource/Response/Role/Credit.pm
 lib/Business/CyberSource/Response/Role/Reject.pm
+lib/Business/CyberSource/Role/RequestID.pm
 lib/MooseX/Types/CyberSource.pm
 perlcritic.rc
 share/production/CyberSourceTransaction_1.62.wsdl

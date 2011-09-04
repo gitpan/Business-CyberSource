@@ -1,32 +1,31 @@
-package Business::CyberSource::Response::Role::Capture;
+package Business::CyberSource::Role::RequestID;
 use 5.008;
 use strict;
 use warnings;
-BEGIN {
-	our $VERSION = 'v0.2.2'; # VERSION
-}
+use Carp;
+use namespace::autoclean;
+
+our $VERSION = 'v0.2.2'; # VERSION
+
 use Moose::Role;
+use MooseX::Types::Varchar qw( Varchar );
 
-has reconciliation_id => (
+has request_id => (
+	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
-);
-
-has capture_reason_code => (
-	is       => 'ro',
-	isa      => 'Num',
+	isa      => Varchar[29],
 );
 
 1;
 
-# ABSTRACT: CyberSource Capture Response Object
+# ABSTRACT: Role to apply to requests and responses that require request id's
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Capture - CyberSource Capture Response Object
+Business::CyberSource::Role::RequestID - Role to apply to requests and responses that require request id's
 
 =head1 VERSION
 

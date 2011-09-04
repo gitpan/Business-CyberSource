@@ -4,13 +4,14 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.1'; # VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 
 use Moose;
 use namespace::autoclean;
 with qw(
 	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::PurchaseInfo
+	Business::CyberSource::Request::Role::FollowUp
 );
 
 use Business::CyberSource::Response;
@@ -51,32 +52,12 @@ sub submit {
 			})
 			;
 	}
-	elsif ( $r->{decision} eq 'REJECT' ) {
-		$res
-			= Business::CyberSource::Response
-			->with_traits(qw{
-				Business::CyberSource::Response::Role::Reject
-			})
-			->new({
-				decision      => $r->{decision},
-				request_id    => $r->{requestID},
-				reason_code   => "$r->{reasonCode}",
-				request_token => $r->{requestToken},
-			})
-			;
-	}
 	else {
-		croak 'decision defined, but not sane: ' . $r->{decision};
+		$res = $self->_handle_decision( $r );
 	}
 
 	return $res;
 }
-
-has request_id => (
-	required => 1,
-	is       => 'ro',
-	isa      => 'Str',
-);
 
 __PACKAGE__->meta->make_immutable;
 1;
@@ -93,7 +74,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.2.1
+version v0.2.2
 
 =head1 SYNOPSIS
 
@@ -180,7 +161,7 @@ Additional documentation: 0: test server. 1: production server
 
 Reader: request_id
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[29]
 
 This attribute is required.
 

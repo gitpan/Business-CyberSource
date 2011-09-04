@@ -3,21 +3,18 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.2.1'; # VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 
 use Moose;
 use namespace::autoclean;
 
-with qw( MooseX::Traits );
+with qw(
+	MooseX::Traits
+	Business::CyberSource::Role::RequestID
+);
 
 use MooseX::Types::Moose qw( Str Int );
 use MooseX::Types::CyberSource qw( Decision );
-
-has request_id => (
-	required => 1,
-	is       => 'ro',
-	isa      => Str,
-);
 
 has decision => (
 	required => 1,
@@ -138,7 +135,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.2.1
+version v0.2.2
 
 =head1 ATTRIBUTES
 
@@ -146,7 +143,7 @@ version v0.2.1
 
 Reader: request_id
 
-Type: Str
+Type: MooseX::Types::Varchar::Varchar[29]
 
 This attribute is required.
 
