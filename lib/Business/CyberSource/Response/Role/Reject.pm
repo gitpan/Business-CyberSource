@@ -4,14 +4,15 @@ use strict;
 use warnings;
 use Carp;
 BEGIN {
-	our $VERSION = 'v0.2.2'; # VERSION
+	our $VERSION = 'v0.2.3'; # VERSION
 }
 use Moose::Role;
+use MooseX::Types::Varchar qw( Varchar );
 
 has request_token => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Varchar[256],
 );
 
 1;
@@ -27,7 +28,7 @@ Business::CyberSource::Response::Role::Reject - role for handling rejected trans
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 BUGS
 

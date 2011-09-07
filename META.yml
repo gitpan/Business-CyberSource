@@ -1,5 +1,5 @@
 ---
-abstract: Business::CyberSource
+abstract: 'Perl interface to the CyberSource Simple Order SOAP API'
 author:
   - 'Caleb Cushing <xenoterracide@gmail.com>'
 build_requires:
@@ -25,7 +25,9 @@ no_index:
   namespace:
     - Business::CyberSource::Request::Role
     - Business::CyberSource::Response::Role
+    - Business::CyberSource::Role
 requires:
+  Business::CreditCard: 0
   Carp: 0
   Config: 0
   File::ShareDir: 0
@@ -43,6 +45,7 @@ requires:
   MooseX::Types::Locale::Country: 0
   MooseX::Types::Locale::Currency: 0
   MooseX::Types::Moose: 0
+  MooseX::Types::NetAddr::IP: 0
   MooseX::Types::Path::Class: 0
   MooseX::Types::URI: 0
   MooseX::Types::Varchar: 0
@@ -59,4 +62,4 @@ resources:
   bugtracker: https://github.com/xenoterracide/Business-CyberSource/issues
   homepage: http://search.cpan.org/dist/Business-CyberSource/
   repository: git://github.com/xenoterracide/Business-CyberSource.git
-version: v0.2.2
+version: v0.2.3

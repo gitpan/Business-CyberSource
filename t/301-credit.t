@@ -33,7 +33,7 @@ my $req
 		ip             => '192.168.100.2',
 		total          => 5.00,
 		currency       => 'USD',
-		credit_card    => '4111-1111-1111-1111',
+		credit_card    => '3566 1111 1111 1113',
 		cc_exp_month   => '09',
 		cc_exp_year    => '2025',
 		production     => 0,
@@ -41,6 +41,7 @@ my $req
 	;
 
 my $res = $req->submit;
+
 
 note( $req->trace->printRequest );
 note( $req->trace->printResponse );
@@ -57,17 +58,17 @@ is( $req->city,           'Houston',   'check city'           );
 is( $req->state,          'TX',        'check state'          );
 is( $req->country,        'US',        'check country'        );
 
-is( $req->ip,    '192.168.100.2',          'check ip'    );
+is( $req->ip->addr,   '192.168.100.2',          'check ip'    );
 is( $req->email, 'xenoterracide@gmail.com', 'check email' );
 
 is( $req->total,      5, 'check total'      );
 
 is( $req->currency, 'USD', 'check currency' );
 
-is( $req->credit_card,  '4111111111111111', 'check credit card number' );
-
 is( $req->cc_exp_month, '09',   'check credit card expiration year'  );
 is( $req->cc_exp_year,  '2025', 'check credit card expiration month' );
+
+is( $req->card_type, '007', 'check card type is JCB' );
 
 ok( $res, 'request response exists' );
 

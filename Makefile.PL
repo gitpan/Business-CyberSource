@@ -11,7 +11,7 @@ install_share dist => "share";
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Business::CyberSource",
+  "ABSTRACT" => "Perl interface to the CyberSource Simple Order SOAP API",
   "AUTHOR" => "Caleb Cushing <xenoterracide\@gmail.com>",
   "BUILD_REQUIRES" => {
     "English" => 0,
@@ -30,6 +30,7 @@ my %WriteMakefileArgs = (
   "LICENSE" => "artistic_2",
   "NAME" => "Business::CyberSource",
   "PREREQ_PM" => {
+    "Business::CreditCard" => 0,
     "Carp" => 0,
     "Config" => 0,
     "File::ShareDir" => 0,
@@ -47,6 +48,7 @@ my %WriteMakefileArgs = (
     "MooseX::Types::Locale::Country" => 0,
     "MooseX::Types::Locale::Currency" => 0,
     "MooseX::Types::Moose" => 0,
+    "MooseX::Types::NetAddr::IP" => 0,
     "MooseX::Types::Path::Class" => 0,
     "MooseX::Types::URI" => 0,
     "MooseX::Types::Varchar" => 0,
@@ -59,7 +61,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v0.2.2",
+  "VERSION" => "v0.2.3",
   "test" => {
     "TESTS" => "t/*.t"
   }

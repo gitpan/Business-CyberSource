@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moose::Role;
 
@@ -36,6 +36,7 @@ has client_name => (
 	is       => 'ro',
 	isa      => Str,
 	default  => sub { return __PACKAGE__ },
+	documentation => 'provided by the library',
 );
 
 has client_env => (
@@ -47,6 +48,7 @@ has client_env => (
 	default  => sub {
 		return "Perl $Config{version} $Config{osname} $Config{osvers} $Config{archname}";
 	},
+	documentation => 'provided by the library',
 );
 
 has cybs_api_version => (
@@ -55,6 +57,7 @@ has cybs_api_version => (
 	is       => 'ro',
 	isa      => Str,
 	default  => '1.62',
+	documentation => 'provided by the library',
 );
 
 has cybs_wsdl => (
@@ -63,6 +66,7 @@ has cybs_wsdl => (
 	is        => 'ro',
 	isa       => File,
 	builder   => '_build_cybs_wsdl',
+	documentation => 'provided by the library',
 );
 
 has cybs_xsd => (
@@ -71,6 +75,7 @@ has cybs_xsd => (
 	is       => 'ro',
 	isa      => File,
 	builder  => '_build_cybs_xsd',
+	documentation => 'provided by the library',
 );
 
 sub _build_cybs_wsdl {
@@ -115,18 +120,34 @@ sub _build_cybs_xsd {
 
 1;
 
-# ABSTRACT: Business::CyberSource
+# ABSTRACT: Perl interface to the CyberSource Simple Order SOAP API
+
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource - Business::CyberSource
+Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
+
+=head1 DESCRIPTION
+
+This library is a Perl interface to the CyberSource Simple Order SOAP API built
+on L<Moose> and L<XML::Compile::SOAP> technologies. This library aims to
+eventually provide a full interface the SOAPI.
+
+You may wish to read the Official CyberSource Documentation on L<Credit Card
+Services for the Simpler Order
+API|http://apps.cybersource.com/library/documentation/dev_guides/CC_Svcs_SO_API/html/>
+as it will provide further information on why what some things are and the
+general workflow.
+
+To get started you will want to read the documentation in
+L<Business::CyberSource::Request>
 
 =head1 BUGS
 

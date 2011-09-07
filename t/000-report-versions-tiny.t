@@ -48,6 +48,7 @@ sub pmver {
     return sprintf('%-45s => %-10s%-15s%s', $module, $pmver, $wanted, "\n");
 }
 
+eval { $v .= pmver('Business::CreditCard','any version') };
 eval { $v .= pmver('Carp','any version') };
 eval { $v .= pmver('Config','any version') };
 eval { $v .= pmver('English','any version') };
@@ -71,6 +72,7 @@ eval { $v .= pmver('MooseX::Types::Email','any version') };
 eval { $v .= pmver('MooseX::Types::Locale::Country','any version') };
 eval { $v .= pmver('MooseX::Types::Locale::Currency','any version') };
 eval { $v .= pmver('MooseX::Types::Moose','any version') };
+eval { $v .= pmver('MooseX::Types::NetAddr::IP','any version') };
 eval { $v .= pmver('MooseX::Types::Path::Class','any version') };
 eval { $v .= pmver('MooseX::Types::URI','any version') };
 eval { $v .= pmver('MooseX::Types::Varchar','any version') };

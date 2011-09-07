@@ -2,24 +2,24 @@ package Business::CyberSource::Response::Role::Accept;
 use 5.008;
 use strict;
 use warnings;
+use namespace::autoclean;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moose::Role;
-use namespace::autoclean;
+with qw(
+	Business::CyberSource::Role::Currency
+);
+
 use MooseX::Types::Moose         qw( Num Str     );
 use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
+use MooseX::Types::Varchar       qw( Varchar     );
+
 
 has amount => (
 	required => 1,
 	is       => 'ro',
 	isa      => Num,
-);
-
-has currency => (
-	required => 1,
-	is       => 'ro',
-	isa      => Str,
 );
 
 has datetime => (
@@ -31,7 +31,7 @@ has datetime => (
 has reference_code => (
 	required => 1,
 	is       => 'ro',
-	isa      => Str,
+	isa      => Varchar[50],
 );
 
 1;
@@ -47,7 +47,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 BUGS
 

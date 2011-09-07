@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -74,7 +74,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 SYNOPSIS
 
@@ -115,11 +115,15 @@ Reader: client_env
 
 Type: Str
 
+Additional documentation: provided by the library
+
 =head2 cybs_wsdl
 
 Reader: cybs_wsdl
 
 Type: MooseX::Types::Path::Class::File
+
+Additional documentation: provided by the library
 
 =head2 trace
 
@@ -171,11 +175,15 @@ Reader: cybs_api_version
 
 Type: Str
 
+Additional documentation: provided by the library
+
 =head2 total
 
 Reader: total
 
 Type: Num
+
+Additional documentation: Grand total for the order. You must include either this field or item_#_unitPrice in your request
 
 =head2 username
 
@@ -193,17 +201,23 @@ Reader: cybs_xsd
 
 Type: MooseX::Types::Path::Class::File
 
+Additional documentation: provided by the library
+
 =head2 foreign_currency
 
 Reader: foreign_currency
 
 Type: MooseX::Types::Locale::Currency::CurrencyCode
 
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
 =head2 client_name
 
 Reader: client_name
 
 Type: Str
+
+Additional documentation: provided by the library
 
 =head2 reference_code
 

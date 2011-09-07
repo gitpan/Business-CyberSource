@@ -1,32 +1,30 @@
-package Business::CyberSource::Response::Role::Capture;
+package Business::CyberSource::Role::Currency;
 use 5.008;
 use strict;
 use warnings;
-BEGIN {
-	our $VERSION = 'v0.2.3'; # VERSION
-}
+use namespace::autoclean;
+
+our $VERSION = 'v0.2.3'; # VERSION
+
 use Moose::Role;
+use MooseX::Types::Locale::Currency qw( CurrencyCode );
 
-has reconciliation_id => (
+has currency => (
+	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
-);
-
-has capture_reason_code => (
-	is       => 'ro',
-	isa      => 'Num',
+	isa      => CurrencyCode,
 );
 
 1;
 
-# ABSTRACT: CyberSource Capture Response Object
+# ABSTRACT: Role to apply to requests and responses that require currency
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Capture - CyberSource Capture Response Object
+Business::CyberSource::Role::Currency - Role to apply to requests and responses that require currency
 
 =head1 VERSION
 

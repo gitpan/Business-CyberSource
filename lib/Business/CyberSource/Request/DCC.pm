@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -70,7 +70,7 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 DESCRIPTION
 
@@ -96,17 +96,21 @@ Reader: client_env
 
 Type: Str
 
+Additional documentation: provided by the library
+
 =head2 cybs_wsdl
 
 Reader: cybs_wsdl
 
 Type: MooseX::Types::Path::Class::File
 
+Additional documentation: provided by the library
+
 =head2 cv_indicator
 
 Reader: cv_indicator
 
-Type: MooseX::Types::Varchar::Varchar[1]
+Type: MooseX::Types::CyberSource::CvIndicator
 
 Additional documentation: Flag that indicates whether a CVN code was sent
 
@@ -152,11 +156,15 @@ Reader: cybs_api_version
 
 Type: Str
 
+Additional documentation: provided by the library
+
 =head2 cvn
 
 Reader: cvn
 
 Type: MooseX::Types::CreditCard::CardSecurityCode
+
+Additional documentation: Card Verification Numbers
 
 =head2 total
 
@@ -164,13 +172,17 @@ Reader: total
 
 Type: Num
 
+Additional documentation: Grand total for the order. You must include either this field or item_#_unitPrice in your request
+
 =head2 cc_exp_month
 
 Reader: cc_exp_month
 
-Type: Int
+Type: MooseX::Types::Varchar::Varchar[2]
 
 This attribute is required.
+
+Additional documentation: Two-digit month that the credit card expires in. Format: MM.
 
 =head2 username
 
@@ -186,9 +198,11 @@ Additional documentation: Your CyberSource merchant ID. Use the same merchantID 
 
 Reader: cc_exp_year
 
-Type: Int
+Type: MooseX::Types::Varchar::Varchar[4]
 
 This attribute is required.
+
+Additional documentation: Four-digit year that the credit card expires in. Format: YYYY.
 
 =head2 credit_card
 
@@ -198,17 +212,23 @@ Type: MooseX::Types::CreditCard::CreditCard
 
 This attribute is required.
 
+Additional documentation: Customer's credit card number
+
 =head2 card_type
 
 Reader: card_type
 
-Type: MooseX::Types::Varchar::Varchar[3]
+Type: MooseX::Types::CyberSource::CardTypeCode
+
+Additional documentation: Type of card to authorize
 
 =head2 cybs_xsd
 
 Reader: cybs_xsd
 
 Type: MooseX::Types::Path::Class::File
+
+Additional documentation: provided by the library
 
 =head2 reference_code
 
@@ -224,11 +244,15 @@ Reader: client_name
 
 Type: Str
 
+Additional documentation: provided by the library
+
 =head2 foreign_currency
 
 Reader: foreign_currency
 
 Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 client_version
 

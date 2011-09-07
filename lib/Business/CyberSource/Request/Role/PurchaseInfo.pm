@@ -2,11 +2,15 @@ package Business::CyberSource::Request::Role::PurchaseInfo;
 use 5.008;
 use strict;
 use warnings;
+use namespace::autoclean;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moose::Role;
-use namespace::autoclean;
+with qw(
+	Business::CyberSource::Role::Currency
+);
+
 use MooseX::Types::Moose   qw( Num     );
 use MooseX::Types::Varchar qw( Varchar );
 use MooseX::Types::Locale::Currency qw( CurrencyCode );
@@ -26,20 +30,19 @@ sub _purchase_info {
 	return $i;
 }
 
-has currency => (
-	required => 1,
-	is       => 'ro',
-	isa      => CurrencyCode,
-);
-
 has total => (
 	is       => 'ro',
 	isa      => Num,
+	documentation => 'Grand total for the order. You must include '
+		. 'either this field or item_#_unitPrice in your request',
 );
 
 has foreign_currency => (
 	is  => 'ro',
 	isa => CurrencyCode,
+	documentation => 'Billing currency returned by the DCC service. '
+		. 'For the possible values, see the ISO currency codes',
+
 );
 
 1;
@@ -55,7 +58,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use MooseX::AbstractFactory;
 use namespace::autoclean;
@@ -35,7 +35,7 @@ around 'create' => sub {
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource Request factory
+# ABSTRACT: CyberSource Request Factory Module
 
 
 __END__
@@ -43,11 +43,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request - CyberSource Request factory
+Business::CyberSource::Request - CyberSource Request Factory Module
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 SYNOPSIS
 
@@ -61,8 +61,7 @@ version v0.2.2
 			username       => $CYBS_ID,
 			password       => $CYBS_KEY,
 			production     => 0,
-		})
-		;
+		});
 
 	my $request_obj = $request_factory->create(
 		'Authorization',
@@ -86,7 +85,7 @@ version v0.2.2
 
 =head1 DESCRIPTION
 
-This library provides a generic factory interface to creating request objects.
+This module provides a generic factory interface to creating request objects.
 It also allows us to not repeat ourselves when specifying attributes that are
 common to all requests such as authentication, and server destination.
 
