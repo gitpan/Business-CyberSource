@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.3'; # VERSION
+our $VERSION = 'v0.2.4'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -57,6 +57,7 @@ sub submit {
 				# quote reason_code to stringify from BigInt
 				reason_code    => "$r->{reasonCode}",
 				reference_code => $r->{merchantReferenceCode},
+				request_token  => $r->{requestToken},
 				currency       => $r->{purchaseTotals}->{currency},
 				datetime       => $r->{ccCreditReply}->{requestDateTime},
 				amount         => $r->{ccCreditReply}->{amount},
@@ -87,7 +88,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.2.3
+version v0.2.4
 
 =head1 SYNOPSIS
 
@@ -122,8 +123,10 @@ version v0.2.3
 
 =head1 DESCRIPTION
 
-This object allows you to create a request for a credit. Their are two types
-of credits, a standalone credit, and a follow on credit.
+This object allows you to create a request for a credit. If you do not want to
+apply traits (or are using the Request factory) then you can instantiate either the
+L<Business::CyberSource::Request::StandAloneCredit> or the
+L<Business::CyberSource::Request::FollowOnCredit>.
 
 =head1 METHODS
 

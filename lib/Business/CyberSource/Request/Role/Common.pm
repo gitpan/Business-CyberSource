@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.3'; # VERSION
+our $VERSION = 'v0.2.4'; # VERSION
 
 use Moose::Role;
 use MooseX::Types::Moose   qw( HashRef );
@@ -66,18 +66,12 @@ sub _handle_decision {
 
 	my $res;
 	if ( $r->{decision} eq 'REJECT' ) {
-		$res
-			= Business::CyberSource::Response
-			->with_traits(qw{
-				Business::CyberSource::Response::Role::Reject
-			})
-			->new({
-				decision      => $r->{decision},
-				request_id    => $r->{requestID},
-				reason_code   => "$r->{reasonCode}",
-				request_token => $r->{requestToken},
-			})
-			;
+		$res = Business::CyberSource::Response->new({
+			decision      => $r->{decision},
+			request_id    => $r->{requestID},
+			reason_code   => "$r->{reasonCode}",
+			request_token => $r->{requestToken},
+		});
 	}
 	else {
 		croak 'decision defined, but not sane: ' . $r->{decision};
@@ -110,7 +104,7 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version v0.2.3
+version v0.2.4
 
 =head1 BUGS
 

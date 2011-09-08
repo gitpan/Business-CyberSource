@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.3'; # VERSION
+our $VERSION = 'v0.2.4'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -41,6 +41,7 @@ sub submit {
 				decision       => $r->{decision},
 				# quote reason_code to stringify from BigInt
 				reason_code    => "$r->{reasonCode}",
+				request_token  => $r->{requestToken},
 				reference_code => $r->{merchantReferenceCode},
 				currency       => $r->{purchaseTotals}->{currency},
 				datetime       => $r->{ccCaptureReply}->{requestDateTime},
@@ -70,11 +71,14 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.2.3
+version v0.2.4
 
 =head1 DESCRIPTION
 
 This object allows you to create a request for Direct Currency Conversion.
+This object is not known to work correctly. Although it follows the
+CyberSource Documentation for DCC request, the response returned appears to
+always be a 150 General Error.
 
 =head1 METHODS
 

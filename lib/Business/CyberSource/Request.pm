@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.3'; # VERSION
+our $VERSION = 'v0.2.4'; # VERSION
 
 use MooseX::AbstractFactory;
 use namespace::autoclean;
@@ -47,7 +47,7 @@ Business::CyberSource::Request - CyberSource Request Factory Module
 
 =head1 VERSION
 
-version v0.2.3
+version v0.2.4
 
 =head1 SYNOPSIS
 
@@ -122,11 +122,17 @@ implementation and required attributes:
 
 =item * L<Capture|Business::CyberSource::Request::Capture>
 
-=item * L<Credit|Business::CyberSource::Request::Credit>
+=item * L<Follow-On Credit|Business::CyberSource::Request::FollowOnCredit>
+
+=item * L<Stand Alone Credit|Business::CyberSource::Request::StandAloneCredit>
 
 =item * L<DCC|Business::CyberSource::Request::DCC>
 
 =back
+
+I<note:> You can use the L<Business:CyberSource::Request::Credit> class but,
+it requires traits to be applied depending on the type of request you need,
+and thus does not currently work with the factory.
 
 =head1 ATTRIBUTES
 

@@ -1,69 +1,22 @@
-package Business::CyberSource::Request::AuthReversal;
+package Business::CyberSource::Request::FollowOnCredit;
 use 5.008;
 use strict;
 use warnings;
+use namespace::autoclean;
 use Carp;
 
 our $VERSION = 'v0.2.4'; # VERSION
 
 use Moose;
-use namespace::autoclean;
+extends 'Business::CyberSource::Request::Credit';
 with qw(
-	Business::CyberSource::Request::Role::Common
-	Business::CyberSource::Request::Role::PurchaseInfo
 	Business::CyberSource::Request::Role::FollowUp
 );
-
-use Business::CyberSource::Response;
-
-sub submit {
-	my $self = shift;
-
-	my $payload = {
-		ccAuthReversalService => {
-			run => 'true',
-			authRequestID => $self->request_id,
-		},
-	};
-
-	my $r = $self->_build_request( $payload );
-
-	my $res;
-	if ( $r->{decision} eq 'ACCEPT' ) {
-		$res
-			= Business::CyberSource::Response
-			->with_traits(qw{
-				Business::CyberSource::Response::Role::Accept
-				Business::CyberSource::Response::Role::AuthReversal
-			})
-			->new({
-				request_id     => $r->{requestID},
-				decision       => $r->{decision},
-				# quote reason_code to stringify from BigInt
-				reason_code    => "$r->{reasonCode}",
-				request_token  => $r->{requestToken},
-				reference_code => $r->{merchantReferenceCode},
-				currency       => $r->{purchaseTotals}->{currency},
-				datetime       => $r->{ccAuthReversalReply}->{requestDateTime},
-				amount         => $r->{ccAuthReversalReply}->{amount},
-				reversal_reason_code =>
-					"$r->{ccAuthReversalReply}->{reasonCode}",
-				processor_response =>
-					$r->{ccAuthReversalReply}->{processorResponse},
-			})
-			;
-	}
-	else {
-		$res = $self->_handle_decision( $r );
-	}
-
-	return $res;
-}
 
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource Reverse Authorization request object
+# ABSTRACT: CyberSource Credit Request Object
 
 
 __END__
@@ -71,7 +24,7 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization request object
+Business::CyberSource::Request::FollowOnCredit - CyberSource Credit Request Object
 
 =head1 VERSION
 
@@ -79,29 +32,31 @@ version v0.2.4
 
 =head1 SYNOPSIS
 
-	my $req = Business::CyberSource::Request::AuthReversal->new({
-		username       => 'merchantID',
-		password       => 'transaction key',
-		production     => 0,
-		reference_code => 'orignal authorization merchant reference code',
-		request_id     => 'request id returned in original authorization response',
-		total          => 5.00, # same as original authorization amount
-		currency       => 'USD', # same as original currency
-	});
+	use Business::CyberSource::Request::FollowOnCredit;
+
+	my $req = Business::CyberSource::Request::FollowOnCredit
+		->new({
+			username       => 'merchantID',
+			password       => 'transaction key',
+			production     => 0,
+			reference_code => 'merchant reference code',
+			total          => 5.00,
+			currency       => 'USD',
+			request_id     => 'capture request_id',
+		});
 
 	my $res = $req->submit;
 
 =head1 DESCRIPTION
 
-This allows you to reverse an authorization request.
+This object allows you to create a request for a Follow-On credit.
 
 =head1 METHODS
 
 =head2 new
 
-Instantiates a authorization reversal request object, see
-L<the attributes listed below|/ATTRIBUTES> for which ones are required and
-which are optional.
+Instantiates a credit request object, see L<the attributes listed below|/ATTRIBUTES>
+for which ones are required and which are optional.
 
 =head2 submit
 
