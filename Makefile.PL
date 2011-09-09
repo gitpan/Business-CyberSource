@@ -38,7 +38,6 @@ my %WriteMakefileArgs = (
     "Moose::Role" => 0,
     "MooseX::AbstractFactory" => 0,
     "MooseX::Aliases" => 0,
-    "MooseX::SetOnce" => 0,
     "MooseX::Traits" => 0,
     "MooseX::Types" => 0,
     "MooseX::Types::Common::String" => 0,
@@ -61,7 +60,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v0.2.4",
+  "VERSION" => "v0.2.5",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -1,36 +1,34 @@
-package Business::CyberSource::Response::Role::Capture;
+package Business::CyberSource::Response::Role::ReconciliationID;
 use 5.008;
 use strict;
 use warnings;
-BEGIN {
-	our $VERSION = 'v0.2.4'; # VERSION
-}
+use namespace::autoclean;
+
+our $VERSION = 'v0.2.5'; # VERSION
+
 use Moose::Role;
+use MooseX::Types::Moose qw( Int );
 
 has reconciliation_id => (
+	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
-);
-
-has capture_reason_code => (
-	is       => 'ro',
-	isa      => 'Num',
+	isa      => Int,
 );
 
 1;
 
-# ABSTRACT: CyberSource Capture Response Object
+# ABSTRACT: Reconciliation Identifier
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Capture - CyberSource Capture Response Object
+Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identifier
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -33,7 +33,7 @@ sub submit {
 			= Business::CyberSource::Response
 			->with_traits(qw{
 				Business::CyberSource::Response::Role::Accept
-				Business::CyberSource::Response::Role::Capture
+				Business::CyberSource::Response::Role::ReconciliationID
 			})
 			->new({
 				request_id     => $r->{requestID},
@@ -47,7 +47,8 @@ sub submit {
 				amount         => $r->{ccCaptureReply}->{amount},
 				reference_code => $r->{merchantReferenceCode},
 				reconciliation_id => $r->{ccCaptureReply}->{reconciliationID},
-				capture_reason_code => "$r->{ccCaptureReply}->{reasonCode}",
+				request_specific_reason_code =>
+					"$r->{ccCaptureReply}->{reasonCode}",
 			})
 			;
 	}
@@ -73,7 +74,7 @@ Business::CyberSource::Request::Capture - CyberSource Capture Request Object
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 SYNOPSIS
 

@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose;
 with qw(
@@ -54,6 +54,8 @@ sub submit {
 				auth_code      => $r->{ccAuthReply}->{authorizationCode},
 				processor_response =>
 					$r->{ccAuthReply}->{processorResponse},
+				request_specific_reason_code =>
+					"$r->{ccAuthReply}->{reasonCode}",
 			})
 			;
 	}
@@ -79,7 +81,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 SYNOPSIS
 

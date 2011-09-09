@@ -2,11 +2,17 @@ package Business::CyberSource::Response::Role::Authorization;
 use 5.008;
 use strict;
 use warnings;
+use namespace::autoclean;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose::Role;
+with qw(
+	Business::CyberSource::Response::Role::ProcessorResponse
+);
+
 use MooseX::Types::Varchar qw( Varchar );
+use MooseX::Types::Moose   qw( Str     );
 
 has auth_code => (
 	required => 1,
@@ -17,7 +23,7 @@ has auth_code => (
 has auth_record => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Str',
+	isa      => Str,
 );
 
 has avs_code => (
@@ -35,11 +41,6 @@ has avs_code_raw => (
 		. 'Returned only if a value is returned by the processor.',
 );
 
-has processor_response => (
-	required => 1,
-	is       => 'ro',
-	isa      => Varchar[10],
-);
 
 1;
 
@@ -54,7 +55,7 @@ Business::CyberSource::Response::Role::Authorization - CyberSource Authorization
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 BUGS
 

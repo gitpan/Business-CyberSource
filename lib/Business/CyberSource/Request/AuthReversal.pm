@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -34,7 +34,7 @@ sub submit {
 			= Business::CyberSource::Response
 			->with_traits(qw{
 				Business::CyberSource::Response::Role::Accept
-				Business::CyberSource::Response::Role::AuthReversal
+				Business::CyberSource::Response::Role::ProcessorResponse
 			})
 			->new({
 				request_id     => $r->{requestID},
@@ -46,7 +46,7 @@ sub submit {
 				currency       => $r->{purchaseTotals}->{currency},
 				datetime       => $r->{ccAuthReversalReply}->{requestDateTime},
 				amount         => $r->{ccAuthReversalReply}->{amount},
-				reversal_reason_code =>
+				request_specific_reason_code =>
 					"$r->{ccAuthReversalReply}->{reasonCode}",
 				processor_response =>
 					$r->{ccAuthReversalReply}->{processorResponse},
@@ -75,7 +75,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 SYNOPSIS
 

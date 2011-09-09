@@ -1,34 +1,34 @@
-package Business::CyberSource::Response::Role::Credit;
+package Business::CyberSource::Response::Role::ProcessorResponse;
 use 5.008;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose::Role;
-use MooseX::Types::Moose qw( Int );
+use MooseX::Types::Varchar qw( Varchar );
 
-has reconciliation_id => (
+has processor_response => (
 	required => 1,
 	is       => 'ro',
-	isa      => Int, # Int[6]
+	isa      => Varchar[10],
 );
 
 1;
 
-# ABSTRACT: CyberSource Credit Response object
+# ABSTRACT: Processor Response attribute
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Credit - CyberSource Credit Response object
+Business::CyberSource::Response::Role::ProcessorResponse - Processor Response attribute
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 BUGS
 

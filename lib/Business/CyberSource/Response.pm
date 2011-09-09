@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.2.4'; # VERSION
+our $VERSION = 'v0.2.5'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -155,7 +155,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 DESCRIPTION
 
@@ -167,6 +167,89 @@ C<reason_text>, C<request_token>, and C<request_id> attributes. You should alway
 introspection or check the C<decision> to determine which attributes will be
 defined, as what is returned by CyberSource varies depending on what the
 C<decision> is and what was sent in the request itself.
+
+All of the responses contain the attributes here, however if the response is
+C<ACCEPT> you will want to read the documentation for the L<Accept
+Role|Business::CyberSource::Response::Role::Accept>
+
+=head1 ATTRIBUTES
+
+=head2 amount
+
+Type: Num
+
+Condition: ACCEPT
+
+Amount that was approved.
+
+=head2 currency
+
+Type: MooseX::Types::Locale::Currency
+
+Condition: ACCEPT
+
+Currency code which was used to make the request
+
+=head2 datetime
+
+Type: MooseX::Types::DateTime::W3C::DateTimeW3C
+
+Condition: ACCEPT
+
+Request timestamp (will probably become a DateTime object at some point)
+
+=head2 reference_code
+
+Type: MooseX::Types::Varchar::Varchar[50]
+
+Condition: ACCEPT
+
+The merchant reference code originally sent
+
+=head2 request_specific_reason_code
+
+Type: Int
+
+Condition: ACCEPT
+
+Every successful request also has a reason code specific to its request type,
+e.g. for capture this is the ccCaptureReply_reasonCode.
+
+=head2 processor_response
+
+Type: MooseX::Types::Varchar::Varchar[10]
+
+Condition: ACCEPT and be either an Authorization or Authorization Reversal
+
+=head2 reconciliation_id
+
+Type: Int
+
+Condition: ACCEPT and be either a Credit or Capture
+
+=head2 avs_code
+
+Type: MooseX::Types::Varchar::Varchar[1]
+
+Condition: ACCEPT and Authorization
+
+=head2 avs_code_raw
+
+Type: MooseX::Types::Varchar::Varchar[10]
+
+Condition: ACCEPT and Authorization
+
+=head2 auth_record
+
+Type: Str
+
+Condition: ACCEPT and Authorization
+
+=head2 auth_code
+
+Type: MooseX::Types::Varchar::Varchar[7]
+
+Condition: ACCEPT and Authorization
 
 =head1 ATTRIBUTES
 
