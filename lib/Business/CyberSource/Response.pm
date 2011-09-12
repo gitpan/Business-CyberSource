@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -13,6 +13,7 @@ with qw(
 	Business::CyberSource::Role::RequestID
 );
 
+use MooseX::StrictConstructor;
 use MooseX::Types::Moose qw( Str Int );
 use MooseX::Types::CyberSource qw( Decision );
 use MooseX::Types::Varchar qw( Varchar );
@@ -155,7 +156,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 DESCRIPTION
 
@@ -300,6 +301,22 @@ Condition: ACCEPT and Authorization
 Type: MooseX::Types::Varchar::Varchar[7]
 
 Condition: ACCEPT and Authorization
+
+=head2 cv_code
+
+Type: MooseX::Types::Varchar::Varchar[1]
+
+Condition: ACCEPT, Authorization, and cv_code actually returned
+
+you can use predicate has_cv_code to check if attribute is defined
+
+=head2 cv_code_raw
+
+Type: MooseX::Types::Varchar::Varchar[10]
+
+Condition: ACCEPT, Authorization, and cv_code_raw actually returned
+
+you can use predicate has_cv_code to check if attribute is defined
 
 =head1 BUGS
 

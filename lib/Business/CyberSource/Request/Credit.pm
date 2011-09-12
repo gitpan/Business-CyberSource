@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -15,6 +15,7 @@ with qw(
 );
 
 use Business::CyberSource::Response;
+use MooseX::StrictConstructor;
 
 has '+_trait_namespace' => (
 	default => 'Business::CyberSource::Request::Role',
@@ -89,7 +90,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 SYNOPSIS
 

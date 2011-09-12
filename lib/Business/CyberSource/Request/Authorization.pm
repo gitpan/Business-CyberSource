@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use Moose;
 with qw(
@@ -16,6 +16,7 @@ with qw(
 );
 
 use Business::CyberSource::Response;
+use MooseX::StrictConstructor;
 
 sub submit {
 	my $self = shift;
@@ -30,13 +31,22 @@ sub submit {
 
 	my $r = $self->_build_request( $payload );
 
+
 	my $res;
 	if ( $r->{decision} eq 'ACCEPT' ) {
+
+		my $cv = { };
+
+		if ( $r->{cvCode} and $r->{cvCodeRaw} ) {
+			$cv->{cv_code}     = $r->{cvCode};
+			$cv->{cv_code_raw} = $r->{cvCodeRaw};
+		}
+
 		$res
 			= Business::CyberSource::Response
 			->with_traits(qw{
-				Business::CyberSource::Response::Role::Accept
 				Business::CyberSource::Response::Role::Authorization
+				Business::CyberSource::Response::Role::Accept
 			})
 			->new({
 				request_id     => $r->{requestID},
@@ -56,6 +66,7 @@ sub submit {
 					$r->{ccAuthReply}->{processorResponse},
 				request_specific_reason_code =>
 					"$r->{ccAuthReply}->{reasonCode}",
+				%{$cv},
 			})
 			;
 	}
@@ -81,7 +92,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 SYNOPSIS
 

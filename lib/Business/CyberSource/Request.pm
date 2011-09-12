@@ -2,12 +2,13 @@ package Business::CyberSource::Request;
 use 5.008;
 use strict;
 use warnings;
+use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use MooseX::AbstractFactory;
-use namespace::autoclean;
+use MooseX::StrictConstructor;
 
 with qw(
 	 Business::CyberSource::Request::Role::Credentials
@@ -47,7 +48,7 @@ Business::CyberSource::Request - CyberSource Request Factory Module
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 SYNOPSIS
 

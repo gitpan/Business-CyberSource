@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use Moose::Role;
 use MooseX::Types::Moose   qw( HashRef );
@@ -64,7 +64,7 @@ sub _handle_decision {
 	my ( $self, $r ) = @_;
 
 	my $res;
-	if ( $r->{decision} eq 'REJECT' ) {
+	if ( $r->{decision} eq 'REJECT' or $r->{decision} eq 'ERROR' ) {
 		$res = Business::CyberSource::Response->new({
 			decision      => $r->{decision},
 			request_id    => $r->{requestID},
@@ -103,7 +103,7 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 BUGS
 

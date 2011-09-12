@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.6'; # VERSION
+our $VERSION = 'v0.2.7'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -75,7 +75,7 @@ has cv_indicator => (
 	isa      => CvIndicator,
 	default  => sub {
 		my $self = shift;
-		if ( $self->cvn ) {
+		if ( $self->has_cvn ) {
 			return 1;
 		} else {
 			return 0;
@@ -85,10 +85,11 @@ has cv_indicator => (
 );
 
 has cvn => (
-	required => 0,
-	alias    => [ qw( cvv cvv2  cvc2 cid ) ],
-	is       => 'ro',
-	isa      => CardSecurityCode,
+	required  => 0,
+	alias     => [ qw( cvv cvv2  cvc2 cid ) ],
+	predicate => 'has_cvn',
+	is        => 'ro',
+	isa       => CardSecurityCode,
 	documentation => 'Card Verification Numbers',
 );
 
@@ -127,7 +128,7 @@ Business::CyberSource::Request::Role::CreditCardInfo - credit card info role
 
 =head1 VERSION
 
-version v0.2.6
+version v0.2.7
 
 =head1 BUGS
 
