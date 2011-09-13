@@ -16,7 +16,7 @@ my $req0
 	= Business::CyberSource::Request::Authorization->new({
 		username       => $CYBS_ID,
 		password       => $CYBS_KEY,
-		reference_code => '99',
+		reference_code => '72',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street         => '432 nowhere ave.',
@@ -25,7 +25,7 @@ my $req0
 		zip            => '77064',
 		country        => 'US',
 		email          => 'foobar@example.com',
-		total          => 3000.37,
+		total          => 5000.00,
 		currency       => 'USD',
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '12',
@@ -35,21 +35,12 @@ my $req0
 
 my $ret0 = $req0->submit;
 
-note( $req0->trace->printResponse );
+is( $ret0->decision,       'ACCEPT', 'check decision'       );
+is( $ret0->reason_code,     100,     'check reason_code'    );
+is( $ret0->auth_code,      '831000', 'check auth code'      );
+is( $ret0->avs_code,       'X',      'check avs_code'       );
+is( $ret0->avs_code_raw,   'X',      'check avs_code_raw'   );
 
-is( $ret0->decision,       'REJECT', 'check decision'       );
-is( $ret0->reason_code,     202,     'check reason_code'    );
-is(
-	$ret0->reason_text,
-	'Expired card. You might also receive this if the expiration date you '
-		. 'provided does not match the date the issuing bank has on file'
-		,
-	'check reason_text',
-);
-is( $ret0->processor_response, '54', 'check processor response' );
-
-ok( $ret0->request_id,    'check request_id exists'    );
-ok( $ret0->request_token, 'check request_token exists' );
 
 my $req1
 	= Business::CyberSource::Request::Authorization->new({
@@ -64,7 +55,7 @@ my $req1
 		zip            => '77064',
 		country        => 'US',
 		email          => 'foobar@example.com',
-		total          => 3000.04,
+		total          => 5005.00,
 		currency       => 'USD',
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '12',
@@ -77,14 +68,9 @@ my $ret1 = $req1->submit;
 note( $req1->trace->printResponse );
 
 is( $ret1->decision,       'REJECT', 'check decision'       );
-is( $ret1->reason_code,     201,     'check reason_code'    );
-is(
-	$ret1->reason_text,
-	'The issuing bank has questions about the request. You do not '
-	. 'receive an authorization code programmatically, but you might '
-	. 'receive one verbally by calling the processor'
-	,
-	'check reason_text',
-);
+is( $ret1->reason_code,    '200',    'check reason_code'    );
+is( $ret1->avs_code,       'N',      'check avs_code'       );
+is( $ret1->avs_code_raw,   'N',      'check avs_code_raw'   );
+is( $ret1->processor_response, '00', 'check processor response' );
 
 done_testing;

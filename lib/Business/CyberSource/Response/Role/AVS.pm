@@ -1,4 +1,4 @@
-package Business::CyberSource::Role::Currency;
+package Business::CyberSource::Response::Role::AVS;
 use 5.008;
 use strict;
 use warnings;
@@ -7,24 +7,36 @@ use namespace::autoclean;
 our $VERSION = 'v0.2.8'; # VERSION
 
 use Moose::Role;
-use MooseX::Types::Locale::Currency qw( CurrencyCode );
 
-has currency => (
-	required => 1,
+use MooseX::Types::Varchar qw( Varchar );
+
+has avs_code => (
+	required => 0,
+	predicate => 'has_avs_code',
 	is       => 'ro',
-	isa      => CurrencyCode,
+	isa      => Varchar[1],
+	documentation => 'AVS results.',
+);
+
+has avs_code_raw => (
+	required  => 0,
+	predicate => 'has_avs_code_raw',
+	is        => 'ro',
+	isa       => Varchar[10],
+	documentation => 'AVS result code sent directly from the processor. '
+		. 'Returned only if a value is returned by the processor.',
 );
 
 1;
 
-# ABSTRACT: Role to apply to requests and responses that require currency
+# ABSTRACT: AVS Role
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Role::Currency - Role to apply to requests and responses that require currency
+Business::CyberSource::Response::Role::AVS - AVS Role
 
 =head1 VERSION
 

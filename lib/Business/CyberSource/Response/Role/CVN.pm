@@ -1,4 +1,4 @@
-package Business::CyberSource::Role::Currency;
+package Business::CyberSource::Response::Role::CVN;
 use 5.008;
 use strict;
 use warnings;
@@ -7,24 +7,33 @@ use namespace::autoclean;
 our $VERSION = 'v0.2.8'; # VERSION
 
 use Moose::Role;
-use MooseX::Types::Locale::Currency qw( CurrencyCode );
 
-has currency => (
-	required => 1,
-	is       => 'ro',
-	isa      => CurrencyCode,
+use MooseX::Types::Varchar qw( Varchar );
+
+has cv_code => (
+	required  => 0,
+	predicate => 'has_cv_code',
+	is        => 'ro',
+	isa       => Varchar[1],
+);
+
+has cv_code_raw => (
+	required  => 0,
+	predicate => 'has_cv_code_raw',
+	is        => 'ro',
+	isa       => Varchar[10],
 );
 
 1;
 
-# ABSTRACT: Role to apply to requests and responses that require currency
+# ABSTRACT: CVN Role
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Role::Currency - Role to apply to requests and responses that require currency
+Business::CyberSource::Response::Role::CVN - CVN Role
 
 =head1 VERSION
 
