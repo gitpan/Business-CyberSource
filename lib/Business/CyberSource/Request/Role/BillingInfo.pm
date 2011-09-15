@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -43,7 +43,24 @@ has street2 => (
 	required => 0,
 	is       => 'ro',
 	isa      => Varchar[60],
+	predicate => 'has_street2',
 	documentation => 'Second line of the billing street address.',
+);
+
+has street3 => (
+	required => 0,
+	is       => 'ro',
+	isa      => Varchar[60],
+	predicate => 'has_street3',
+	documentation => 'Third line of the billing street address.',
+);
+
+has street4 => (
+	required => 0,
+	is       => 'ro',
+	isa      => Varchar[60],
+	predicate => 'has_street4',
+	documentation => 'Fourth line of the billing street address.',
 );
 
 has city => (
@@ -58,6 +75,7 @@ has state => (
 	alias    => 'province',
 	is       => 'ro',
 	isa      => Varchar[2],
+	predicate => 'has_state',
 	documentation => 'State or province of the billing address. '
 		. 'Use the two-character codes. alias: C<province>',
 );
@@ -76,6 +94,7 @@ has zip => (
 	alias    => 'postal_code',
 	is       => 'ro',
 	isa      => Varchar[10],
+	predicate => 'has_zip',
 	documentation => 'Postal code for the billing address. '
 		. 'The postal code must consist of 5 to 9 digits. '
 		. 'alias: C<postal_code>',
@@ -95,6 +114,7 @@ has ip => (
 	coerce   => 1,
 	is       => 'ro',
 	isa      => NetAddrIPv4,
+	predicate => 'has_ip',
 	documentation => 'Customer\'s IP address. alias: C<ip_address>',
 );
 
@@ -105,23 +125,17 @@ sub _billing_info {
 		firstName  => $self->first_name,
 		lastName   => $self->last_name,
 		street1    => $self->street1,
-		street2    => $self->street2,
 		city       => $self->city,
 		country    => $self->country,
 		email      => $self->email,
 	};
 
-	if ( $self->ip ) {
-		$i->{ipAddress} = $self->ip->addr;
-	}
-
-	if ( $self->state ) {
-		$i->{state} = $self->state;
-	}
-
-	if ( $self->zip ) {
-		$i->{postalCode} = $self->zip,
-	}
+	$i->{ipAddress}  = $self->ip->addr if $self->has_ip;
+	$i->{state}      = $self->state    if $self->has_state;
+	$i->{postalCode} = $self->zip      if $self->has_zip;
+	$i->{street2}    = $self->street2  if $self->has_street2;
+	$i->{street3}    = $self->street3  if $self->has_street3;
+	$i->{street4}    = $self->street3  if $self->has_street4;
 
 	return $i;
 }
@@ -139,7 +153,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 BUGS
 

@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 use MooseX::Types::Moose   qw( HashRef );
@@ -81,6 +81,16 @@ sub _handle_decision {
 	return $res;
 }
 
+sub BUILD {
+	my $self = shift;
+
+	if ( $self->does('Business::CyberSource::Request::Role::PurchaseInfo' ) ) {
+		unless ( $self->has_items or $self->has_total ) {
+			croak 'you must define either items or total';
+		}
+	}
+}
+
 has reference_code => (
 	required => 1,
 	is       => 'ro',
@@ -96,6 +106,7 @@ has trace => (
 
 # ABSTRACT: Request Role
 
+
 __END__
 =pod
 
@@ -105,7 +116,9 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
+
+=for Pod::Coverage BUILD
 
 =head1 BUGS
 

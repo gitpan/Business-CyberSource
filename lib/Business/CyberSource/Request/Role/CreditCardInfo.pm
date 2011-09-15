@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -26,7 +26,7 @@ sub _cc_info {
 		cardType        => $self->card_type,
 	};
 
-	if ( $self->cvn ) {
+	if ( $self->has_cvn ) {
 		$i->{cvNumber   } = $self->cvn;
 		$i->{cvIndicator} = $self->cv_indicator;
 	}
@@ -128,7 +128,7 @@ Business::CyberSource::Request::Role::CreditCardInfo - credit card info role
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 BUGS
 

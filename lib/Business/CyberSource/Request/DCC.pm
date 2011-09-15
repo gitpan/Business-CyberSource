@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -72,7 +72,7 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 DESCRIPTION
 
@@ -99,14 +99,6 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 cv_indicator
-
-Reader: cv_indicator
-
-Type: MooseX::Types::CyberSource::CvIndicator
-
-Additional documentation: Flag that indicates whether a CVN code was sent
-
 =head2 trace
 
 Reader: trace
@@ -114,14 +106,6 @@ Reader: trace
 Writer: trace
 
 Type: XML::Compile::SOAP::Trace
-
-=head2 currency
-
-Reader: currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-This attribute is required.
 
 =head2 password
 
@@ -132,16 +116,6 @@ Type: MooseX::Types::Common::String::NonEmptyStr
 This attribute is required.
 
 Additional documentation: your SOAP transaction key
-
-=head2 production
-
-Reader: production
-
-Type: Bool
-
-This attribute is required.
-
-Additional documentation: 0: test server. 1: production server
 
 =head2 cybs_api_version
 
@@ -163,7 +137,7 @@ Additional documentation: Card Verification Numbers
 
 Reader: total
 
-Type: Num
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
 Additional documentation: Grand total for the order. You must include either this field or item_#_unitPrice in your request
 
@@ -187,15 +161,13 @@ This attribute is required.
 
 Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
-=head2 cc_exp_year
+=head2 card_type
 
-Reader: cc_exp_year
+Reader: card_type
 
-Type: MooseX::Types::Varchar::Varchar[4]
+Type: MooseX::Types::CyberSource::CardTypeCode
 
-This attribute is required.
-
-Additional documentation: Four-digit year that the credit card expires in. Format: YYYY.
+Additional documentation: Type of card to authorize
 
 =head2 credit_card
 
@@ -207,13 +179,49 @@ This attribute is required.
 
 Additional documentation: Customer's credit card number
 
-=head2 card_type
+=head2 reference_code
 
-Reader: card_type
+Reader: reference_code
 
-Type: MooseX::Types::CyberSource::CardTypeCode
+Type: MooseX::Types::Varchar::Varchar[50]
 
-Additional documentation: Type of card to authorize
+This attribute is required.
+
+=head2 cv_indicator
+
+Reader: cv_indicator
+
+Type: MooseX::Types::CyberSource::CvIndicator
+
+Additional documentation: Flag that indicates whether a CVN code was sent
+
+=head2 currency
+
+Reader: currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+This attribute is required.
+
+=head2 production
+
+Reader: production
+
+Type: Bool
+
+This attribute is required.
+
+Additional documentation: 0: test server. 1: production server
+
+=head2 cc_exp_year
+
+Reader: cc_exp_year
+
+Type: MooseX::Types::Varchar::Varchar[4]
+
+This attribute is required.
+
+Additional documentation: Four-digit year that the credit card expires in. Format: YYYY.
 
 =head2 cybs_xsd
 
@@ -222,14 +230,6 @@ Reader: cybs_xsd
 Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
-
-=head2 reference_code
-
-Reader: reference_code
-
-Type: MooseX::Types::Varchar::Varchar[50]
-
-This attribute is required.
 
 =head2 client_name
 
@@ -252,6 +252,12 @@ Additional documentation: Billing currency returned by the DCC service. For the 
 Reader: client_version
 
 Type: Str
+
+=head2 items
+
+Reader: items
+
+Type: ArrayRef[MooseX::Types::CyberSource::Item]
 
 =head1 METHODS
 

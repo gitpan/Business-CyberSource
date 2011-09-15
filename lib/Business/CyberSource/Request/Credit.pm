@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -90,7 +90,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 SYNOPSIS
 
@@ -196,7 +196,7 @@ Additional documentation: provided by the library
 
 Reader: total
 
-Type: Num
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
 Additional documentation: Grand total for the order. You must include either this field or item_#_unitPrice in your request
 
@@ -218,14 +218,6 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
-
 =head2 client_name
 
 Reader: client_name
@@ -242,11 +234,25 @@ Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
 
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
 =head2 client_version
 
 Reader: client_version
 
 Type: Str
+
+=head2 items
+
+Reader: items
+
+Type: ArrayRef[MooseX::Types::CyberSource::Item]
 
 =head1 METHODS
 

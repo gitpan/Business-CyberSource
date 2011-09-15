@@ -4,17 +4,18 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 
-use MooseX::Types::Varchar qw( Varchar );
+use MooseX::Types::Varchar     qw( Varchar   );
+use MooseX::Types::CyberSource qw( CvResults );
 
 has cv_code => (
 	required  => 0,
 	predicate => 'has_cv_code',
 	is        => 'ro',
-	isa       => Varchar[1],
+	isa       => CvResults,
 );
 
 has cv_code_raw => (
@@ -37,7 +38,7 @@ Business::CyberSource::Response::Role::CVN - CVN Role
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 BUGS
 

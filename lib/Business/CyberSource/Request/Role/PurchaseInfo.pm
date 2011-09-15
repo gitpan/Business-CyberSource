@@ -4,42 +4,46 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 with qw(
 	Business::CyberSource::Role::Currency
+	Business::CyberSource::Request::Role::Items
 );
 
-use MooseX::Types::Moose   qw( Num     );
-use MooseX::Types::Varchar qw( Varchar );
-use MooseX::Types::Locale::Currency qw( CurrencyCode );
+use MooseX::Types::Common::Numeric  qw( PositiveOrZeroNum );
+use MooseX::Types::Varchar          qw( Varchar           );
+use MooseX::Types::Locale::Currency qw( CurrencyCode      );
 
 sub _purchase_info {
 	my $self = shift;
 
 	my $i = {
-		currency         => $self->currency,
-		grandTotalAmount => $self->total,
+		currency => $self->currency,
 	};
 
-	if ( $self->foreign_currency ) {
-		$i->{foreignCurrency} = $self->foreign_currency;
-	}
+	$i->{grandTotalAmount} = $self->total if $self->has_total;;
+	$i->{foreignCurrency}  = $self->foreign_currency
+		if $self->has_foreign_currency;
 
 	return $i;
 }
 
 has total => (
-	is       => 'ro',
-	isa      => Num,
+	required  => 0,
+	predicate => 'has_total',
+	is        => 'ro',
+	isa       => PositiveOrZeroNum,
 	documentation => 'Grand total for the order. You must include '
 		. 'either this field or item_#_unitPrice in your request',
 );
 
 has foreign_currency => (
-	is  => 'ro',
-	isa => CurrencyCode,
+	required  => 0,
+	predicate => 'has_foreign_currency',
+	is        => 'ro',
+	isa       => CurrencyCode,
 	documentation => 'Billing currency returned by the DCC service. '
 		. 'For the possible values, see the ISO currency codes',
 
@@ -58,7 +62,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 BUGS
 

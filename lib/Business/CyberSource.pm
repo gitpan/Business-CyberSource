@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose::Role;
 
@@ -132,7 +132,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 DESCRIPTION
 
@@ -149,6 +149,11 @@ general workflow.
 To get started you will want to read the documentation in
 L<Business::CyberSource::Request>. If you find any documentation unclear or
 outright missing, please file a bug.
+
+If there are features that are part of CyberSource's API but are not
+documented, or are missing here, please file a bug. I'll be happy to add them,
+but due to the size of the upstream API, I have not had time to cover all the features
+and some are currently undocumented.
 
 =head1 ACKNOWLEDGEMENTS
 

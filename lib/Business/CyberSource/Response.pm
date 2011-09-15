@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = 'v0.2.8'; # VERSION
+our $VERSION = 'v0.3.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -156,7 +156,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version v0.2.8
+version v0.3.0
 
 =head1 DESCRIPTION
 
@@ -175,14 +175,6 @@ Role|Business::CyberSource::Response::Role::Accept>
 
 =head1 ATTRIBUTES
 
-=head2 request_id
-
-Reader: request_id
-
-Type: MooseX::Types::Varchar::Varchar[29]
-
-This attribute is required.
-
 =head2 reason_text
 
 Reader: reason_text
@@ -192,6 +184,14 @@ Type: Str
 This attribute is required.
 
 Additional documentation: official description of returned reason code. warning: reason codes are returned by CyberSource and occasionally do not reflect the real reason for the error please inspect the trace request/response for issues
+
+=head2 request_id
+
+Reader: request_id
+
+Type: MooseX::Types::Varchar::Varchar[29]
+
+This attribute is required.
 
 =head2 decision
 
