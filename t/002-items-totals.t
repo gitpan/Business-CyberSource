@@ -5,13 +5,16 @@ use warnings;
 use Test::More;
 use Test::Exception;
 
+# If no items and no totals throw exception
+
 use Business::CyberSource::Request::Authorization;
 
+throws_ok {
 my $req
 	= Business::CyberSource::Request::Authorization->new({
 		username       => 'foobar',
 		password       => 'test',
-		reference_code => 't001',
+		reference_code => 't108',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street         => 'somewhere',
@@ -20,17 +23,13 @@ my $req
 		zip            => '77064',
 		country        => 'US',
 		email          => 'xenoterracide@gmail.com',
-		ip             => '192.168.100.2',
-		total          => 5.00,
 		currency       => 'USD',
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '09',
 		cc_exp_year    => '2025',
 		production     => 0,
 	});
+} qr/you must define either items or total/, 'new threw exception ok';
 
-is( $req->username, 'foobar',  'check username' );
-is( $req->password, 'test'  ,  'check password' );
 
-throws_ok { $req->submit } qr/SOAP Fault/, 'submit threw exception ok';
 done_testing;

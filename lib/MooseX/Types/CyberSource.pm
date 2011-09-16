@@ -4,13 +4,14 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.0'; # VERSION
+our $VERSION = 'v0.3.1'; # VERSION
 
 use MooseX::Types -declare => [ qw(
-	Decision
+	AVSResult
 	CardTypeCode
 	CvIndicator
 	CvResults
+	Decision
 	Item
 ) ];
 
@@ -54,6 +55,8 @@ subtype Item,
 
 enum CvResults, [ qw( D I M N P S U X 1 2 3 ) ];
 
+enum AVSResult, [ qw( A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 ) ];
+
 1;
 
 # ABSTRACT: Moose Types specific to CyberSource
@@ -68,7 +71,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version v0.3.0
+version v0.3.1
 
 =head1 SYNOPSIS
 
@@ -161,6 +164,15 @@ Base Type: C<enum>
 Single character code that defines the result of having sent a CVN. See
 L<CyberSource's Documentation on Card Verification Results
 |http://www.cybersource.com/support_center/support_documentation/quick_references/view.php?page_id=421>
+for more information.
+
+=item * C<AVSResults>
+
+Base Type: C<enum>
+
+Single character code that defines the result of having sent a CVN. See
+L<CyberSource's Documentation on AVS Results
+|http://www.cybersource.com/support_center/support_documentation/quick_references/view.php?page_id=423>
 for more information.
 
 =back

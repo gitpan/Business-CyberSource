@@ -4,17 +4,18 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.0'; # VERSION
+our $VERSION = 'v0.3.1'; # VERSION
 
 use Moose::Role;
 
+use MooseX::Types::CyberSource qw( AVSResult );
 use MooseX::Types::Varchar qw( Varchar );
 
 has avs_code => (
 	required => 0,
 	predicate => 'has_avs_code',
 	is       => 'ro',
-	isa      => Varchar[1],
+	isa      => AVSResult,
 	documentation => 'AVS results.',
 );
 
@@ -40,7 +41,7 @@ Business::CyberSource::Response::Role::AVS - AVS Role
 
 =head1 VERSION
 
-version v0.3.0
+version v0.3.1
 
 =head1 BUGS
 

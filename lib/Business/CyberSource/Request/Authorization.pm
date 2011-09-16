@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.0'; # VERSION
+our $VERSION = 'v0.3.1'; # VERSION
 
 use Moose;
 with qw(
@@ -13,6 +13,7 @@ with qw(
 	Business::CyberSource::Request::Role::BillingInfo
 	Business::CyberSource::Request::Role::PurchaseInfo
 	Business::CyberSource::Request::Role::CreditCardInfo
+	Business::CyberSource::Request::Role::BusinessRules
 );
 
 use Business::CyberSource::Response;
@@ -28,6 +29,10 @@ sub submit {
 			run => 'true',
 		},
 	};
+
+	if ( keys $self->_business_rules ) {
+		$payload->{businessRules} = $self->_business_rules;
+	}
 
 	if ( $self->has_items and not $self->items_is_empty ) {
 		$payload->{item} = [ @{ $self->_item_info } ];
@@ -112,7 +117,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.3.0
+version v0.3.1
 
 =head1 SYNOPSIS
 
@@ -184,6 +189,12 @@ cards.
 
 =head1 ATTRIBUTES
 
+=head2 ignore_cv_result
+
+Reader: ignore_cv_result
+
+Type: Bool
+
 =head2 street
 
 Reader: street
@@ -253,6 +264,12 @@ Reader: cybs_api_version
 Type: Str
 
 Additional documentation: provided by the library
+
+=head2 ignore_export_result
+
+Reader: ignore_export_result
+
+Type: Bool
 
 =head2 cvn
 
@@ -340,6 +357,16 @@ Type: MooseX::Types::Varchar::Varchar[60]
 
 Additional documentation: Third line of the billing street address.
 
+=head2 score_threshold
+
+Type: Int
+
+=head2 ignore_avs_result
+
+Reader: ignore_avs_result
+
+Type: Bool
+
 =head2 ip
 
 Reader: ip
@@ -412,6 +439,12 @@ This attribute is required.
 
 Additional documentation: ISO 2 character country code (as it would apply to a credit card billing statement)
 
+=head2 ignore_validate_result
+
+Reader: ignore_validate_result
+
+Type: Bool
+
 =head2 cc_exp_year
 
 Reader: cc_exp_year
@@ -430,13 +463,11 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 foreign_currency
+=head2 ignore_dav_result
 
-Reader: foreign_currency
+Reader: ignore_dav_result
 
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+Type: Bool
 
 =head2 client_name
 
@@ -446,17 +477,23 @@ Type: Str
 
 Additional documentation: provided by the library
 
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
+=head2 decline_avs_flags
+
+Type: ArrayRef[MooseX::Types::CyberSource::AVSResult]
+
 =head2 client_version
 
 Reader: client_version
 
 Type: Str
-
-=head2 items
-
-Reader: items
-
-Type: ArrayRef[MooseX::Types::CyberSource::Item]
 
 =head2 first_name
 
@@ -467,6 +504,12 @@ Type: MooseX::Types::Varchar::Varchar[60]
 This attribute is required.
 
 Additional documentation: Customer's first name.The value should be the same as the one that is on the card.
+
+=head2 items
+
+Reader: items
+
+Type: ArrayRef[MooseX::Types::CyberSource::Item]
 
 =head1 METHODS
 

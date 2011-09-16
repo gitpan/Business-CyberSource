@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.0'; # VERSION
+our $VERSION = 'v0.3.1'; # VERSION
 
 use MooseX::AbstractFactory;
 use MooseX::StrictConstructor;
@@ -48,7 +48,7 @@ Business::CyberSource::Request - CyberSource Request Factory Module
 
 =head1 VERSION
 
-version v0.3.0
+version v0.3.1
 
 =head1 SYNOPSIS
 
@@ -154,6 +154,8 @@ implementation and required attributes:
 =item * L<Stand Alone Credit|Business::CyberSource::Request::StandAloneCredit>
 
 =item * L<DCC|Business::CyberSource::Request::DCC>
+
+=item * L<Sale|Business::CyberSource::Request::Sale>
 
 =back
 
