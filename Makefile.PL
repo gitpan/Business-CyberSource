@@ -34,6 +34,7 @@ my %WriteMakefileArgs = (
     "Carp" => 0,
     "Config" => 0,
     "File::ShareDir" => 0,
+    "Locale::Country" => 0,
     "Moose" => 0,
     "Moose::Role" => 0,
     "MooseX::AbstractFactory" => 0,
@@ -63,7 +64,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "v0.3.2",
+  "VERSION" => "v0.3.3",
   "test" => {
     "TESTS" => "t/*.t"
   }

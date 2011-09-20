@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.2'; # VERSION
+our $VERSION = 'v0.3.3'; # VERSION
 
 use Moose;
 with qw(
@@ -80,6 +80,10 @@ sub submit {
 			}
 		}
 
+		if ( $r->{ccCaptureReply}->{reconciliationID} ) {
+			$e->{reconciliation_id} = $r->{ccCaptureReply}->{reconciliationID};
+		}
+
 		$res
 			= Business::CyberSource::Response
 			->with_traits( @traits )
@@ -90,7 +94,6 @@ sub submit {
 				reason_code    => "$r->{reasonCode}",
 				request_token  => $r->{requestToken},
 				auth_record    => $r->{ccAuthReply}->{authRecord},
-				reconciliation_id => $r->{ccCaptureReply}->{reconciliationID},
 				processor_response =>
 					$r->{ccAuthReply}->{processorResponse},
 				%{$e},
@@ -119,7 +122,7 @@ Business::CyberSource::Request::Sale - Sale Request Object
 
 =head1 VERSION
 
-version v0.3.2
+version v0.3.3
 
 =head1 SYNOPSIS
 
@@ -401,7 +404,7 @@ Additional documentation: Fourth line of the billing street address.
 
 Reader: country
 
-Type: MooseX::Types::Locale::Country::Alpha2Country
+Type: MooseX::Types::CyberSource::CountryCode
 
 This attribute is required.
 

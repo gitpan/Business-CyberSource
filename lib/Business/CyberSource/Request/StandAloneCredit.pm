@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.2'; # VERSION
+our $VERSION = 'v0.3.3'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::StandAloneCredit - CyberSource Credit Request Ob
 
 =head1 VERSION
 
-version v0.3.2
+version v0.3.3
 
 =head1 SYNOPSIS
 
@@ -284,7 +284,7 @@ Additional documentation: Fourth line of the billing street address.
 
 Reader: country
 
-Type: MooseX::Types::Locale::Country::Alpha2Country
+Type: MooseX::Types::CyberSource::CountryCode
 
 This attribute is required.
 
