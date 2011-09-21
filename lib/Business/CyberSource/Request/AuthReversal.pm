@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.3.3'; # VERSION
+our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -76,7 +76,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.3.3
+version v0.3.4
 
 =head1 SYNOPSIS
 
@@ -192,14 +192,6 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 reference_code
-
-Reader: reference_code
-
-Type: MooseX::Types::Varchar::Varchar[50]
-
-This attribute is required.
-
 =head2 client_name
 
 Reader: client_name
@@ -208,13 +200,13 @@ Type: Str
 
 Additional documentation: provided by the library
 
-=head2 foreign_currency
+=head2 reference_code
 
-Reader: foreign_currency
+Reader: reference_code
 
-Type: MooseX::Types::Locale::Currency::CurrencyCode
+Type: MooseX::Types::Varchar::Varchar[50]
 
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+This attribute is required.
 
 =head2 client_version
 

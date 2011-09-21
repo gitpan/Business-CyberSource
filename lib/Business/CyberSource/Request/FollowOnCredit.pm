@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.3'; # VERSION
+our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::FollowOnCredit - CyberSource Credit Request Obje
 
 =head1 VERSION
 
-version v0.3.3
+version v0.3.4
 
 =head1 SYNOPSIS
 
@@ -162,14 +162,6 @@ Reader: reference_code
 Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
-
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 client_version
 

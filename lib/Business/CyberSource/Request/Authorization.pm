@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.3'; # VERSION
+our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose;
 with qw(
@@ -117,7 +117,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version v0.3.3
+version v0.3.4
 
 =head1 SYNOPSIS
 
@@ -476,14 +476,6 @@ Reader: client_name
 Type: Str
 
 Additional documentation: provided by the library
-
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 decline_avs_flags
 

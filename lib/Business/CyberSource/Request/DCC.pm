@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.3.3'; # VERSION
+our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -12,6 +12,7 @@ with qw(
 	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::PurchaseInfo
 	Business::CyberSource::Request::Role::CreditCardInfo
+	Business::CyberSource::Role::ForeignCurrency
 );
 
 use Business::CyberSource::Response;
@@ -34,8 +35,7 @@ sub submit {
 		$res
 			= Business::CyberSource::Response
 			->with_traits(qw{
-				Business::CyberSource::Response::Role::Accept
-				Business::CyberSource::Response::Role::Credit
+				Business::CyberSource::Response::Role::DCC
 			})
 			->new({
 				request_id     => $r->{requestID},
@@ -44,9 +44,18 @@ sub submit {
 				reason_code    => "$r->{reasonCode}",
 				request_token  => $r->{requestToken},
 				reference_code => $r->{merchantReferenceCode},
-				currency       => $r->{purchaseTotals}->{currency},
-				datetime       => $r->{ccCaptureReply}->{requestDateTime},
-				amount         => $r->{ccCaptureReply}->{amount},
+				exchange_rate  => $r->{purchaseTotals}{exchangeRate},
+				exchange_rate_timestamp =>
+					$r->{purchaseTotals}{exchangeRateTimeStamp},
+				currency       => $r->{purchaseTotals}{currency},
+				foreign_currency => $r->{purchaseTotals}{foreignCurrency},
+				foreign_amount   => $r->{purchaseTotals}{foreignAmount},
+				dcc_supported =>
+					$r->{ccDCCReply}{dccSupported} eq 'TRUE' ? 1 : 0,
+				valid_hours => $r->{ccDCCReply}{validHours},
+				margin_rate_percentage =>
+					$r->{ccDCCReply}{marginRatePercentage},
+				request_specific_reason_code => "$r->{ccDCCReply}{reasonCode}",
 			})
 			;
 	}
@@ -72,14 +81,11 @@ Business::CyberSource::Request::DCC - CyberSource DCC Request Object
 
 =head1 VERSION
 
-version v0.3.3
+version v0.3.4
 
 =head1 DESCRIPTION
 
 This object allows you to create a request for Direct Currency Conversion.
-This object is not known to work correctly. Although it follows the
-CyberSource Documentation for DCC request, the response returned appears to
-always be a 150 General Error.
 
 =head1 ATTRIBUTES
 
@@ -161,14 +167,6 @@ This attribute is required.
 
 Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
-=head2 card_type
-
-Reader: card_type
-
-Type: MooseX::Types::CyberSource::CardTypeCode
-
-Additional documentation: Type of card to authorize
-
 =head2 credit_card
 
 Reader: credit_card
@@ -178,6 +176,14 @@ Type: MooseX::Types::CreditCard::CreditCard
 This attribute is required.
 
 Additional documentation: Customer's credit card number
+
+=head2 card_type
+
+Reader: card_type
+
+Type: MooseX::Types::CyberSource::CardTypeCode
+
+Additional documentation: Type of card to authorize
 
 =head2 reference_code
 
@@ -231,6 +237,16 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+This attribute is required.
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
 =head2 client_name
 
 Reader: client_name
@@ -238,14 +254,6 @@ Reader: client_name
 Type: Str
 
 Additional documentation: provided by the library
-
-=head2 foreign_currency
-
-Reader: foreign_currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 client_version
 

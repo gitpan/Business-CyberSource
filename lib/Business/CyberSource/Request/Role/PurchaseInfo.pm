@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.3'; # VERSION
+our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -24,8 +24,6 @@ sub _purchase_info {
 	};
 
 	$i->{grandTotalAmount} = $self->total if $self->has_total;;
-	$i->{foreignCurrency}  = $self->foreign_currency
-		if $self->has_foreign_currency;
 
 	return $i;
 }
@@ -37,16 +35,6 @@ has total => (
 	isa       => PositiveOrZeroNum,
 	documentation => 'Grand total for the order. You must include '
 		. 'either this field or item_#_unitPrice in your request',
-);
-
-has foreign_currency => (
-	required  => 0,
-	predicate => 'has_foreign_currency',
-	is        => 'ro',
-	isa       => CurrencyCode,
-	documentation => 'Billing currency returned by the DCC service. '
-		. 'For the possible values, see the ISO currency codes',
-
 );
 
 1;
@@ -62,7 +50,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.3.3
+version v0.3.4
 
 =head1 BUGS
 

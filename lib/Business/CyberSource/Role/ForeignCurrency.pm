@@ -1,4 +1,4 @@
-package Business::CyberSource::Response::Role::ReconciliationID;
+package Business::CyberSource::Role::ForeignCurrency;
 use 5.008;
 use strict;
 use warnings;
@@ -7,24 +7,27 @@ use namespace::autoclean;
 our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose::Role;
-use MooseX::Types::Moose qw( Int );
+use MooseX::Types::Locale::Currency qw( CurrencyCode );
 
-has reconciliation_id => (
-	required => 1,
-	is       => 'ro',
-	isa      => Int,
+has foreign_currency => (
+	required  => 1,
+	predicate => 'has_foreign_currency',
+	is        => 'ro',
+	isa       => CurrencyCode,
+	documentation => 'Billing currency returned by the DCC service. '
+		. 'For the possible values, see the ISO currency codes',
 );
 
 1;
 
-# ABSTRACT: Reconciliation Identifier
+# ABSTRACT: Role to apply to requests and responses that require currency
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identifier
+Business::CyberSource::Role::ForeignCurrency - Role to apply to requests and responses that require currency
 
 =head1 VERSION
 

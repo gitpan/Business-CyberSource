@@ -1,4 +1,4 @@
-package Business::CyberSource::Response::Role::Accept;
+package Business::CyberSource::Response::Role::DCC;
 use 5.008;
 use strict;
 use warnings;
@@ -8,57 +8,62 @@ our $VERSION = 'v0.3.4'; # VERSION
 
 use Moose::Role;
 with qw(
-	Business::CyberSource::Role::Currency
+	Business::CyberSource::Role::ForeignCurrency
+	Business::CyberSource::Response::Role::Accept
 );
 
-use MooseX::Types::Moose         qw( Num Int );
-use MooseX::Types::Varchar       qw( Varchar );
-use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
+use MooseX::Types::Moose qw( Num Bool Str Int );
 
-
-has amount => (
-	required => 0,
+has foreign_amount => (
+	required => 1,
 	is       => 'ro',
 	isa      => Num,
 );
 
-has datetime => (
-	required => 0,
-	is       => 'ro',
-	isa      => DateTimeW3C,
-);
-
-has reference_code => (
+has dcc_supported => (
 	required => 1,
 	is       => 'ro',
-	isa      => Varchar[50],
+	isa      => Bool
 );
 
-has request_specific_reason_code => (
+has exchange_rate => (
+	required => 1,
+	is       => 'ro',
+	isa      => Num,
+);
+
+has exchange_rate_timestamp => (
+	required => 1,
+	is       => 'ro',
+	isa      => Str,
+);
+
+has valid_hours => (
 	required => 1,
 	is       => 'ro',
 	isa      => Int,
 );
 
+has margin_rate_percentage => (
+	required => 1,
+	is       => 'ro',
+	isa      => Num,
+);
+
 1;
 
-# ABSTRACT: role for handling accepted transactions
-
+# ABSTRACT: Role that provides attributes specific to responses for DCC
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Accept - role for handling accepted transactions
+Business::CyberSource::Response::Role::DCC - Role that provides attributes specific to responses for DCC
 
 =head1 VERSION
 
 version v0.3.4
-
-=head1 DESCRIPTION
-
-If the transaction has a C<decision> of C<ACCEPT> then this Role is applied.
 
 =head1 BUGS
 
