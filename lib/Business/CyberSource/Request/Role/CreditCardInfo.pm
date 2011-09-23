@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.4'; # VERSION
+our $VERSION = 'v0.3.5'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -101,7 +101,7 @@ sub _build_card_type {
 	my $code
 		= $ct =~ /visa            /ixms ? '001'
 		: $ct =~ /mastercard      /ixms ? '002'
-		: $ct =~ /american express/ixms ? '003'
+		: $ct =~ /american\ express\ card/ixms ? '003'
 		: $ct =~ /discover        /ixms ? '004'
 		: $ct =~ /jcb             /ixms ? '007'
 		: $ct =~ /enroute         /ixms ? '014'
@@ -109,7 +109,7 @@ sub _build_card_type {
 		:                                 undef
 		;
 
-	croak $ct . 'card_type was unable to be detected please define it manually'
+	croak $ct . ' card_type was unable to be detected please define it manually'
 		unless $code;
 
 	return $code;
@@ -128,7 +128,7 @@ Business::CyberSource::Request::Role::CreditCardInfo - credit card info role
 
 =head1 VERSION
 
-version v0.3.4
+version v0.3.5
 
 =head1 BUGS
 

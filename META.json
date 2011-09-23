@@ -4,7 +4,7 @@
       "Caleb Cushing <xenoterracide@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300001, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Dist::Zilla version 4.300002, CPAN::Meta::Converter version 2.112621",
    "license" : [
       "artistic_2"
    ],
@@ -91,6 +91,6 @@
          "web" : "https://github.com/xenoterracide/Business-CyberSource"
       }
    },
-   "version" : "v0.3.4"
+   "version" : "v0.3.5"
 }
 
