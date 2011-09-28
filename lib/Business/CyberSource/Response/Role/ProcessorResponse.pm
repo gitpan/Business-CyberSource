@@ -4,15 +4,16 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.6'; # VERSION
+our $VERSION = 'v0.3.7'; # VERSION
 
 use Moose::Role;
 use MooseX::Types::Varchar qw( Varchar );
 
 has processor_response => (
-	required => 1,
-	is       => 'ro',
-	isa      => Varchar[10],
+	required  => 0,
+	predicate => 'has_processor_response',
+	is        => 'ro',
+	isa       => Varchar[10],
 );
 
 1;
@@ -28,7 +29,7 @@ Business::CyberSource::Response::Role::ProcessorResponse - Processor Response at
 
 =head1 VERSION
 
-version v0.3.6
+version v0.3.7
 
 =head1 BUGS
 
