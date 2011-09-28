@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.5'; # VERSION
+our $VERSION = 'v0.3.6'; # VERSION
 
 use Moose::Role;
 use MooseX::Types::Moose   qw( HashRef );
@@ -81,12 +81,19 @@ sub _handle_decision {
 	return $res;
 }
 
-sub BUILD {
+sub BUILD { ## no critic qw( Subroutines::RequireFinalReturn )
 	my $self = shift;
 
 	if ( $self->does('Business::CyberSource::Request::Role::PurchaseInfo' ) ) {
 		unless ( $self->has_items or $self->has_total ) {
 			croak 'you must define either items or total';
+		}
+	}
+
+	if ( $self->does('Business::CyberSource::Request::Role::BillingInfo' ) ) {
+		if ( $self->country eq 'US' or $self->country eq 'CA' ) {
+			croak 'zip code is required for US or Canada'
+				unless $self->has_zip;
 		}
 	}
 }
@@ -116,7 +123,7 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version v0.3.5
+version v0.3.6
 
 =for Pod::Coverage BUILD
 

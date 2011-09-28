@@ -3,18 +3,19 @@ use 5.008;
 use strict;
 use warnings;
 use Test::More;
-use Test::Exception;
-
-# If no items and no totals throw exception
 
 use Business::CyberSource::Request::Authorization;
+use Business::CyberSource::Request::AuthReversal;
+use Business::CyberSource::Request::Credit;
+use Business::CyberSource::Request::Capture;
+use Business::CyberSource::Request::DCC;
 
-throws_ok {
-my $req
+my $req0
 	= Business::CyberSource::Request::Authorization->new({
-		username       => 'foobar',
+		username       => 'test',
 		password       => 'test',
-		reference_code => 't108',
+		production     => 0,
+		reference_code => 't100',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street         => 'somewhere',
@@ -23,13 +24,13 @@ my $req
 		zip            => '77064',
 		country        => 'US',
 		email          => 'xenoterracide@gmail.com',
+		total          => 3000.00,
 		currency       => 'USD',
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '09',
 		cc_exp_year    => '2025',
-		production     => 0,
 	});
-} qr/you must define either items or total/, 'new threw exception ok';
 
+ok( $req0, 'authorization object created' );
 
 done_testing;

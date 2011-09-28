@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.3.5'; # VERSION
+our $VERSION = 'v0.3.6'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -97,6 +97,7 @@ has zip => (
 	predicate => 'has_zip',
 	documentation => 'Postal code for the billing address. '
 		. 'The postal code must consist of 5 to 9 digits. '
+		. 'Required if C<country> is "US" or "CA"'
 		. 'alias: C<postal_code>',
 );
 
@@ -153,7 +154,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.3.5
+version v0.3.6
 
 =head1 BUGS
 

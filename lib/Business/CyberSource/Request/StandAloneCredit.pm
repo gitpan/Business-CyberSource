@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.5'; # VERSION
+our $VERSION = 'v0.3.6'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::StandAloneCredit - CyberSource Credit Request Ob
 
 =head1 VERSION
 
-version v0.3.5
+version v0.3.6
 
 =head1 SYNOPSIS
 
@@ -192,7 +192,7 @@ Reader: zip
 
 Type: MooseX::Types::Varchar::Varchar[10]
 
-Additional documentation: Postal code for the billing address. The postal code must consist of 5 to 9 digits. alias: C<postal_code>
+Additional documentation: Postal code for the billing address. The postal code must consist of 5 to 9 digits. Required if C<country> is "US" or "CA"alias: C<postal_code>
 
 =head2 street2
 
