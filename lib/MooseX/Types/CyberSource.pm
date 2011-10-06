@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use MooseX::Types -declare => [ qw(
 	AVSResult
@@ -12,6 +12,7 @@ use MooseX::Types -declare => [ qw(
 	CountryCode
 	CvIndicator
 	CvResults
+	DCCIndicator
 	Decision
 	Item
 ) ];
@@ -52,8 +53,15 @@ enum CvIndicator, [ qw( 0 1 2 9 ) ];
 
 subtype Item,
 	as Dict[
-		unit_price => PositiveOrZeroNum,
-		quantity   => Int,
+		unit_price   => PositiveOrZeroNum,
+		quantity     => Int,
+		product_code => Optional[Str],
+		product_name => Optional[Str],
+		product_sku  => Optional[Str],
+		product_risk => Optional[Str],
+		tax_amount   => Optional[PositiveOrZeroNum],
+		tax_rate     => Optional[PositiveOrZeroNum],
+		national_tax => Optional[PositiveOrZeroNum],
 	];
 
 enum CvResults, [ qw( D I M N P S U X 1 2 3 ) ];
@@ -78,6 +86,8 @@ coerce CountryCode,
 	}
 	;
 
+enum DCCIndicator, [ qw( 1 2 3 ) ];
+
 1;
 
 # ABSTRACT: Moose Types specific to CyberSource
@@ -92,7 +102,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 SYNOPSIS
 
@@ -203,6 +213,44 @@ Single character code that defines the result of having sent a CVN. See
 L<CyberSource's Documentation on AVS Results
 |http://www.cybersource.com/support_center/support_documentation/quick_references/view.php?page_id=423>
 for more information.
+
+=item * C<DCCIndicator>
+
+Base Type: C<enum>
+
+Single character code that defines the DCC status
+
+=over
+
+=item * C<1>
+
+Converted - DCC is being used.
+
+=item * C<2>
+
+Non-convertible - DCC cannot be used.
+
+=item * C<3>
+
+Declined - DCC could be used, but the customer declined it.
+
+=back
+
+=item * C<Item>
+
+Base Type: C<Dict>
+
+Here's the current list of valid keys and their types for the Dictionary
+
+	unit_price   => PositiveOrZeroNum,
+	quantity     => Int,
+	product_code => Optional[Str],
+	product_name => Optional[Str],
+	product_sku  => Optional[Str],
+	product_risk => Optional[Str],
+	tax_amount   => Optional[PositiveOrZeroNum],
+	tax_rate     => Optional[PositiveOrZeroNum],
+	national_tax => Optional[PositiveOrZeroNum],
 
 =back
 

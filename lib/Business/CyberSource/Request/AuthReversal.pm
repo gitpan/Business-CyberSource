@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -20,14 +20,12 @@ use MooseX::StrictConstructor;
 sub submit {
 	my $self = shift;
 
-	my $payload = {
-		ccAuthReversalService => {
-			run => 'true',
-			authRequestID => $self->request_id,
-		},
-	};
+	$self->_request_data->{ccAuthReversalService}{run} = 'true';
+	$self->_request_data->{ccAuthReversalService}{authRequestID}
+		= $self->request_id
+		;
 
-	my $r = $self->_build_request( $payload );
+	my $r = $self->_build_request;
 
 	my $res;
 	if ( $r->{decision} eq 'ACCEPT' ) {
@@ -76,7 +74,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 SYNOPSIS
 
@@ -97,6 +95,12 @@ version v0.3.8
 This allows you to reverse an authorization request.
 
 =head1 ATTRIBUTES
+
+=head2 foreign_amount
+
+Reader: foreign_amount
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
 =head2 client_env
 
@@ -166,6 +170,18 @@ Type: Str
 
 Additional documentation: provided by the library
 
+=head2 exchange_rate
+
+Reader: exchange_rate
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 exchange_rate_timestamp
+
+Reader: exchange_rate_timestamp
+
+Type: Str
+
 =head2 total
 
 Reader: total
@@ -192,13 +208,13 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 client_name
+=head2 foreign_currency
 
-Reader: client_name
+Reader: foreign_currency
 
-Type: Str
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
-Additional documentation: provided by the library
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 reference_code
 
@@ -207,6 +223,14 @@ Reader: reference_code
 Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
+
+=head2 client_name
+
+Reader: client_name
+
+Type: Str
+
+Additional documentation: provided by the library
 
 =head2 client_version
 

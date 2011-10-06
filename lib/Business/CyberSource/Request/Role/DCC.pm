@@ -1,4 +1,4 @@
-package Business::CyberSource::Response::Role::Authorization;
+package Business::CyberSource::Request::Role::DCC;
 use 5.008;
 use strict;
 use warnings;
@@ -7,39 +7,34 @@ use namespace::autoclean;
 our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose::Role;
+
 with qw(
-	Business::CyberSource::Response::Role::ProcessorResponse
-	Business::CyberSource::Response::Role::AVS
-	Business::CyberSource::Response::Role::CVN
+	Business::CyberSource::Role::ForeignCurrency
 );
 
-use MooseX::Types::Varchar qw( Varchar );
-use MooseX::Types::Moose   qw( Str     );
+use MooseX::Types::CyberSource qw( DCCIndicator );
 
-has auth_code => (
+has dcc_indicator => (
 	required  => 0,
-	predicate => 'has_auth_code',
+	predicate => 'has_dcc_indicator',
 	is        => 'ro',
-	isa       => Varchar[7],
-);
-
-has auth_record => (
-	required  => 0,
-	predicate => 'has_auth_record',
-	is        => 'ro',
-	isa       => Str,
+	isa       => DCCIndicator,
+	trigger   => sub {
+		my $self = shift;
+		$self->_request_data->{dcc}{dccIndicator} = $self->dcc_indicator;
+	},
 );
 
 1;
 
-# ABSTRACT: CyberSource Authorization Response only attributes
+# ABSTRACT: Role for DCC follow up requests
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Authorization - CyberSource Authorization Response only attributes
+Business::CyberSource::Request::Role::DCC - Role for DCC follow up requests
 
 =head1 VERSION
 

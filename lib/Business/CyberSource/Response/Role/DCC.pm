@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -14,28 +14,11 @@ with qw(
 
 use MooseX::Types::Moose qw( Num Bool Str Int );
 
-has foreign_amount => (
-	required => 1,
-	is       => 'ro',
-	isa      => Num,
-);
 
 has dcc_supported => (
 	required => 1,
 	is       => 'ro',
 	isa      => Bool
-);
-
-has exchange_rate => (
-	required => 1,
-	is       => 'ro',
-	isa      => Num,
-);
-
-has exchange_rate_timestamp => (
-	required => 1,
-	is       => 'ro',
-	isa      => Str,
 );
 
 has valid_hours => (
@@ -63,7 +46,7 @@ Business::CyberSource::Response::Role::DCC - Role that provides attributes speci
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 BUGS
 

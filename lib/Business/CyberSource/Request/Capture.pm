@@ -4,13 +4,14 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
 with qw(
 	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::FollowUp
+	Business::CyberSource::Request::Role::DCC
 );
 
 use Business::CyberSource::Response;
@@ -19,14 +20,12 @@ use MooseX::StrictConstructor;
 sub submit {
 	my $self = shift;
 
-	my $payload = {
-		ccCaptureService => {
-			run => 'true',
-			authRequestID => $self->request_id,
-		},
-	};
+	$self->_request_data->{ccCaptureService}{run} = 'true';
+	$self->_request_data->{ccCaptureService}{authRequestID}
+		= $self->request_id
+		;
 
-	my $r = $self->_build_request( $payload );
+	my $r = $self->_build_request;
 
 	my $res;
 	if ( $r->{decision} eq 'ACCEPT' ) {
@@ -46,7 +45,6 @@ sub submit {
 				currency       => $r->{purchaseTotals}->{currency},
 				datetime       => $r->{ccCaptureReply}->{requestDateTime},
 				amount         => $r->{ccCaptureReply}->{amount},
-				reference_code => $r->{merchantReferenceCode},
 				reconciliation_id => $r->{ccCaptureReply}->{reconciliationID},
 				request_specific_reason_code =>
 					"$r->{ccCaptureReply}->{reasonCode}",
@@ -75,7 +73,7 @@ Business::CyberSource::Request::Capture - CyberSource Capture Request Object
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 SYNOPSIS
 
@@ -94,6 +92,12 @@ version v0.3.8
 This object allows you to create a request for a capture.
 
 =head1 ATTRIBUTES
+
+=head2 foreign_amount
+
+Reader: foreign_amount
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
 =head2 client_env
 
@@ -189,6 +193,18 @@ Type: MooseX::Types::Varchar::Varchar[29]
 
 This attribute is required.
 
+=head2 exchange_rate
+
+Reader: exchange_rate
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 exchange_rate_timestamp
+
+Reader: exchange_rate_timestamp
+
+Type: Str
+
 =head2 cybs_xsd
 
 Reader: cybs_xsd
@@ -196,6 +212,20 @@ Reader: cybs_xsd
 Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
+
+=head2 dcc_indicator
+
+Reader: dcc_indicator
+
+Type: MooseX::Types::CyberSource::DCCIndicator
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
 =head2 client_name
 

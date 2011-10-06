@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -12,6 +12,7 @@ with qw(
 	MooseX::Traits
 	Business::CyberSource::Request::Role::Common
 	Business::CyberSource::Request::Role::PurchaseInfo
+	Business::CyberSource::Request::Role::DCC
 );
 
 use Business::CyberSource::Response;
@@ -24,25 +25,11 @@ has '+_trait_namespace' => (
 sub submit {
 	my $self = shift;
 
-	my $payload = {
-		ccCreditService => {
-			run => 'true',
-		},
-	};
+	$self->_request_data->{ccCreditService}{run} = 'true';
+	$self->_request_data->{ccCreditService}{captureRequestID}
+		= $self->request_id if $self->meta->has_attribute( 'request_id' );
 
-	if ( $self->does('Business::CyberSource::Request::Role::BillingInfo') ) {
-		$payload->{billTo} = $self->_billing_info ;
-	}
-
-	if ( $self->does('Business::CyberSource::Request::Role::CreditCardInfo') ) {
-		$payload->{card} = $self->_cc_info ;
-	}
-
-	if ( $self->does('Business::CyberSource::Request::Role::FollowUp') ) {
-		$payload->{ccCreditService}->{captureRequestID} = $self->request_id;
-	}
-
-	my $r = $self->_build_request( $payload );
+	my $r = $self->_build_request;
 
 	my $res;
 	if ( $r->{decision} eq 'ACCEPT' ) {
@@ -90,7 +77,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 SYNOPSIS
 
@@ -131,6 +118,12 @@ L<Business::CyberSource::Request::StandAloneCredit> or the
 L<Business::CyberSource::Request::FollowOnCredit>.
 
 =head1 ATTRIBUTES
+
+=head2 foreign_amount
+
+Reader: foreign_amount
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
 =head2 client_env
 
@@ -192,6 +185,18 @@ Type: Str
 
 Additional documentation: provided by the library
 
+=head2 exchange_rate
+
+Reader: exchange_rate
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 exchange_rate_timestamp
+
+Reader: exchange_rate_timestamp
+
+Type: Str
+
 =head2 total
 
 Reader: total
@@ -218,13 +223,11 @@ Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
 
-=head2 client_name
+=head2 dcc_indicator
 
-Reader: client_name
+Reader: dcc_indicator
 
-Type: Str
-
-Additional documentation: provided by the library
+Type: MooseX::Types::CyberSource::DCCIndicator
 
 =head2 reference_code
 
@@ -233,6 +236,22 @@ Reader: reference_code
 Type: MooseX::Types::Varchar::Varchar[50]
 
 This attribute is required.
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
+=head2 client_name
+
+Reader: client_name
+
+Type: Str
+
+Additional documentation: provided by the library
 
 =head2 client_version
 

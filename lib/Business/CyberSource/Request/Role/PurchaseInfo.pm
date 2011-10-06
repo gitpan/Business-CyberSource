@@ -4,35 +4,29 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose::Role;
 with qw(
 	Business::CyberSource::Role::Currency
+	Business::CyberSource::Role::ForeignCurrency
 	Business::CyberSource::Request::Role::Items
 );
 
+use MooseX::Types::Moose            qw( HashRef           );
 use MooseX::Types::Common::Numeric  qw( PositiveOrZeroNum );
 use MooseX::Types::Varchar          qw( Varchar           );
 use MooseX::Types::Locale::Currency qw( CurrencyCode      );
-
-sub _purchase_info {
-	my $self = shift;
-
-	my $i = {
-		currency => $self->currency,
-	};
-
-	$i->{grandTotalAmount} = $self->total if $self->has_total;;
-
-	return $i;
-}
 
 has total => (
 	required  => 0,
 	predicate => 'has_total',
 	is        => 'ro',
 	isa       => PositiveOrZeroNum,
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{purchaseTotals}{grandTotalAmount} = $self->total;
+	},
 	documentation => 'Grand total for the order. You must include '
 		. 'either this field or item_#_unitPrice in your request',
 );
@@ -50,7 +44,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 BUGS
 

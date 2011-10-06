@@ -20,6 +20,7 @@ lib/Business/CyberSource/Request/Role/BusinessRules.pm
 lib/Business/CyberSource/Request/Role/Common.pm
 lib/Business/CyberSource/Request/Role/Credentials.pm
 lib/Business/CyberSource/Request/Role/CreditCardInfo.pm
+lib/Business/CyberSource/Request/Role/DCC.pm
 lib/Business/CyberSource/Request/Role/FollowUp.pm
 lib/Business/CyberSource/Request/Role/Items.pm
 lib/Business/CyberSource/Request/Role/PurchaseInfo.pm
@@ -65,6 +66,8 @@ t/401-auth-reversal.t
 t/402-auth-reversal-reject.t
 t/403-auth-reversal-factory.t
 t/501-dcc.t
+t/502-dcc-authorization.t
+t/503-dcc-sale.t
 t/601-sale.t
 t/602-sale-reject.t
 t/author-critic.t

@@ -5,33 +5,16 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = 'v0.3.8'; # VERSION
+our $VERSION = 'v0.4.0'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
-use MooseX::Types::Moose      qw( Int        );
+use MooseX::Types::Moose      qw( Int HashRef );
 use MooseX::Types::Varchar    qw( Varchar    );
 use MooseX::Types::CreditCard 0.001001 qw( CreditCard CardSecurityCode );
 use MooseX::Types::CyberSource qw( CvIndicator CardTypeCode );
 
 use Business::CreditCard qw( cardtype );
-
-sub _cc_info {
-	my $self = shift;
-
-	my $i = {
-		accountNumber   => $self->credit_card,
-		expirationMonth => $self->cc_exp_month,
-		expirationYear  => $self->cc_exp_year,
-		cardType        => $self->card_type,
-	};
-
-	if ( $self->has_cvn ) {
-		$i->{cvNumber   } = $self->cvn;
-		$i->{cvIndicator} = $self->cv_indicator;
-	}
-	return $i;
-}
 
 has credit_card => (
 	required => 1,
@@ -39,15 +22,21 @@ has credit_card => (
 	is       => 'ro',
 	isa      => CreditCard,
 	coerce   => 1,
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{card}{accountNumber} = $self->credit_card;
+		$self->_request_data->{card}{cardType}      = $self->card_type;
+	},
 	documentation => 'Customer\'s credit card number',
 );
 
 has card_type => (
-	required => 0,
-	lazy     => 1,
-	is       => 'ro',
-	isa      => CardTypeCode,
-	builder  => '_build_card_type',
+	required  => 0,
+	lazy      => 1,
+	predicate => 'has_card_type',
+	is        => 'ro',
+	isa       => CardTypeCode,
+	builder   => '_build_card_type',
 	documentation => 'Type of card to authorize',
 );
 
@@ -55,6 +44,11 @@ has cc_exp_month => (
 	required => 1,
 	is       => 'ro',
 	isa      => Varchar[2],
+	alias    => [ qw( exp_month expiration_month ) ],
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{card}{expirationMonth} = $self->cc_exp_month;
+	},
 	documentation => 'Two-digit month that the credit card expires '
 		. 'in. Format: MM.',
 );
@@ -63,6 +57,11 @@ has cc_exp_year => (
 	required => 1,
 	is       => 'ro',
 	isa      => Varchar[4],
+	alias    => [ qw( exp_year expiration_year ) ],
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{card}{expirationYear} = $self->cc_exp_year;
+	},
 	documentation => 'Four-digit year that the credit card expires in. '
 		. 'Format: YYYY.',
 );
@@ -90,7 +89,22 @@ has cvn => (
 	predicate => 'has_cvn',
 	is        => 'ro',
 	isa       => CardSecurityCode,
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{card}{cvNumber} = $self->cvn;
+		$self->_request_data->{card}{cvIndicator} = $self->cv_indicator;
+	},
 	documentation => 'Card Verification Numbers',
+);
+
+has full_name => (
+	required => 0,
+	is       => 'ro',
+	isa      => Varchar[60],
+	trigger  => sub {
+		my $self = shift;
+		$self->_request_data->{card}{fullName} = $self->full_name;
+	},
 );
 
 sub _build_card_type {
@@ -128,7 +142,7 @@ Business::CyberSource::Request::Role::CreditCardInfo - credit card info role
 
 =head1 VERSION
 
-version v0.3.8
+version v0.4.0
 
 =head1 BUGS
 
