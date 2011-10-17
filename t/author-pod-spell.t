@@ -21,7 +21,7 @@ plan skip_all => "Test::Spelling 0.12 required for testing POD spelling"
 
 
 add_stopwords(<DATA>);
-all_pod_files_spelling_ok('lib');
+all_pod_files_spelling_ok('bin', 'lib');
 __DATA__
 SubmittingPatches
 CyberSource
@@ -51,6 +51,7 @@ timestamp
 overmeer
 ACKNOWLEDGEMENTS
 AVS
+MerchantReferenceCode
 Caleb
 Cushing
 Caleb

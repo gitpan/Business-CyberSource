@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.4.0'; # VERSION
+our $VERSION = 'v0.4.1'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::StandAloneCredit - CyberSource Credit Request Ob
 
 =head1 VERSION
 
-version v0.4.0
+version v0.4.1
 
 =head1 SYNOPSIS
 
@@ -106,7 +106,7 @@ Additional documentation: Customer's email address, including the full domain na
 
 Reader: trace
 
-Writer: trace
+Writer: _trace
 
 Type: XML::Compile::SOAP::Trace
 

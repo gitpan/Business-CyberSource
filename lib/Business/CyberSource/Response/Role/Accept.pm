@@ -4,11 +4,12 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = 'v0.4.0'; # VERSION
+our $VERSION = 'v0.4.1'; # VERSION
 
 use Moose::Role;
 with qw(
 	Business::CyberSource::Role::Currency
+	Business::CyberSource::Role::MerchantReferenceCode
 );
 
 use MooseX::Types::Moose         qw( Num Int );
@@ -26,12 +27,6 @@ has datetime => (
 	required => 0,
 	is       => 'ro',
 	isa      => DateTimeW3C,
-);
-
-has reference_code => (
-	required => 1,
-	is       => 'ro',
-	isa      => Varchar[50],
 );
 
 has request_specific_reason_code => (
@@ -54,7 +49,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version v0.4.0
+version v0.4.1
 
 =head1 DESCRIPTION
 

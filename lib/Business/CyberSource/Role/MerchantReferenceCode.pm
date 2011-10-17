@@ -1,45 +1,31 @@
-package Business::CyberSource::Response::Role::Authorization;
+package Business::CyberSource::Role::MerchantReferenceCode;
 use 5.008;
 use strict;
 use warnings;
+use Carp;
 use namespace::autoclean;
 
 our $VERSION = 'v0.4.1'; # VERSION
 
 use Moose::Role;
-with qw(
-	Business::CyberSource::Response::Role::ProcessorResponse
-	Business::CyberSource::Response::Role::AVS
-	Business::CyberSource::Response::Role::CVN
-);
-
 use MooseX::Types::Varchar qw( Varchar );
-use MooseX::Types::Moose   qw( Str     );
 
-has auth_code => (
-	required  => 0,
-	predicate => 'has_auth_code',
-	is        => 'ro',
-	isa       => Varchar[7],
-);
-
-has auth_record => (
-	required  => 0,
-	predicate => 'has_auth_record',
-	is        => 'ro',
-	isa       => Str,
+has reference_code => (
+	required => 1,
+	is       => 'ro',
+	isa      => Varchar[50],
 );
 
 1;
 
-# ABSTRACT: CyberSource Authorization Response only attributes
+# ABSTRACT: Generic implementation of MerchantReferenceCode
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Authorization - CyberSource Authorization Response only attributes
+Business::CyberSource::Role::MerchantReferenceCode - Generic implementation of MerchantReferenceCode
 
 =head1 VERSION
 

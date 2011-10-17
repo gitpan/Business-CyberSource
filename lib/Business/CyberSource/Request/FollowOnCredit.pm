@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.4.0'; # VERSION
+our $VERSION = 'v0.4.1'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::FollowOnCredit - CyberSource Credit Request Obje
 
 =head1 VERSION
 
-version v0.4.0
+version v0.4.1
 
 =head1 SYNOPSIS
 
@@ -79,7 +79,7 @@ Additional documentation: provided by the library
 
 Reader: trace
 
-Writer: trace
+Writer: _trace
 
 Type: XML::Compile::SOAP::Trace
 
