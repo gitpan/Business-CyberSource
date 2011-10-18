@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.4.1'; # VERSION
+our $VERSION = 'v0.4.2'; # VERSION
 
 use Moose;
 with qw(
@@ -119,7 +119,7 @@ Business::CyberSource::Request::Sale - Sale Request Object
 
 =head1 VERSION
 
-version v0.4.1
+version v0.4.2
 
 =head1 SYNOPSIS
 
@@ -250,6 +250,12 @@ Reader: cvn
 Type: MooseX::Types::CreditCard::CardSecurityCode
 
 Additional documentation: Card Verification Numbers
+
+=head2 phone_number
+
+Reader: phone_number
+
+Type: MooseX::Types::Varchar::Varchar[20]
 
 =head2 total
 
@@ -493,6 +499,12 @@ Reader: client_version
 
 Type: Str
 
+=head2 items
+
+Reader: items
+
+Type: ArrayRef[MooseX::Types::CyberSource::Item]
+
 =head2 first_name
 
 Reader: first_name
@@ -502,12 +514,6 @@ Type: MooseX::Types::Varchar::Varchar[60]
 This attribute is required.
 
 Additional documentation: Customer's first name.The value should be the same as the one that is on the card.
-
-=head2 items
-
-Reader: items
-
-Type: ArrayRef[MooseX::Types::CyberSource::Item]
 
 =head1 SEE ALSO
 

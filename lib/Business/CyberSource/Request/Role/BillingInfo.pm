@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = 'v0.4.1'; # VERSION
+our $VERSION = 'v0.4.2'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -127,12 +127,12 @@ has country => (
 );
 
 has postal_code => (
-	required => 0,
-	alias    => 'zip',
-	is       => 'ro',
-	isa      => Varchar[10],
+	required  => 0,
+	alias     => 'zip',
+	is        => 'ro',
+	isa       => Varchar[10],
 	predicate => 'has_zip',
-	trigger  => sub {
+	trigger   => sub {
 		my $self = shift;
 		$self->_request_data->{billTo}{postalCode} = $self->postal_code;
 	},
@@ -140,6 +140,18 @@ has postal_code => (
 		. 'The postal code must consist of 5 to 9 digits. '
 		. 'Required if C<country> is "US" or "CA"'
 		. 'alias: C<postal_code>',
+);
+
+has phone_number => (
+	required  => 0,
+	alias     => 'phone',
+	is        => 'ro',
+	isa       => Varchar[20],
+	predicate => 'has_phone_number',
+	trigger   => sub {
+		my $self = shift;
+		$self->_request_data->{billTo}{phoneNumber} = $self->phone_number;
+	},
 );
 
 has email => (
@@ -163,7 +175,7 @@ has ip_address => (
 	predicate => 'has_ip',
 	trigger  => sub {
 		my $self = shift;
-		$self->_request_data->{billTo}{ipAddress} = $self->ip_address;
+		$self->_request_data->{billTo}{ipAddress} = $self->ip_address->addr;
 	},
 	documentation => 'Customer\'s IP address. alias: C<ip_address>',
 );
@@ -181,7 +193,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version v0.4.1
+version v0.4.2
 
 =head1 BUGS
 

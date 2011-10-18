@@ -20,7 +20,7 @@ lives_ok {
 		username       => $cybs_id,
 		password       => $cybs_key,
 		production     => 0,
-		reference_code => '36',
+		reference_code => 't106',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street1        => '100 somewhere blvd',
@@ -29,8 +29,9 @@ lives_ok {
 		street4        => 'idk, just putting something here',
 		city           => 'Houston',
 		state          => 'TX',
-		zip            => '77064',
+		postal_code    => '77064',
 		country        => 'US',
+		phone_number   => '+1(555)555-5555',
 		email          => 'xenoterracide@gmail.com',
 		total          => 5.00,
 		currency       => 'USD',
@@ -48,7 +49,7 @@ is( $req->client_name , 'Business::CyberSource', 'check client_library'    );
 ok( $req->client_env,                            'check client_env exists' );
 
 # check billing info
-is( $req->reference_code, '36',        'check reference_code' );
+is( $req->reference_code, 't106',      'check reference_code' );
 is( $req->first_name,     'Caleb',     'check first_name'     );
 is( $req->last_name,      'Cushing',   'check first_name'     );
 is( $req->street1,        '100 somewhere blvd', 'check street1');
@@ -57,6 +58,9 @@ is( $req->city,           'Houston',   'check city'           );
 is( $req->state,          'TX',        'check state'          );
 is( $req->country,        'US',        'check country'        );
 is( $req->ip->addr,       '192.168.42.39', 'check ip address' );
+is( $req->ip->addr, $req->_request_data->{billTo}{ipAddress},
+	'check that ip was added in the request right'
+);
 
 is( $req->email, 'xenoterracide@gmail.com', 'check email' );
 
@@ -85,7 +89,7 @@ SKIP: {
 	note( $req->trace->request->decoded_content );
 
 	is( $ret->decision,       'ACCEPT', 'check decision'       );
-	is( $ret->reference_code, '36',     'check reference_code' );
+	is( $ret->reference_code, 't106',   'check reference_code' );
 	is( $ret->reason_code,     100,     'check reason_code'    );
 	is( $ret->currency,       'USD',    'check currency'       );
 	is( $ret->amount,         '5.00',    'check amount'        );
