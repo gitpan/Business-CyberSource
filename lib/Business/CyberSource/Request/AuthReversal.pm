@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = 'v0.4.2'; # VERSION
+our $VERSION = '0.004003'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -74,7 +74,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version v0.4.2
+version 0.004003
 
 =head1 SYNOPSIS
 
@@ -117,6 +117,12 @@ Reader: cybs_wsdl
 Type: MooseX::Types::Path::Class::File
 
 Additional documentation: provided by the library
+
+=head2 comments
+
+Reader: comments
+
+Type: Str
 
 =head2 trace
 

@@ -1,5 +1,9 @@
 Revision history for Business-CyberSource
 
+0.004003  2011-10-23
+	- add ->comments field
+	- switch to decimal based versions
+
 v0.4.2    2011-10-18
 	- add a field for ->phone_number
 	- fix the way ->ip_address is transmitted
