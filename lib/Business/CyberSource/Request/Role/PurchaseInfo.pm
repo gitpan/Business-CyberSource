@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -15,7 +15,6 @@ with qw(
 
 use MooseX::Types::Moose            qw( HashRef           );
 use MooseX::Types::Common::Numeric  qw( PositiveOrZeroNum );
-use MooseX::Types::Varchar          qw( Varchar           );
 use MooseX::Types::Locale::Currency qw( CurrencyCode      );
 
 has total => (
@@ -44,7 +43,7 @@ Business::CyberSource::Request::Role::PurchaseInfo - CyberSource Purchase Inform
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 BUGS
 

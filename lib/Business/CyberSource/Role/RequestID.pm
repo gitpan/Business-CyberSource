@@ -5,16 +5,18 @@ use warnings;
 use Carp;
 use namespace::autoclean;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose::Role;
-use MooseX::Types::Varchar qw( Varchar );
+
+use MooseX::Types::Common::String qw( NonEmptySimpleStr );
+use Moose::Util::TypeConstraints;
 
 has request_id => (
 	required  => 1,
 	predicate => 'has_request_id',
 	is        => 'ro',
-	isa       => Varchar[29],
+	isa       => subtype( NonEmptySimpleStr, where { length $_ <= 29 }),
 );
 
 1;
@@ -30,7 +32,7 @@ Business::CyberSource::Role::RequestID - Role to apply to requests and responses
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 BUGS
 

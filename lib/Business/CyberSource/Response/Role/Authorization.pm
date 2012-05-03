@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -13,14 +13,14 @@ with qw(
 	Business::CyberSource::Response::Role::CVN
 );
 
-use MooseX::Types::Varchar qw( Varchar );
 use MooseX::Types::Moose   qw( Str     );
+use MooseX::Types::CyberSource qw( _VarcharSeven );
 
 has auth_code => (
 	required  => 0,
 	predicate => 'has_auth_code',
 	is        => 'ro',
-	isa       => Varchar[7],
+	isa       => _VarcharSeven,
 );
 
 has auth_record => (
@@ -43,7 +43,7 @@ Business::CyberSource::Response::Role::Authorization - CyberSource Authorization
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 BUGS
 

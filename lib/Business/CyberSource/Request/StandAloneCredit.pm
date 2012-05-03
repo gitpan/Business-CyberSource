@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::StandAloneCredit - CyberSource Credit Request Ob
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 SYNOPSIS
 
@@ -68,22 +68,6 @@ Reader: foreign_amount
 
 Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
-=head2 client_env
-
-Reader: client_env
-
-Type: Str
-
-Additional documentation: provided by the library
-
-=head2 cybs_wsdl
-
-Reader: cybs_wsdl
-
-Type: MooseX::Types::Path::Class::File
-
-Additional documentation: provided by the library
-
 =head2 comments
 
 Reader: comments
@@ -94,7 +78,7 @@ Type: Str
 
 Reader: state
 
-Type: MooseX::Types::Varchar::Varchar[2]
+Type: __ANON__
 
 Additional documentation: State or province of the billing address. Use the two-character codes. alias: C<province>
 
@@ -122,25 +106,13 @@ Reader: password
 
 Type: MooseX::Types::Common::String::NonEmptyStr
 
-This attribute is required.
-
-Additional documentation: your SOAP transaction key
-
 =head2 postal_code
 
 Reader: postal_code
 
-Type: MooseX::Types::Varchar::Varchar[10]
+Type: MooseX::Types::CyberSource::_VarcharTen
 
 Additional documentation: Postal code for the billing address. The postal code must consist of 5 to 9 digits. Required if C<country> is "US" or "CA"alias: C<postal_code>
-
-=head2 cybs_api_version
-
-Reader: cybs_api_version
-
-Type: Str
-
-Additional documentation: provided by the library
 
 =head2 cvn
 
@@ -154,13 +126,13 @@ Additional documentation: Card Verification Numbers
 
 Reader: phone_number
 
-Type: MooseX::Types::Varchar::Varchar[20]
+Type: MooseX::Types::CyberSource::_VarcharTwenty
 
 =head2 cc_exp_month
 
 Reader: cc_exp_month
 
-Type: MooseX::Types::Varchar::Varchar[2]
+Type: __ANON__
 
 This attribute is required.
 
@@ -178,11 +150,7 @@ Additional documentation: Grand total for the order. You must include either thi
 
 Reader: username
 
-Type: MooseX::Types::Varchar::Varchar[30]
-
-This attribute is required.
-
-Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
+Type: __ANON__
 
 =head2 card_type
 
@@ -206,7 +174,7 @@ Additional documentation: Customer's credit card number
 
 Reader: street2
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 Additional documentation: Second line of the billing street address.
 
@@ -214,7 +182,7 @@ Additional documentation: Second line of the billing street address.
 
 Reader: reference_code
 
-Type: MooseX::Types::Varchar::Varchar[50]
+Type: MooseX::Types::CyberSource::_VarcharFifty
 
 This attribute is required.
 
@@ -222,7 +190,7 @@ This attribute is required.
 
 Reader: street3
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 Additional documentation: Third line of the billing street address.
 
@@ -238,7 +206,7 @@ Additional documentation: Flag that indicates whether a CVN code was sent
 
 Reader: last_name
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 This attribute is required.
 
@@ -256,7 +224,7 @@ This attribute is required.
 
 Reader: city
 
-Type: MooseX::Types::Varchar::Varchar[50]
+Type: MooseX::Types::CyberSource::_VarcharFifty
 
 This attribute is required.
 
@@ -268,15 +236,11 @@ Reader: production
 
 Type: Bool
 
-This attribute is required.
-
-Additional documentation: 0: test server. 1: production server
-
 =head2 street4
 
 Reader: street4
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 Additional documentation: Fourth line of the billing street address.
 
@@ -314,13 +278,13 @@ Type: Str
 
 Reader: full_name
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 =head2 street1
 
 Reader: street1
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 This attribute is required.
 
@@ -330,19 +294,11 @@ Additional documentation: First line of the billing street address as it appears
 
 Reader: cc_exp_year
 
-Type: MooseX::Types::Varchar::Varchar[4]
+Type: __ANON__
 
 This attribute is required.
 
 Additional documentation: Four-digit year that the credit card expires in. Format: YYYY.
-
-=head2 cybs_xsd
-
-Reader: cybs_xsd
-
-Type: MooseX::Types::Path::Class::File
-
-Additional documentation: provided by the library
 
 =head2 dcc_indicator
 
@@ -358,25 +314,11 @@ Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
 
-=head2 client_name
-
-Reader: client_name
-
-Type: Str
-
-Additional documentation: provided by the library
-
-=head2 client_version
-
-Reader: client_version
-
-Type: Str
-
 =head2 first_name
 
 Reader: first_name
 
-Type: MooseX::Types::Varchar::Varchar[60]
+Type: MooseX::Types::CyberSource::_VarcharSixty
 
 This attribute is required.
 

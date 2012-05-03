@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -15,9 +15,11 @@ with qw(
 
 use MooseX::Aliases;
 use MooseX::StrictConstructor;
-use MooseX::Types::Moose qw( Str Int Bool );
+use MooseX::Types::Moose qw( Str Bool );
 use MooseX::Types::CyberSource qw( Decision );
-use MooseX::Types::Varchar qw( Varchar );
+use MooseX::Types::Common::String 0.001005 qw( NumericCode NonEmptySimpleStr );
+
+use Moose::Util::TypeConstraints;
 
 has decision => (
 	required => 1,
@@ -29,7 +31,7 @@ has decision => (
 has reason_code => (
 	required => 1,
 	is       => 'ro',
-	isa      => Int,
+	isa      => NumericCode,
 	documentation => 'Numeric value corresponding to the result '
 		. 'of the credit card authorization request',
 );
@@ -49,7 +51,7 @@ has reason_text => (
 has request_token => (
 	required => 1,
 	is       => 'ro',
-	isa      => Varchar[256],
+	isa      => subtype( NonEmptySimpleStr, where { length $_ <= 256 }),
 	documentation => 'Request token data created by CyberSource for each '
 		. 'reply. The field is an encoded string that contains no '
 		. 'confidential information, such as an account or card verification '
@@ -70,89 +72,90 @@ has accepted => (
 		. 'accepted',
 );
 
-my $reason = {
-	100 => 'Successful transaction',
-	101 => 'The request is missing one or more required fields',
-	102 => 'One or more fields in the request contains invalid data',
-	110 => 'Only a partial amount was approved',
-	150 => 'General system failure',
-	151 => 'The request was received but there was a server timeout.',
-	152 => 'The request was received, but a service did not finish '
-		. 'running in time'
-		,
-	200 => 'The authorization request was approved by the issuing bank '
-		. 'but declined by CyberSource because it did not pass the '
-		. 'Address Verification Service (AVS) check'
-		,
-	201 => 'The issuing bank has questions about the request. You do not '
-		. 'receive an authorization code programmatically, but you might '
-		. 'receive one verbally by calling the processor'
-		,
-	202 => 'Expired card. You might also receive this if the expiration '
-		. 'date you provided does not match the date the issuing bank '
-		. 'has on file'
-		,
-	203 => 'General decline of the card. No other information provided '
-		. 'by the issuing bank'
-		,
-	204 => 'Insufficient funds in the account',
-	205 => 'Stolen or lost card',
-	207 => 'Issuing bank unavailable',
-	208 => 'Inactive card or card not authorized for card-not-present '
-		. 'transactions'
-		,
-	209 => 'American Express Card Identification Digits (CID) did not '
-		. 'match'
-		,
-	210 => 'The card has reached the credit limit',
-	211 => 'Invalid CVN',
-	221 => 'The customer matched an entry on the processor\'s negative '
-		. 'file'
-		,
-	230 => 'The authorization request was approved by the issuing bank '
-		. 'but declined by CyberSource because it did not pass the CVN '
-		. 'check'
-		,
-	231 => 'Invalid account number',
-	232 => 'The card type is not accepted by the payment processor',
-	233 => 'General decline by the processor',
-	234 => 'There is a problem with your CyberSource merchant '
-		. 'configuration'
-		,
-	235 => 'The requested amount exceeds the originally authorized '
-		. 'amount'
-		,
-	236 => 'Processor failure',
-	237 => 'The authorization has already been reversed',
-	238 => 'The authorization has already been captured',
-	239 => 'The requested transaction amount must match the previous '
-		. 'transaction amount'
-		,
-	240 => 'The card type sent is invalid or does not correlate with '
-		. 'the credit card number'
-		,
-	241 => 'The request ID is invalid',
-	242 => 'You requested a capture, but there is no corresponding, '
-		. 'unused authorization record'
-		,
-	243 => 'The transaction has already been settled or reversed',
-	246 => 'The capture or credit is not voidable because the capture or '
-		. 'credit information has already been submitted to your '
-		. 'processor. Or, you requested a void for a type of '
-		. 'transaction that cannot be voided'
-		,
-	247 => 'You requested a credit for a capture that was previously '
-		. 'voided'
-		,
-	250 => 'The request was received, but there was a timeout at the '
-		. 'payment processor'
-		,
-};
 
 sub _build_reason_text {
 	my $self = shift;
 
-	return $reason->{$self->reason_code};
+	my %reason = (
+		100 => 'Successful transaction',
+		101 => 'The request is missing one or more required fields',
+		102 => 'One or more fields in the request contains invalid data',
+		110 => 'Only a partial amount was approved',
+		150 => 'General system failure',
+		151 => 'The request was received but there was a server timeout.',
+		152 => 'The request was received, but a service did not finish '
+			. 'running in time'
+			,
+		200 => 'The authorization request was approved by the issuing bank '
+			. 'but declined by CyberSource because it did not pass the '
+			. 'Address Verification Service (AVS) check'
+			,
+		201 => 'The issuing bank has questions about the request. You do not '
+			. 'receive an authorization code programmatically, but you might '
+			. 'receive one verbally by calling the processor'
+			,
+		202 => 'Expired card. You might also receive this if the expiration '
+			. 'date you provided does not match the date the issuing bank '
+			. 'has on file'
+			,
+		203 => 'General decline of the card. No other information provided '
+			. 'by the issuing bank'
+			,
+		204 => 'Insufficient funds in the account',
+		205 => 'Stolen or lost card',
+		207 => 'Issuing bank unavailable',
+		208 => 'Inactive card or card not authorized for card-not-present '
+			. 'transactions'
+			,
+		209 => 'American Express Card Identification Digits (CID) did not '
+			. 'match'
+			,
+		210 => 'The card has reached the credit limit',
+		211 => 'Invalid CVN',
+		221 => 'The customer matched an entry on the processor\'s negative '
+			. 'file'
+			,
+		230 => 'The authorization request was approved by the issuing bank '
+			. 'but declined by CyberSource because it did not pass the CVN '
+			. 'check'
+			,
+		231 => 'Invalid account number',
+		232 => 'The card type is not accepted by the payment processor',
+		233 => 'General decline by the processor',
+		234 => 'There is a problem with your CyberSource merchant '
+			. 'configuration'
+			,
+		235 => 'The requested amount exceeds the originally authorized '
+			. 'amount'
+			,
+		236 => 'Processor failure',
+		237 => 'The authorization has already been reversed',
+		238 => 'The authorization has already been captured',
+		239 => 'The requested transaction amount must match the previous '
+			. 'transaction amount'
+			,
+		240 => 'The card type sent is invalid or does not correlate with '
+			. 'the credit card number'
+			,
+		241 => 'The request ID is invalid',
+		242 => 'You requested a capture, but there is no corresponding, '
+			. 'unused authorization record'
+			,
+		243 => 'The transaction has already been settled or reversed',
+		246 => 'The capture or credit is not voidable because the capture or '
+			. 'credit information has already been submitted to your '
+			. 'processor. Or, you requested a void for a type of '
+			. 'transaction that cannot be voided'
+			,
+		247 => 'You requested a credit for a capture that was previously '
+			. 'voided'
+			,
+		250 => 'The request was received, but there was a timeout at the '
+			. 'payment processor'
+			,
+	);
+
+	return $reason{$self->reason_code};
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -170,7 +173,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 DESCRIPTION
 
@@ -203,7 +206,7 @@ Additional documentation: official description of returned reason code. warning:
 
 Reader: request_id
 
-Type: MooseX::Types::Varchar::Varchar[29]
+Type: __ANON__
 
 This attribute is required.
 
@@ -221,7 +224,7 @@ Additional documentation: Summarizes the result of the overall request
 
 Reader: reason_code
 
-Type: Int
+Type: MooseX::Types::Common::String::NumericCode
 
 This attribute is required.
 
@@ -231,7 +234,7 @@ Additional documentation: Numeric value corresponding to the result of the credi
 
 Reader: request_token
 
-Type: MooseX::Types::Varchar::Varchar[256]
+Type: __ANON__
 
 This attribute is required.
 
@@ -273,7 +276,7 @@ Request timestamp (will probably become a DateTime object at some point)
 
 =head2 reference_code
 
-Type: MooseX::Types::Varchar::Varchar[50]
+Type: Varying character 50
 
 Condition: ACCEPT
 
@@ -290,7 +293,7 @@ e.g. for capture this is the ccCaptureReply_reasonCode.
 
 =head2 processor_response
 
-Type: MooseX::Types::Varchar::Varchar[10]
+Type: Varying character 10
 
 Condition: ACCEPT and be either an Authorization or Authorization Reversal
 
@@ -302,13 +305,13 @@ Condition: ACCEPT and be either a Credit or Capture
 
 =head2 avs_code
 
-Type: MooseX::Types::Varchar::Varchar[1]
+Type: Varying character 1
 
 Condition: ACCEPT and Authorization
 
 =head2 avs_code_raw
 
-Type: MooseX::Types::Varchar::Varchar[10]
+Type: Varying character 10
 
 Condition: ACCEPT and Authorization
 
@@ -320,13 +323,13 @@ Condition: ACCEPT and Authorization
 
 =head2 auth_code
 
-Type: MooseX::Types::Varchar::Varchar[7]
+Type: Varying character 7
 
 Condition: ACCEPT and Authorization
 
 =head2 cv_code
 
-Type: MooseX::Types::Varchar::Varchar[1]
+Type: Single Char
 
 Condition: ACCEPT, Authorization, and cv_code actually returned
 
@@ -334,7 +337,7 @@ you can use predicate has_cv_code to check if attribute is defined
 
 =head2 cv_code_raw
 
-Type: MooseX::Types::Varchar::Varchar[10]
+Type: Varying character 10
 
 Condition: ACCEPT, Authorization, and cv_code_raw actually returned
 

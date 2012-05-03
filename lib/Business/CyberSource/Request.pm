@@ -1,11 +1,9 @@
 package Business::CyberSource::Request;
-use 5.008;
 use strict;
 use warnings;
 use namespace::autoclean;
-use Carp;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use MooseX::AbstractFactory;
 use MooseX::StrictConstructor;
@@ -27,7 +25,7 @@ around 'create' => sub {
 		$args->{production} = $self->production unless defined $args->{production};
 	}
 	else {
-		croak 'args not a hashref';
+		confess 'args not a hashref';
 	}
 
 	$self->$orig( $imp, $args );
@@ -48,7 +46,7 @@ Business::CyberSource::Request - CyberSource Request Factory Module
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 SYNOPSIS
 
@@ -98,23 +96,17 @@ Reader: password
 
 Type: MooseX::Types::Common::String::NonEmptyStr
 
-Additional documentation: your SOAP transaction key
+=head2 username
+
+Reader: username
+
+Type: __ANON__
 
 =head2 production
 
 Reader: production
 
 Type: Bool
-
-Additional documentation: 0: test server. 1: production server
-
-=head2 username
-
-Reader: username
-
-Type: MooseX::Types::Varchar::Varchar[30]
-
-Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
 
 =head1 METHODS
 

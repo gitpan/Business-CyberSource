@@ -1,22 +1,25 @@
-#!/usr/bin/perl
-use 5.008;
 use strict;
 use warnings;
-use Env qw( CYBS_ID CYBS_KEY );
 use Test::More;
+use Test::Requires::Env qw(
+	PERL_BUSINESS_CYBERSOURCE_USERNAME
+	PERL_BUSINESS_CYBERSOURCE_PASSWORD
+);
 
-plan skip_all
-	=> 'You MUST set ENV variable CYBS_ID and CYBS_KEY to test this!'
-	unless $CYBS_ID and $CYBS_KEY
-	;
+my ( $CYBS_ID, $CYBS_KEY )
+	= (
+		$ENV{PERL_BUSINESS_CYBERSOURCE_USERNAME},
+		$ENV{PERL_BUSINESS_CYBERSOURCE_PASSWORD},
+	);
 
-use Business::CyberSource::Request::Authorization;
+use Business::CyberSource::Request::Sale;
 
 my $req0
-	= Business::CyberSource::Request::Authorization->new({
+	= Business::CyberSource::Request::Sale->new({
 		username       => $CYBS_ID,
 		password       => $CYBS_KEY,
-		reference_code => '99',
+		production     => 0,
+		reference_code => 't602',
 		first_name     => 'Caleb',
 		last_name      => 'Cushing',
 		street         => '432 nowhere ave.',
@@ -30,10 +33,11 @@ my $req0
 		credit_card    => '4111-1111-1111-1111',
 		cc_exp_month   => '12',
 		cc_exp_year    => '2025',
-		production     => 0,
 	});
 
-my $ret0 = $req0->submit;
+my $ret0;
+
+eval { $ret0 = $req0->submit };
 
 note( $req0->trace->printResponse );
 
@@ -53,7 +57,7 @@ ok( $ret0->request_id,    'check request_id exists'    );
 ok( $ret0->request_token, 'check request_token exists' );
 
 my $req1
-	= Business::CyberSource::Request::Authorization->new({
+	= Business::CyberSource::Request::Sale->new({
 		username       => $CYBS_ID,
 		password       => $CYBS_KEY,
 		reference_code => '99',
@@ -87,34 +91,5 @@ is(
 	,
 	'check reason_text',
 );
-
-my $req2
-	= Business::CyberSource::Request::Authorization->new({
-		username       => $CYBS_ID,
-		password       => $CYBS_KEY,
-		reference_code => '99',
-		first_name     => 'Caleb',
-		last_name      => 'Cushing',
-		street         => '432 nowhere ave.',
-		city           => 'Detroit',
-		state          => 'MI',
-		zip            => '77064',
-		country        => 'US',
-		email          => 'foobar@example.com',
-		total          => 35.00,
-		currency       => 'USD',
-		credit_card    => '6304 9850 2809 0561 515',
-		cc_exp_month   => '12',
-		cc_exp_year    => '2010',
-		production     => 0,
-	});
-
-my $ret2 = $req2->submit;
-
-note( $req2->trace->printResponse );
-
-is( $ret2->is_success,     0,        'check success'        );
-is( $ret2->decision,       'REJECT', 'check decision'       );
-is( $ret2->reason_code,     202,     'check reason_code'    );
 
 done_testing;

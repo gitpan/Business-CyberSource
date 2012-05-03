@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -13,7 +13,6 @@ with qw(
 );
 
 use MooseX::Types::Moose         qw( Num Int );
-use MooseX::Types::Varchar       qw( Varchar );
 use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
 
 
@@ -49,7 +48,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 DESCRIPTION
 

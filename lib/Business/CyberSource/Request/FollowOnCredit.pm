@@ -5,7 +5,7 @@ use warnings;
 use namespace::autoclean;
 use Carp;
 
-our $VERSION = '0.004003'; # VERSION
+our $VERSION = '0.004004'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -28,7 +28,7 @@ Business::CyberSource::Request::FollowOnCredit - CyberSource Credit Request Obje
 
 =head1 VERSION
 
-version 0.004003
+version 0.004004
 
 =head1 SYNOPSIS
 
@@ -59,22 +59,6 @@ Reader: foreign_amount
 
 Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
 
-=head2 client_env
-
-Reader: client_env
-
-Type: Str
-
-Additional documentation: provided by the library
-
-=head2 cybs_wsdl
-
-Reader: cybs_wsdl
-
-Type: MooseX::Types::Path::Class::File
-
-Additional documentation: provided by the library
-
 =head2 comments
 
 Reader: comments
@@ -89,61 +73,11 @@ Writer: _trace
 
 Type: XML::Compile::SOAP::Trace
 
-=head2 currency
-
-Reader: currency
-
-Type: MooseX::Types::Locale::Currency::CurrencyCode
-
-This attribute is required.
-
 =head2 password
 
 Reader: password
 
 Type: MooseX::Types::Common::String::NonEmptyStr
-
-This attribute is required.
-
-Additional documentation: your SOAP transaction key
-
-=head2 production
-
-Reader: production
-
-Type: Bool
-
-This attribute is required.
-
-Additional documentation: 0: test server. 1: production server
-
-=head2 request_id
-
-Reader: request_id
-
-Type: MooseX::Types::Varchar::Varchar[29]
-
-This attribute is required.
-
-=head2 cybs_api_version
-
-Reader: cybs_api_version
-
-Type: Str
-
-Additional documentation: provided by the library
-
-=head2 exchange_rate
-
-Reader: exchange_rate
-
-Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
-
-=head2 exchange_rate_timestamp
-
-Reader: exchange_rate_timestamp
-
-Type: Str
 
 =head2 total
 
@@ -157,33 +91,55 @@ Additional documentation: Grand total for the order. You must include either thi
 
 Reader: username
 
-Type: MooseX::Types::Varchar::Varchar[30]
+Type: __ANON__
+
+=head2 reference_code
+
+Reader: reference_code
+
+Type: MooseX::Types::CyberSource::_VarcharFifty
 
 This attribute is required.
 
-Additional documentation: Your CyberSource merchant ID. Use the same merchantID for evaluation, testing, and production
+=head2 currency
 
-=head2 cybs_xsd
+Reader: currency
 
-Reader: cybs_xsd
+Type: MooseX::Types::Locale::Currency::CurrencyCode
 
-Type: MooseX::Types::Path::Class::File
+This attribute is required.
 
-Additional documentation: provided by the library
+=head2 production
+
+Reader: production
+
+Type: Bool
+
+=head2 request_id
+
+Reader: request_id
+
+Type: __ANON__
+
+This attribute is required.
+
+=head2 exchange_rate
+
+Reader: exchange_rate
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 exchange_rate_timestamp
+
+Reader: exchange_rate_timestamp
+
+Type: Str
 
 =head2 dcc_indicator
 
 Reader: dcc_indicator
 
 Type: MooseX::Types::CyberSource::DCCIndicator
-
-=head2 reference_code
-
-Reader: reference_code
-
-Type: MooseX::Types::Varchar::Varchar[50]
-
-This attribute is required.
 
 =head2 foreign_currency
 
@@ -192,20 +148,6 @@ Reader: foreign_currency
 Type: MooseX::Types::Locale::Currency::CurrencyCode
 
 Additional documentation: Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
-
-=head2 client_name
-
-Reader: client_name
-
-Type: Str
-
-Additional documentation: provided by the library
-
-=head2 client_version
-
-Reader: client_version
-
-Type: Str
 
 =head2 items
 

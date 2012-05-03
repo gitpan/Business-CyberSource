@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use 5.008;
+use 5.010;
 
 use ExtUtils::MakeMaker 6.30;
 
@@ -20,7 +20,9 @@ my %WriteMakefileArgs = (
     "File::Find" => 0,
     "File::Temp" => 0,
     "Test::Exception" => 0,
-    "Test::More" => "0.88"
+    "Test::Moose" => 0,
+    "Test::More" => "0.88",
+    "Test::Requires::Env" => 0
   },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30",
@@ -37,8 +39,10 @@ my %WriteMakefileArgs = (
     "File::ShareDir" => 0,
     "LWP::Protocol::https" => 0,
     "Locale::Country" => 0,
+    "Module::Runtime" => 0,
     "Moose" => 0,
     "Moose::Role" => 0,
+    "Moose::Util::TypeConstraints" => 0,
     "MooseX::AbstractFactory" => 0,
     "MooseX::Aliases" => 0,
     "MooseX::SetOnce" => "0.200001",
@@ -46,7 +50,7 @@ my %WriteMakefileArgs = (
     "MooseX::Traits" => 0,
     "MooseX::Types" => 0,
     "MooseX::Types::Common::Numeric" => "0.001003",
-    "MooseX::Types::Common::String" => 0,
+    "MooseX::Types::Common::String" => "0.001005",
     "MooseX::Types::CreditCard" => "0.001001",
     "MooseX::Types::DateTime::W3C" => 0,
     "MooseX::Types::Email" => 0,
@@ -57,7 +61,6 @@ my %WriteMakefileArgs = (
     "MooseX::Types::Path::Class" => 0,
     "MooseX::Types::Structured" => 0,
     "MooseX::Types::URI" => 0,
-    "MooseX::Types::Varchar" => 0,
     "Path::Class" => 0,
     "XML::Compile::SOAP11" => 0,
     "XML::Compile::SOAP::WSS" => "0.12",
@@ -67,7 +70,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.004003",
+  "VERSION" => "0.004004",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -92,8 +95,10 @@ delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
 
 WriteMakefile(%WriteMakefileArgs);
 
+{
 package
 MY;
 use File::ShareDir::Install qw(postamble);
+}
 
 

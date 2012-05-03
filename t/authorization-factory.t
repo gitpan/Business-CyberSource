@@ -1,16 +1,17 @@
-#!/usr/bin/perl
-use 5.008;
 use strict;
 use warnings;
-use Env qw( CYBS_ID CYBS_KEY );
 use Test::More;
 use Test::Exception;
-use Data::Dumper;
+use Test::Requires::Env qw(
+	PERL_BUSINESS_CYBERSOURCE_USERNAME
+	PERL_BUSINESS_CYBERSOURCE_PASSWORD
+);
 
-my ( $cybs_id, $cybs_key ) = ( $CYBS_ID, $CYBS_KEY );
-
-$cybs_id  ||= 'test';
-$cybs_key ||= 'test';
+my ( $cybs_id, $cybs_key )
+	= (
+		$ENV{PERL_BUSINESS_CYBERSOURCE_USERNAME},
+		$ENV{PERL_BUSINESS_CYBERSOURCE_PASSWORD},
+	);
 
 use Business::CyberSource::Request;
 
@@ -49,22 +50,14 @@ lives_ok {
 
 is( $req->card_type, '003', 'check card type is american express' );
 ok( $req, 'request exists' );
-note( Dumper $req->_request_data );
 
 ok( $req->reference_code , 'reference_code exists' );
 
-SKIP: {
-	skip 'You MUST set ENV variable CYBS_ID and CYBS_KEY to test this!',
-		4
-		unless $CYBS_ID and $CYBS_KEY
-		;
+my $ret;
+lives_ok { $ret = $req->submit } 'submit';
 
-	my $ret;
-	lives_ok { $ret = $req->submit } 'submit';
+ok( $ret, 'response exists' );
+is( $ret->accepted,  1, 'check if the decision is ACCEPT' );
 
-	ok( $ret, 'response exists' );
-	is( $ret->accepted,  1, 'check if the decision is ACCEPT' );
-
-	is( $ret->decision, 'ACCEPT', 'response is ACCEPT' );
-}
+is( $ret->decision, 'ACCEPT', 'response is ACCEPT' );
 done_testing;
