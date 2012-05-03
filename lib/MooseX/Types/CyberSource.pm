@@ -1,10 +1,9 @@
 package MooseX::Types::CyberSource;
-use 5.008;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004004'; # VERSION
+our $VERSION = '0.004005'; # VERSION
 
 use MooseX::Types -declare => [ qw(
 	AVSResult
@@ -130,6 +129,7 @@ subtype _VarcharSixty,
 # ABSTRACT: Moose Types specific to CyberSource
 
 
+
 __END__
 =pod
 
@@ -139,7 +139,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version 0.004004
+version 0.004005
 
 =head1 SYNOPSIS
 
