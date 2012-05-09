@@ -1,24 +1,26 @@
-package Business::CyberSource::Response::Role::ProcessorResponse;
-use 5.008;
+package Business::CyberSource::Message;
 use strict;
 use warnings;
 use namespace::autoclean;
 
 our $VERSION = '0.004006'; # VERSION
 
-use Moose::Role;
-use MooseX::Types::CyberSource qw( _VarcharTen );
+use Moose;
+with 'MooseX::Traits';
 
-has processor_response => (
-	required  => 0,
-	predicate => 'has_processor_response',
+use MooseX::StrictConstructor;
+use MooseX::ABC;
+
+has trace => (
+	isa       => 'XML::Compile::SOAP::Trace',
+	predicate => 'has_trace',
 	is        => 'ro',
-	isa       => _VarcharTen,
 );
 
+__PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: Processor Response attribute
+# ABSTRACT: Abstract Message Class;
 
 
 __END__
@@ -26,7 +28,7 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::ProcessorResponse - Processor Response attribute
+Business::CyberSource::Message - Abstract Message Class;
 
 =head1 VERSION
 
@@ -34,7 +36,10 @@ version 0.004006
 
 =head1 ATTRIBUTES
 
-=head2 processor_response
+=head2 trace
+
+A L<XML::Compile::SOAP::Trace> object which is populated only after the object
+has been submitted to CyberSource by a L<Business::CyberSource::Client>.
 
 =head1 BUGS
 

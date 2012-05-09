@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004005'; # VERSION
+our $VERSION = '0.004006'; # VERSION
 
 use Moose;
 
@@ -17,7 +17,6 @@ use MooseX::Types::Path::Class qw( File Dir );
 use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
 
 use Carp qw( carp );
-use Path::Class;
 use File::ShareDir qw( dist_file );
 use Config;
 use Module::Runtime qw( use_module );
@@ -29,6 +28,12 @@ use XML::Compile::Transport::SOAPHTTP;
 
 sub run_transaction {
 	my ( $self, $dto ) = @_;
+
+	confess 'Not a Business::CyberSource::Request'
+		unless defined $dto
+			&& blessed $dto
+			&& $dto->isa('Business::CyberSource::Request')
+			;
 
 	my $wss = XML::Compile::SOAP::WSS->new( version => '1.1' );
 
@@ -64,43 +69,37 @@ sub run_transaction {
 }
 
 sub _build_cybs_wsdl {
-		my $self = shift;
+	my $self = shift;
 
-		my $dir = $self->_production ? 'production' : 'test';
+	my $dir = $self->_production ? 'production' : 'test';
 
-		my $file
-			= Path::Class::File->new(
-				dist_file(
-					'Business-CyberSource',
-					$dir
-					. '/'
-					. 'CyberSourceTransaction_'
-					. $self->cybs_api_version
-					. '.wsdl'
-				)
-			);
-
-		return $file;
+	return use_module('Path::Class::File')->new(
+			dist_file(
+				'Business-CyberSource',
+				$dir
+				. '/'
+				. 'CyberSourceTransaction_'
+				. $self->cybs_api_version
+				. '.wsdl'
+			)
+		);
 }
 
 sub _build_cybs_xsd {
-		my $self = shift;
+	my $self = shift;
 
-		my $dir = $self->_production ? 'production' : 'test';
+	my $dir = $self->_production ? 'production' : 'test';
 
-		my $file
-			= Path::Class::File->new(
-				dist_file(
-					'Business-CyberSource',
-					$dir
-					. '/'
-					. 'CyberSourceTransaction_'
-					. $self->cybs_api_version
-					. '.xsd'
-				)
-			);
-
-		return $file;
+	return use_module('Path::Class::File')->new(
+			dist_file(
+				'Business-CyberSource',
+				$dir
+				. '/'
+				. 'CyberSourceTransaction_'
+				. $self->cybs_api_version
+				. '.xsd'
+			)
+		);
 }
 
 has _response_factory => (
@@ -185,7 +184,7 @@ has cybs_api_version => (
 	lazy     => 1,
 	is       => 'ro',
 	isa      => Str,
-	default  => '1.62',
+	default  => '1.71',
 );
 
 has cybs_wsdl => (
@@ -220,7 +219,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.004005
+version 0.004006
 
 =head1 SYNOPSIS
 
@@ -240,74 +239,6 @@ version 0.004005
 
 A service object that is meant to provide a way to run the requested
 transactions.
-
-=head1 ATTRIBUTES
-
-=head2 cybs_wsdl
-
-Reader: cybs_wsdl
-
-Type: MooseX::Types::Path::Class::File
-
-=head2 password
-
-Reader: _password
-
-Type: MooseX::Types::Common::String::NonEmptyStr
-
-This attribute is required.
-
-=head2 debug
-
-Reader: _debug
-
-Type: Bool
-
-=head2 cybs_api_version
-
-Reader: cybs_api_version
-
-Type: Str
-
-=head2 name
-
-Reader: name
-
-Type: Str
-
-=head2 username
-
-Reader: _username
-
-Type: __ANON__
-
-This attribute is required.
-
-=head2 production
-
-Reader: _production
-
-Type: Bool
-
-This attribute is required.
-
-=head2 version
-
-Reader: version
-
-Type: Str
-
-=head2 env
-
-Reader: env
-
-Type: Str
-
-=head2 cybs_xsd
-
-Reader: cybs_xsd
-
-Type: MooseX::Types::Path::Class::File
 
 =head1 METHODS
 
@@ -338,6 +269,30 @@ false they will go to the testing server
 Boolean value that causes the HTTP request/response to be output to STDOUT
 when a transaction is run. defaults to value of the environment variable
 C<PERL_BUSINESS_CYBERSOURCE_DEBUG>
+
+=head2 name
+
+Client Name defaults to L<Business::CyberSource>
+
+=head2 version
+
+Client Version defaults to the version of this library
+
+=head2 env
+
+defaults to specific parts of perl's config hash
+
+=head2 cybs_wsdl
+
+A L<Path::Class::File> to the WSDL definition file
+
+=head2 cybs_xsd
+
+A L<Path::Class::File> to the XSD definition file
+
+=head2 cybs_api_version
+
+CyberSource API version, currently 1.71
 
 =head1 BUGS
 

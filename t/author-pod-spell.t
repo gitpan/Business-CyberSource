@@ -43,11 +43,15 @@ overmeer
 AVS
 MerchantReferenceCode
 env
+WSDL
+XSD
+subclasses
 Caleb
 Cushing
 lib
 Business
 CyberSource
+Message
 Role
 Currency
 Request
@@ -64,6 +68,7 @@ StandAloneCredit
 FollowUp
 Capture
 RequestID
+RequestFactory
 FollowOnCredit
 Client
 PurchaseInfo

@@ -1,40 +1,56 @@
 package Business::CyberSource::Request;
+use 5.010;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004005'; # VERSION
+our $VERSION = '0.004006'; # VERSION
 
-use MooseX::AbstractFactory;
-use MooseX::StrictConstructor;
+use Moose;
+extends 'Business::CyberSource::Message';
 
 with qw(
-	 Business::CyberSource::Request::Role::Credentials
+	Business::CyberSource::Request::Role::Credentials
 );
 
-has '+production' => ( required => 0 );
-has '+username'   => ( required => 0 );
-has '+password'   => ( required => 0 );
+use Module::Runtime qw( use_module );
 
-around 'create' => sub {
-	my ( $orig, $self, $imp, $args ) = @_;
+use MooseX::SetOnce 0.200001;
+
+sub create { ## no critic ( Subroutines::RequireArgUnpacking )
+	my $self = shift;
+	my $impl = shift;
+	my ( $args ) = @_;
+
+	confess 'Business::CyberSource::RequestFactory is now the factory'
+		unless __PACKAGE__ eq ref $self;
 
 	if ( ref($args) eq 'HASH' ) {
-		$args->{username} ||= $self->username;
-		$args->{password} ||= $self->password;
-		$args->{production} = $self->production unless defined $args->{production};
-	}
-	else {
-		confess 'args not a hashref';
+		$args->{username}   //= $self->username   if $self->has_username;
+		$args->{password}   //= $self->password   if $self->has_password;
+		$args->{production} //= $self->production if $self->has_production;
 	}
 
-	$self->$orig( $imp, $args );
-};
+	my $factory = use_module('Business::CyberSource::RequestFactory')->new;
+
+	return $factory->create( $impl, @_ );
+}
+
+has '+_trait_namespace' => (
+	default => 'Business::CyberSource::Request::Role',
+);
+
+has '+trace' => (
+	is        => 'rw',
+	writer    => '_trace',
+	traits    => [ 'SetOnce' ],
+	init_arg  => undef
+);
 
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: CyberSource Request Factory Module
+# ABSTRACT: Abstract Request Class
 
 
 __END__
@@ -42,96 +58,17 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request - CyberSource Request Factory Module
+Business::CyberSource::Request - Abstract Request Class
 
 =head1 VERSION
 
-version 0.004005
-
-=head1 SYNOPSIS
-
-	my $CYBS_ID = 'myMerchantID';
-	my $CYBS_KEY = 'transaction key generated with cybersource';
-
-	use Business::CyberSource::Request;
-
-	my $request_factory
-		= Business::CyberSource::Request->new({
-			username       => $CYBS_ID,
-			password       => $CYBS_KEY,
-			production     => 0,
-		});
-
-	my $request_obj = $request_factory->create(
-		'Authorization',
-		{
-			reference_code => '42',
-			first_name     => 'Caleb',
-			last_name      => 'Cushing',
-			street         => 'somewhere',
-			city           => 'Houston',
-			state          => 'TX',
-			zip            => '77064',
-			country        => 'US',
-			email          => 'xenoterracide@gmail.com',
-			total          => 5.00,
-			currency       => 'USD',
-			credit_card    => '4111111111111111',
-			cc_exp_month   => '09',
-			cc_exp_year    => '2013',
-		}
-	);
+version 0.004006
 
 =head1 DESCRIPTION
 
-This module provides a generic factory interface to creating request objects.
-It also allows us to not repeat ourselves when specifying attributes that are
-common to all requests such as authentication, and server destination.
+extends L<Business::CyberSource::Message>
 
-=head1 ATTRIBUTES
-
-=head2 password
-
-Reader: password
-
-Type: MooseX::Types::Common::String::NonEmptyStr
-
-=head2 username
-
-Reader: username
-
-Type: __ANON__
-
-=head2 production
-
-Reader: production
-
-Type: Bool
-
-=head1 METHODS
-
-=head2 new([{ hashref }])
-
-supports passing L<the attributes listed below|/ATTRIBUTES> as a hashref.
-
-=head2 create( $implementation, { hashref for new } )
-
-Create a new request object. C<create> takes a request implementation and a hashref to pass to the
-implementation's C<new> method. The implementation string accepts any
-implementation whose package name is prefixed by
-C<Business::CyberSource::Request::>.
-
-	my $req = $factory->create(
-			'Capture',
-			{
-				first_name => 'John',
-				last_name  => 'Smith',
-				...
-			}
-		);
-
-Please see the following C<Business::CyberSource::Request::> packages for
-implementation and required attributes:
+Here are the provided Request subclasses.
 
 =over
 
@@ -155,13 +92,150 @@ I<note:> You can use the L<Business:CyberSource::Request::Credit> class but,
 it requires traits to be applied depending on the type of request you need,
 and thus does not currently work with the factory.
 
-=head1 SEE ALSO
+=head1 METHODS
 
-=over
+=head2 new
 
-=item * L<MooseX::AbstractFactory>
+=head2 serialize
 
-=back
+returns a hashref suitable for passing to L<XML::Compile::SOAP>
+
+=head2 create
+
+B<DEPRECATED> consider using L<Business::CyberSource::RequestFactory> instead
+
+( $implementation, { hashref for new } )
+
+Create a new request object. C<create> takes a request implementation and a hashref to pass to the
+implementation's C<new> method. The implementation string accepts any
+implementation whose package name is prefixed by
+C<Business::CyberSource::Request::>.
+
+	my $req = $factory->create(
+			'Capture',
+			{
+				first_name => 'John',
+				last_name  => 'Smith',
+				...
+			}
+		);
+
+Please see the following C<Business::CyberSource::Request::> packages for
+implementation and required attributes:
+
+=head1 ATTRIBUTES
+
+=head2 foreign_amount
+
+Reader: foreign_amount
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 comments
+
+Reader: comments
+
+Type: Str
+
+=head2 cvn
+
+Reader: cvn
+
+Type: MooseX::Types::CreditCard::CardSecurityCode
+
+Additional documentation: Card Verification Numbers
+
+=head2 total
+
+Reader: total
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+Additional documentation: Grand total for the order. You must include either this field or item_#_unitPrice in your request
+
+=head2 cc_exp_month
+
+Reader: cc_exp_month
+
+This attribute is required.
+
+Additional documentation: Two-digit month that the credit card expires in. Format: MM.
+
+=head2 card_type
+
+Reader: card_type
+
+Type: MooseX::Types::CyberSource::CardTypeCode
+
+Additional documentation: Type of card to authorize
+
+=head2 credit_card
+
+Reader: credit_card
+
+Type: MooseX::Types::CreditCard::CreditCard
+
+Customer's credit card number
+
+=head2 reference_code
+
+Reader: reference_code
+
+Type: MooseX::Types::CyberSource::_VarcharFifty
+
+=head2 cv_indicator
+
+Reader: cv_indicator
+
+Type: MooseX::Types::CyberSource::CvIndicator
+
+Flag that indicates whether a CVN code was sent
+
+=head2 currency
+
+Reader: currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+=head2 exchange_rate
+
+Reader: exchange_rate
+
+Type: MooseX::Types::Common::Numeric::PositiveOrZeroNum
+
+=head2 exchange_rate_timestamp
+
+Reader: exchange_rate_timestamp
+
+Type: Str
+
+=head2 full_name
+
+Reader: full_name
+
+Type: MooseX::Types::CyberSource::_VarcharSixty
+
+=head2 cc_exp_year
+
+Reader: cc_exp_year
+
+Four-digit year that the credit card expires in. Format: YYYY.
+
+=head2 foreign_currency
+
+Reader: foreign_currency
+
+Type: MooseX::Types::Locale::Currency::CurrencyCode
+
+Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
+=head2 items
+
+Reader: items
+
+Type: ArrayRef[MooseX::Types::CyberSource::Item]
+
+=for Pod::Coverage BUILD
 
 =head1 BUGS
 

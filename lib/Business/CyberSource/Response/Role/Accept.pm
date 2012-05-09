@@ -1,10 +1,9 @@
 package Business::CyberSource::Response::Role::Accept;
-use 5.008;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004005'; # VERSION
+our $VERSION = '0.004006'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -48,11 +47,29 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version 0.004005
+version 0.004006
 
 =head1 DESCRIPTION
 
 If the transaction has a C<decision> of C<ACCEPT> then this Role is applied.
+
+=head2 composes
+
+=over
+
+=item L<Business::CyberSource::Role::Currency>
+
+=item L<Business::CyberSource::Role::MerchantReferenceCode>
+
+=back
+
+=head1 ATTRIBUTES
+
+=head2 amount
+
+=head2 datetime
+
+=head2 request_specific_reason_code
 
 =head1 BUGS
 

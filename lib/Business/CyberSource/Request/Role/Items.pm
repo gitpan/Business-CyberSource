@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004005'; # VERSION
+our $VERSION = '0.004006'; # VERSION
 
 use Moose::Role;
 
@@ -69,6 +69,7 @@ has items => (
 
 # ABSTRACT: Role that provides Items
 
+
 __END__
 =pod
 
@@ -78,7 +79,13 @@ Business::CyberSource::Request::Role::Items - Role that provides Items
 
 =head1 VERSION
 
-version 0.004005
+version 0.004006
+
+=head1 ATTRIBUTES
+
+=head2 items
+
+an array of L<Items|MooseX::Types::CyberSource/"Items">
 
 =head1 BUGS
 
