@@ -74,7 +74,6 @@
       "test" : {
          "requires" : {
             "Data::Dumper" : "0",
-            "Env" : "0",
             "File::Find" : "0",
             "File::Temp" : "0",
             "Test::Exception" : "0",
@@ -96,6 +95,6 @@
          "web" : "https://github.com/xenoterracide/Business-CyberSource"
       }
    },
-   "version" : "0.004006"
+   "version" : "0.004007"
 }
 

@@ -15,7 +15,6 @@ my %WriteMakefileArgs = (
   "AUTHOR" => "Caleb Cushing <xenoterracide\@gmail.com>",
   "BUILD_REQUIRES" => {
     "Data::Dumper" => 0,
-    "Env" => 0,
     "File::Find" => 0,
     "File::Temp" => 0,
     "Test::Exception" => 0,
@@ -69,7 +68,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.004006",
+  "VERSION" => "0.004007",
   "test" => {
     "TESTS" => "t/*.t"
   }

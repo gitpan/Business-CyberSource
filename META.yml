@@ -4,7 +4,6 @@ author:
   - 'Caleb Cushing <xenoterracide@gmail.com>'
 build_requires:
   Data::Dumper: 0
-  Env: 0
   File::Find: 0
   File::Temp: 0
   Test::Exception: 0
@@ -70,4 +69,4 @@ resources:
   bugtracker: https://github.com/xenoterracide/Business-CyberSource/issues
   homepage: http://search.cpan.org/dist/Business-CyberSource/
   repository: git://github.com/xenoterracide/Business-CyberSource.git
-version: 0.004006
+version: 0.004007
