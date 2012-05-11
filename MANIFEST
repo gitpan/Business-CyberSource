@@ -70,6 +70,7 @@ t/credit.t
 t/dcc-authorization.t
 t/dcc-sale.t
 t/dcc.t
+t/error-exception.t
 t/new-authorization.t
 t/new-client.t
 t/new-exceptions.t

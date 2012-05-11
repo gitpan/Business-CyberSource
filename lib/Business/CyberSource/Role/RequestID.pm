@@ -1,11 +1,9 @@
 package Business::CyberSource::Role::RequestID;
-use 5.008;
 use strict;
 use warnings;
-use Carp;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose::Role;
 
@@ -32,7 +30,7 @@ Business::CyberSource::Role::RequestID - Role to apply to requests and responses
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 BUGS
 

@@ -4,9 +4,11 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose::Role;
+use MooseX::SetOnce 0.200001;
+
 use MooseX::Types::Moose   qw( HashRef Str );
 use MooseX::Types::URI     qw( Uri     );
 use MooseX::Types::Path::Class qw( File Dir );
@@ -54,8 +56,9 @@ sub BUILD { ## no critic qw( Subroutines::RequireFinalReturn )
 }
 
 has comments => (
-	is       => 'ro',
 	isa      => Str,
+	traits   => ['SetOnce'],
+	is       => 'rw',
 	trigger  => sub {
 		my $self = shift;
 		$self->_request_data->{comments} = $self->comments;
@@ -85,7 +88,7 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 METHODS
 

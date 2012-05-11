@@ -18,6 +18,7 @@ my %WriteMakefileArgs = (
     "File::Find" => 0,
     "File::Temp" => 0,
     "Test::Exception" => 0,
+    "Test::Fatal" => 0,
     "Test::Moose" => 0,
     "Test::More" => "0.88",
     "Test::Requires::Env" => 0
@@ -34,6 +35,7 @@ my %WriteMakefileArgs = (
     "Business::CreditCard" => 0,
     "Carp" => 0,
     "Config" => 0,
+    "Exception::Base" => 0,
     "File::ShareDir" => 0,
     "LWP::Protocol::https" => 0,
     "Locale::Country" => 0,
@@ -68,7 +70,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.004007",
+  "VERSION" => "0.004008",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose;
 
@@ -219,7 +219,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 SYNOPSIS
 

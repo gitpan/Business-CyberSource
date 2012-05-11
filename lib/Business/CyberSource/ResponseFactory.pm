@@ -4,12 +4,22 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose;
 use MooseX::StrictConstructor;
 
 use Module::Runtime qw( use_module );
+
+use Exception::Base (
+	'Business::CyberSource::Exception' => {
+		has               => [ qw( decision reason_text response_text ) ],
+		string_attributes => [ qw( decision reason_text response_text ) ],
+	},
+	verbosity      => 4,
+	ignore_package => [ __PACKAGE__, 'Business::CyberSource::Client' ],
+);
+
 
 sub create {
 	my ( $self, $answer, $dto )  = @_;
@@ -18,6 +28,7 @@ sub create {
 
 	my @traits;
 	my $e = { };
+	my $exception;
 
 	if ( $result->{decision} eq 'ACCEPT' or $result->{decision} eq 'REJECT' ) {
 		my $prefix      = 'Business::CyberSource::';
@@ -127,11 +138,14 @@ sub create {
 		}
 
 	}
+	elsif ( $result->{decision} eq 'ERROR' ) {
+		$exception = 1;
+	}
 	else {
-		confess 'decision defined, but not sane: ' . $result->{decision};
+		confess 'decision defined, but not handled: ' . $result->{decision};
 	}
 
-	return use_module('Business::CyberSource::Response')
+	my $response = use_module('Business::CyberSource::Response')
 		->with_traits( @traits )
 		->new({
 			request_id     => $result->{requestID},
@@ -139,9 +153,20 @@ sub create {
 			# quote reason_code to stringify from BigInt
 			reason_code    => "$result->{reasonCode}",
 			request_token  => $result->{requestToken},
-			trace          => $dto->trace,
 			%{$e},
 		});
+
+	$response->_trace( $dto->trace ) if $dto->has_trace;
+
+	Business::CyberSource::Exception->throw(
+		decision    => $response->decision,
+		reason_text => $response->reason_text,
+		value       => $response->reason_code,
+		response_text
+			=> $response->has_trace ? $response->trace->response->as_string : ''
+	) if $exception;
+
+	return $response;
 }
 
 1;
@@ -158,7 +183,7 @@ Business::CyberSource::ResponseFactory - A Response Factory
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 METHODS
 

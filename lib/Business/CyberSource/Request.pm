@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Message';
@@ -42,8 +42,6 @@ has '+_trait_namespace' => (
 
 has '+trace' => (
 	is        => 'rw',
-	writer    => '_trace',
-	traits    => [ 'SetOnce' ],
 	init_arg  => undef
 );
 
@@ -62,7 +60,7 @@ Business::CyberSource::Request - Abstract Request Class
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 DESCRIPTION
 

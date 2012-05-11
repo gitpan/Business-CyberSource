@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004007'; # VERSION
+our $VERSION = '0.004008'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -11,26 +11,27 @@ with qw(
 	Business::CyberSource::Role::MerchantReferenceCode
 );
 
-use MooseX::Types::Moose         qw( Num Int );
+use MooseX::SetOnce 0.200001;
+
 use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
 
 
 has amount => (
-	required => 0,
-	is       => 'ro',
-	isa      => Num,
+	isa      => 'Num',
+	traits   => ['SetOnce'],
+	is       => 'rw',
 );
 
 has datetime => (
-	required => 0,
-	is       => 'ro',
 	isa      => DateTimeW3C,
+	is       => 'rw',
+	traits   => ['SetOnce'],
 );
 
 has request_specific_reason_code => (
 	required => 1,
 	is       => 'ro',
-	isa      => Int,
+	isa      => 'Int',
 );
 
 1;
@@ -47,7 +48,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version 0.004007
+version 0.004008
 
 =head1 DESCRIPTION
 

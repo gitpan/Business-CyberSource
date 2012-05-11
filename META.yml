@@ -7,6 +7,7 @@ build_requires:
   File::Find: 0
   File::Temp: 0
   Test::Exception: 0
+  Test::Fatal: 0
   Test::Moose: 0
   Test::More: 0.88
   Test::Requires::Env: 0
@@ -31,6 +32,7 @@ requires:
   Business::CreditCard: 0
   Carp: 0
   Config: 0
+  Exception::Base: 0
   File::ShareDir: 0
   LWP::Protocol::https: 0
   Locale::Country: 0
@@ -69,4 +71,4 @@ resources:
   bugtracker: https://github.com/xenoterracide/Business-CyberSource/issues
   homepage: http://search.cpan.org/dist/Business-CyberSource/
   repository: git://github.com/xenoterracide/Business-CyberSource.git
-version: 0.004007
+version: 0.004008
