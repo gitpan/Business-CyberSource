@@ -1,10 +1,9 @@
 package Business::CyberSource::Request::Role::Common;
-use 5.008;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004008'; # VERSION
+our $VERSION = '0.004009'; # VERSION
 
 use Moose::Role;
 use MooseX::SetOnce 0.200001;
@@ -19,17 +18,26 @@ with qw(
 	Business::CyberSource::Role::MerchantReferenceCode
 );
 
-use Business::CyberSource::Client;
+use Module::Runtime qw( use_module );
+use Carp qw( cluck );
 
 sub serialize {
 	my $self = shift;
 	return $self->_request_data;
 }
 
+before submit => sub {
+	our @CARP_NOT = ( __PACKAGE__, 'Class::MOP::Method::Wrapped' );
+	cluck 'DEPRECATED: using submit on a request object is deprecated. '
+		. 'Please pass the object to Business::CyberSource::Client directly '
+		. 'instead.'
+		;
+};
+
 sub submit {
 	my $self = shift;
 
-	my $client = Business::CyberSource::Client->new({
+	my $client = use_module('Business::CyberSource::Client')->new({
 		username   => $self->username,
 		password   => $self->password,
 		production => $self->production,
@@ -88,7 +96,7 @@ Business::CyberSource::Request::Role::Common - Request Role
 
 =head1 VERSION
 
-version 0.004008
+version 0.004009
 
 =head1 METHODS
 

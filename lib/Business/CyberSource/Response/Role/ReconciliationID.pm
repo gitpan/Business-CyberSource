@@ -3,14 +3,14 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.004008'; # VERSION
+our $VERSION = '0.004009'; # VERSION
 
 use Moose::Role;
 
 has reconciliation_id => (
 	required => 1,
 	is       => 'ro',
-	isa      => 'Int',
+	isa      => 'Str',
 );
 
 1;
@@ -27,7 +27,7 @@ Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identif
 
 =head1 VERSION
 
-version 0.004008
+version 0.004009
 
 =head1 ATTRIBUTES
 
