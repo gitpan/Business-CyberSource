@@ -48,8 +48,6 @@ sub pmver {
     return sprintf('%-45s => %-10s%-15s%s', $module, $pmver, $wanted, "\n");
 }
 
-eval { $v .= pmver('Bread::Board','any version') };
-eval { $v .= pmver('Bread::Board::Container','any version') };
 eval { $v .= pmver('Business::CreditCard','any version') };
 eval { $v .= pmver('Carp','any version') };
 eval { $v .= pmver('Config','any version') };
@@ -69,7 +67,6 @@ eval { $v .= pmver('Moose','any version') };
 eval { $v .= pmver('Moose::Role','any version') };
 eval { $v .= pmver('Moose::Util::TypeConstraints','any version') };
 eval { $v .= pmver('MooseX::ABC','0.06') };
-eval { $v .= pmver('MooseX::AbstractFactory','any version') };
 eval { $v .= pmver('MooseX::Aliases','any version') };
 eval { $v .= pmver('MooseX::SetOnce','0.200001') };
 eval { $v .= pmver('MooseX::StrictConstructor','any version') };
@@ -91,6 +88,7 @@ eval { $v .= pmver('MooseX::Types::URI','any version') };
 eval { $v .= pmver('Test::Fatal','any version') };
 eval { $v .= pmver('Test::Moose','any version') };
 eval { $v .= pmver('Test::More','0.88') };
+eval { $v .= pmver('Test::Requires','any version') };
 eval { $v .= pmver('Test::Requires::Env','any version') };
 eval { $v .= pmver('XML::Compile::SOAP11','any version') };
 eval { $v .= pmver('XML::Compile::SOAP::WSS','0.12') };

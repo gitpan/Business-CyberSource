@@ -44,7 +44,6 @@ lib/Business/CyberSource/Role/ForeignCurrency.pm
 lib/Business/CyberSource/Role/MerchantReferenceCode.pm
 lib/Business/CyberSource/Role/RequestID.pm
 lib/MooseX/Types/CyberSource.pm
-nytprof.out
 perlcritic.rc
 share/production/CyberSourceTransaction_1.71.wsdl
 share/production/CyberSourceTransaction_1.71.xsd
@@ -76,6 +75,7 @@ t/dcc-authorization.t
 t/dcc-sale.t
 t/dcc.t
 t/error-exception.t
+t/factory-request.t
 t/lib/Test/Business/CyberSource.pm
 t/new-authorization.t
 t/new-client.t

@@ -14,14 +14,13 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Perl interface to the CyberSource Simple Order SOAP API",
   "AUTHOR" => "Caleb Cushing <xenoterracide\@gmail.com>",
   "BUILD_REQUIRES" => {
-    "Bread::Board" => 0,
-    "Bread::Board::Container" => 0,
     "File::Find" => 0,
     "File::Temp" => 0,
     "FindBin" => 0,
     "Test::Fatal" => 0,
     "Test::Moose" => 0,
     "Test::More" => "0.88",
+    "Test::Requires" => 0,
     "Test::Requires::Env" => 0
   },
   "CONFIGURE_REQUIRES" => {
@@ -47,7 +46,6 @@ my %WriteMakefileArgs = (
     "Moose::Role" => 0,
     "Moose::Util::TypeConstraints" => 0,
     "MooseX::ABC" => "0.06",
-    "MooseX::AbstractFactory" => 0,
     "MooseX::Aliases" => 0,
     "MooseX::SetOnce" => "0.200001",
     "MooseX::StrictConstructor" => 0,
@@ -74,7 +72,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.005001",
+  "VERSION" => "0.005002",
   "test" => {
     "TESTS" => "t/*.t"
   }
