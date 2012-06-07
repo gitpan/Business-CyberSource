@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.005003'; # VERSION
+our $VERSION = '0.005004'; # VERSION
 
 use Moose::Role;
 use MooseX::SetOnce 0.200001;
@@ -102,7 +102,7 @@ has score_threshold => (
 	trigger  => sub {
 		my $self = shift;
 		$self->_request_data->{businessRules}{scoreThreshold}
-			= $self->ignore_cv_result
+			= $self->score_threshold
 			;
 	},
 );
@@ -121,7 +121,7 @@ Business::CyberSource::Request::Role::BusinessRules - Business Rules Role
 
 =head1 VERSION
 
-version 0.005003
+version 0.005004
 
 =head1 ATTRIBUTES
 
