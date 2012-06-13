@@ -1,36 +1,47 @@
-package Business::CyberSource::Role::RequestID;
+package Business::CyberSource::MessagePart;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.005004'; # VERSION
+our $VERSION = '0.006000'; # VERSION
 
-use Moose::Role;
-
-use MooseX::Types::Common::String qw( NonEmptySimpleStr );
-use Moose::Util::TypeConstraints;
-
-has request_id => (
-	required  => 1,
-	predicate => 'has_request_id',
-	is        => 'ro',
-	isa       => subtype( NonEmptySimpleStr, where { length $_ <= 29 }),
+use Moose;
+with qw(
+	MooseX::Traits
+	MooseX::RemoteHelper::CompositeSerialization
 );
 
+use MooseX::RemoteHelper;
+use MooseX::SetOnce 0.200001;
+use MooseX::StrictConstructor;
+use MooseX::ABC 0.06;
+
+__PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: Role to apply to requests and responses that require request id's
+# ABSTRACT: Things that all portions of a message have in common
+
 
 __END__
 =pod
 
 =head1 NAME
 
-Business::CyberSource::Role::RequestID - Role to apply to requests and responses that require request id's
+Business::CyberSource::MessagePart - Things that all portions of a message have in common
 
 =head1 VERSION
 
-version 0.005004
+version 0.006000
+
+=head1 WITH
+
+=over
+
+=item L<MooseX::Traits>
+
+=item L<MooseX::RemoteHelper::CompositeSerialization>
+
+=back
 
 =head1 BUGS
 

@@ -1,18 +1,17 @@
-package Business::CyberSource::Request::Role::FollowUp;
+package Business::CyberSource::Factory::Rule;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.005004'; # VERSION
+our $VERSION = '0.006000'; # VERSION
 
-use Moose::Role;
-with qw(
-	Business::CyberSource::Role::RequestID
-);
+use MooseX::AbstractFactory;
 
+implementation_class_via sub { 'Business::CyberSource::Rule::' . shift};
+
+__PACKAGE__->meta->make_immutable;
 1;
-
-# ABSTRACT: Role to apply to requests that are follow ups to a previous request
+# ABSTRACT: CyberSource Rule Factory Module
 
 
 __END__
@@ -20,21 +19,21 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request::Role::FollowUp - Role to apply to requests that are follow ups to a previous request
+Business::CyberSource::Factory::Rule - CyberSource Rule Factory Module
 
 =head1 VERSION
 
-version 0.005004
+version 0.006000
 
-=head1 DESCRIPTION
+=head1 METHODS
 
-=head2 composes
+=head2 create
 
-=over
+takes the name of an object in C<Business::CyberSource::Rule::> namespace as
+the first parameter, then the client object, passed as a hashref to the rule
+constructor.
 
-=item L<Business::CyberSource::Role::RequestID>
-
-=back
+	$factory->create( 'ExpiredCard', { client => $self } ),
 
 =head1 BUGS
 
