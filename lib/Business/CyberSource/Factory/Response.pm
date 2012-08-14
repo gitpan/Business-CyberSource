@@ -4,12 +4,12 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006001'; # VERSION
+our $VERSION = '0.006002'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Factory';
 
-use Module::Runtime qw( use_module );
+use Class::Load qw( load_class );
 
 use Exception::Base (
 	'Business::CyberSource::Exception' => {
@@ -110,7 +110,7 @@ sub create {
 		}
 	}
 
-	my $response = use_module('Business::CyberSource::Response')
+	my $response = load_class('Business::CyberSource::Response')
 		->with_traits( @traits )
 		->new({
 			request_id     => $result->{requestID},
@@ -206,7 +206,7 @@ Business::CyberSource::Factory::Response - A Response Factory
 
 =head1 VERSION
 
-version 0.006001
+version 0.006002
 
 =head1 METHODS
 
@@ -230,7 +230,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2011 by Caleb Cushing.
+This software is Copyright (c) 2012 by Caleb Cushing.
 
 This is free software, licensed under:
 

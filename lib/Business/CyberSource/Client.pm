@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006001'; # VERSION
+our $VERSION = '0.006002'; # VERSION
 
 use Moose;
 
@@ -16,11 +16,9 @@ use MooseX::Types::Moose   qw( HashRef Str );
 use MooseX::Types::Path::Class qw( File Dir );
 use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
 
-use File::ShareDir qw( dist_file );
 use Config;
-use Module::Runtime qw( use_module );
-use Class::Load     qw( load_class );
-use Module::Load    qw( load );
+use Class::Load 0.20 qw( load_class );
+use Module::Load     qw( load );
 
 use XML::Compile::SOAP::WSS 0.12;
 use XML::Compile::WSDL11;
@@ -94,7 +92,8 @@ sub _build_cybs_wsdl {
 
 	my $dir = $self->_production ? 'production' : 'test';
 
-	return use_module('Path::Class::File')->new(
+	load 'File::ShareDir::ProjectDistDir', 'dist_file';
+	return load_class('Path::Class::File')->new(
 			dist_file(
 				'Business-CyberSource',
 				$dir
@@ -111,7 +110,8 @@ sub _build_cybs_xsd {
 
 	my $dir = $self->_production ? 'production' : 'test';
 
-	return use_module('Path::Class::File')->new(
+	load 'File::ShareDir::ProjectDistDir', 'dist_file';
+	return load_class('Path::Class::File')->new(
 			dist_file(
 				'Business-CyberSource',
 				$dir
@@ -141,9 +141,7 @@ has _response_factory => (
 	is       => 'ro',
 	lazy     => 1,
 	default  => sub {
-		my $class = 'Business::CyberSource::Factory::Response';
-		load_class($class);
-		return $class->new;
+		return load_class('Business::CyberSource::Factory::Response')->new;
 	},
 );
 
@@ -152,9 +150,7 @@ has _rule_factory => (
 	is       => 'ro',
 	lazy     => 1,
 	default  => sub {
-		my $class = 'Business::CyberSource::Factory::Rule';
-		load_class($class);
-		return $class->new;
+		return load_class('Business::CyberSource::Factory::Rule')->new;
 	},
 );
 
@@ -291,7 +287,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.006001
+version 0.006002
 
 =head1 SYNOPSIS
 
@@ -395,7 +391,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2011 by Caleb Cushing.
+This software is Copyright (c) 2012 by Caleb Cushing.
 
 This is free software, licensed under:
 

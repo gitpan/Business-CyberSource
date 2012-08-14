@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006001'; # VERSION
+our $VERSION = '0.006002'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -17,14 +17,14 @@ use MooseX::Types -declare => [  qw( DateTimeFromW3C ) ];
 use MooseX::Types::DateTime      qw( DateTime );
 use MooseX::Types::DateTime::W3C qw( DateTimeW3C );
 
-use Module::Runtime qw( use_module );
+use Class::Load 0.20 qw( load_class );
 
 subtype DateTimeFromW3C, as DateTime;
 
 coerce DateTimeFromW3C,
 	from DateTimeW3C,
 	via {
-		return use_module('DateTime::Format::W3CDTF')
+		return load_class('DateTime::Format::W3CDTF')
 			->new
 			->parse_datetime( $_ )
 			;
@@ -63,7 +63,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version 0.006001
+version 0.006002
 
 =head1 DESCRIPTION
 
@@ -104,7 +104,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2011 by Caleb Cushing.
+This software is Copyright (c) 2012 by Caleb Cushing.
 
 This is free software, licensed under:
 
