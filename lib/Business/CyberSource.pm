@@ -1,9 +1,9 @@
 package Business::CyberSource;
-use 5.008;
+use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.006008'; # VERSION
+our $VERSION = '0.006009'; # VERSION
 
 1;
 
@@ -19,7 +19,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.006008
+version 0.006009
 
 =head1 DESCRIPTION
 
@@ -141,7 +141,7 @@ A test credit card number provided by your your credit card processor
 			}
 		};
 
-	unless( $auth_response->is_accepted ) {
+	unless( $auth_response->is_accept ) {
 		carp $auth_response->reason_text;
 	}
 	else {
@@ -172,7 +172,7 @@ A test credit card number provided by your your credit card processor
 			}
 		};
 
-		if ( $capture_response->is_accepted ) {
+		if ( $capture_response->is_accept ) {
 			# you probably want to record this
 			say $capture_response->reconciliation_id;
 		}
