@@ -3,14 +3,13 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006009'; # VERSION
+our $VERSION = '0.006010'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
 
 use MooseX::SetOnce 0.200001;
 
-use MooseX::Types::Moose            qw( Str );
 use MooseX::Types::Locale::Currency qw( CurrencyCode );
 use MooseX::Types::Common::Numeric  qw( PositiveOrZeroNum );
 
@@ -39,11 +38,11 @@ has exchange_rate => (
 );
 
 has exchange_rate_timestamp => (
-	isa       => Str,
+	isa         => 'Str',
 	remote_name => 'exchangeRateTimeStamp',
-	predicate => 'has_exchange_rate_timestamp',
-	traits    => ['SetOnce'],
-	is        => 'rw',
+	predicate   => 'has_exchange_rate_timestamp',
+	traits      => ['SetOnce'],
+	is          => 'rw',
 );
 
 1;
@@ -60,7 +59,7 @@ Business::CyberSource::Role::ForeignCurrency - Role to apply to requests and res
 
 =head1 VERSION
 
-version 0.006009
+version 0.006010
 
 =head1 ATTRIBUTES
 
