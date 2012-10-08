@@ -1,30 +1,23 @@
-package Business::CyberSource::CreditCard;
+package Business::CyberSource::ResponsePart::Reply;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006010'; # VERSION
+our $VERSION = '0.007000'; # TRIAL VERSION
 
 use Moose;
-extends 'Business::CyberSource::RequestPart::Card';
-
-use Carp qw( cluck );
-
-around BUILDARGS => sub {
-	my $orig = shift;
-	my $self = shift;
-
-	cluck 'DEPRECATED: just a thin wrapper around '
-		. 'Business::CyberSource::RequestPart::Card use that instead'
-		;
-
-	return $self->$orig( @_ );
-};
+extends 'Business::CyberSource::MessagePart';
+with qw(
+	Business::CyberSource::Response::Role::ReasonCode
+	Business::CyberSource::Response::Role::ReconciliationID
+	Business::CyberSource::Response::Role::Amount
+	Business::CyberSource::Response::Role::ProcessorResponse
+	Business::CyberSource::Response::Role::RequestDateTime
+);
 
 __PACKAGE__->meta->make_immutable;
 1;
-
-# ABSTRACT: A Credit Card Value Object
+# ABSTRACT: Generic Reply part of response
 
 __END__
 
@@ -32,15 +25,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::CreditCard - A Credit Card Value Object
+Business::CyberSource::ResponsePart::Reply - Generic Reply part of response
 
 =head1 VERSION
 
-version 0.006010
-
-=head1 DESCRIPTION
-
-Just a L<Business::CyberSource::RequestPart::Card>, use that instead.
+version 0.007000
 
 =head1 BUGS
 

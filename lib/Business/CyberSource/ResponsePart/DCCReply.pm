@@ -1,4 +1,4 @@
-package Business::CyberSource::Message;
+package Business::CyberSource::ResponsePart::DCCReply;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -8,23 +8,40 @@ our $VERSION = '0.007000'; # TRIAL VERSION
 use Moose;
 extends 'Business::CyberSource::MessagePart';
 with qw(
-	Business::CyberSource::Role::MerchantReferenceCode
+	Business::CyberSource::Response::Role::ReasonCode
 );
 
-use MooseX::ABC 0.06;
+use MooseX::Types::CyberSource qw( DCCSupported );
 
-has trace => (
-	isa       => 'XML::Compile::SOAP::Trace',
-	predicate => 'has_trace',
-	traits    => [ 'SetOnce' ],
-	is        => 'rw',
-	writer    => '_trace',
+has dcc_supported => (
+	isa         => DCCSupported,
+	remote_name => 'dccSupported',
+	is          => 'ro',
+	coerce      => 1,
+	required    => 1,
+	predicate   => 'has_dcc_supported',
+);
+
+has margin_rate_percentage => (
+	isa         => 'Num',
+	remote_name => 'marginRatePercentage',
+	is          => 'ro',
+	required    => 1,
+	predicate   => 'has_margin_rate_percentage',
+);
+
+has valid_hours => (
+	isa         => 'Int',
+	remote_name => 'validHours',
+	is          => 'ro',
+	required    => 1,
+	predicate   => 'has_valid_hours',
 );
 
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: Abstract Message Class;
+# ABSTRACT: Reply section for DCC
 
 __END__
 
@@ -32,30 +49,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Message - Abstract Message Class;
+Business::CyberSource::ResponsePart::DCCReply - Reply section for DCC
 
 =head1 VERSION
 
 version 0.007000
-
-=head1 ATTRIBUTES
-
-=head2 trace
-
-A L<XML::Compile::SOAP::Trace> object which is populated only after the object
-has been submitted to CyberSource by a L<Business::CyberSource::Client>.
-
-=head1 EXTENDS
-
-L<Business::CyberSource::MessagePart>
-
-=head1 WITH
-
-=over
-
-=item L<Business::CyberSource::Role::MerchantReferenceCode>
-
-=back
 
 =head1 BUGS
 

@@ -1,4 +1,4 @@
-package Business::CyberSource::Response::Role::CVN;
+package Business::CyberSource::Response::Role::Amount;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -6,10 +6,17 @@ use namespace::autoclean;
 our $VERSION = '0.007000'; # TRIAL VERSION
 
 use Moose::Role;
+use MooseX::RemoteHelper;
+
+has amount => (
+	isa         => 'Num',
+	remote_name => 'amount',
+	is          => 'rw',
+	predicate   => 'has_amount',
+);
 
 1;
-
-# ABSTRACT: CVN Role
+# ABSTRACT: Role for ReasonCode
 
 __END__
 
@@ -17,17 +24,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::CVN - CVN Role
+Business::CyberSource::Response::Role::Amount - Role for ReasonCode
 
 =head1 VERSION
 
 version 0.007000
-
-=head1 ATTRIBUTES
-
-=head2 cv_code
-
-=head2 cv_Code_raw
 
 =head1 BUGS
 

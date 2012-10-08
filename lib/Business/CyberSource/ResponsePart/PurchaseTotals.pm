@@ -1,15 +1,20 @@
-package Business::CyberSource::Response::Role::CVN;
+package Business::CyberSource::ResponsePart::PurchaseTotals;
 use strict;
 use warnings;
 use namespace::autoclean;
 
 our $VERSION = '0.007000'; # TRIAL VERSION
 
-use Moose::Role;
+use Moose;
+extends 'Business::CyberSource::MessagePart';
+with qw(
+	Business::CyberSource::Role::Currency
+	Business::CyberSource::Role::ForeignCurrency
+);
 
+__PACKAGE__->meta->make_immutable;
 1;
-
-# ABSTRACT: CVN Role
+# ABSTRACT: PurchaseTotals part of response
 
 __END__
 
@@ -17,17 +22,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::CVN - CVN Role
+Business::CyberSource::ResponsePart::PurchaseTotals - PurchaseTotals part of response
 
 =head1 VERSION
 
 version 0.007000
-
-=head1 ATTRIBUTES
-
-=head2 cv_code
-
-=head2 cv_Code_raw
 
 =head1 BUGS
 

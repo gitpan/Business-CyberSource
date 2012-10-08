@@ -1,4 +1,4 @@
-package Business::CyberSource::Message;
+package Business::CyberSource::ResponsePart::TaxReply::Item;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -7,24 +7,47 @@ our $VERSION = '0.007000'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
-with qw(
-	Business::CyberSource::Role::MerchantReferenceCode
+
+has id => (
+	isa         => 'Int',
+	remote_name => 'id',
+	is          => 'ro',
 );
 
-use MooseX::ABC 0.06;
+has city_tax_amount => (
+	isa         => 'Num',
+	remote_name => 'cityTaxAmount',
+	is          => 'ro',
+);
 
-has trace => (
-	isa       => 'XML::Compile::SOAP::Trace',
-	predicate => 'has_trace',
-	traits    => [ 'SetOnce' ],
-	is        => 'rw',
-	writer    => '_trace',
+has county_tax_amount => (
+	isa         => 'Num',
+	remote_name => 'countyTaxAmount',
+	is          => 'ro',
+);
+
+has district_tax_amount => (
+	isa         => 'Num',
+	remote_name => 'districtTaxAmount',
+	is          => 'ro',
+);
+
+has state_tax_amount => (
+	isa         => 'Num',
+	remote_name => 'stateTaxAmount',
+	is          => 'ro',
+);
+
+has total_tax_amount => (
+	isa         => 'Num',
+	remote_name => 'totalTaxAmount',
+	is          => 'ro',
 );
 
 __PACKAGE__->meta->make_immutable;
 1;
 
-# ABSTRACT: Abstract Message Class;
+# ABSTRACT: taxReply_item
 
 __END__
 
@@ -32,30 +55,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Message - Abstract Message Class;
+Business::CyberSource::ResponsePart::TaxReply::Item - taxReply_item
 
 =head1 VERSION
 
 version 0.007000
-
-=head1 ATTRIBUTES
-
-=head2 trace
-
-A L<XML::Compile::SOAP::Trace> object which is populated only after the object
-has been submitted to CyberSource by a L<Business::CyberSource::Client>.
-
-=head1 EXTENDS
-
-L<Business::CyberSource::MessagePart>
-
-=head1 WITH
-
-=over
-
-=item L<Business::CyberSource::Role::MerchantReferenceCode>
-
-=back
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006010'; # VERSION
+our $VERSION = '0.007000'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -202,7 +202,7 @@ Business::CyberSource::RequestPart::Card - Credit Card Helper Class
 
 =head1 VERSION
 
-version 0.006010
+version 0.007000
 
 =head1 ATTRIBUTES
 

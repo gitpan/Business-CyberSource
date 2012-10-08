@@ -49,7 +49,6 @@ sub pmver {
 }
 
 eval { $v .= pmver('Bread::Board','0.25') };
-eval { $v .= pmver('Carp','any version') };
 eval { $v .= pmver('Class::Load','0.20') };
 eval { $v .= pmver('Config','any version') };
 eval { $v .= pmver('DateTime','any version') };
@@ -61,7 +60,6 @@ eval { $v .= pmver('File::ShareDir::Install','0.03') };
 eval { $v .= pmver('File::ShareDir::ProjectDistDir','any version') };
 eval { $v .= pmver('File::Temp','any version') };
 eval { $v .= pmver('FindBin','any version') };
-eval { $v .= pmver('Hash::Merge','any version') };
 eval { $v .= pmver('LWP::Protocol::https','any version') };
 eval { $v .= pmver('Module::Load','any version') };
 eval { $v .= pmver('Module::Load::Conditional','any version') };
@@ -76,7 +74,6 @@ eval { $v .= pmver('MooseX::RemoteHelper','any version') };
 eval { $v .= pmver('MooseX::RemoteHelper::CompositeSerialization','any version') };
 eval { $v .= pmver('MooseX::SetOnce','0.200001') };
 eval { $v .= pmver('MooseX::StrictConstructor','any version') };
-eval { $v .= pmver('MooseX::Traits','any version') };
 eval { $v .= pmver('MooseX::Types','any version') };
 eval { $v .= pmver('MooseX::Types::Common::Numeric','0.001003') };
 eval { $v .= pmver('MooseX::Types::Common::String','0.001005') };
@@ -95,6 +92,7 @@ eval { $v .= pmver('Test::Moose','any version') };
 eval { $v .= pmver('Test::More','0.88') };
 eval { $v .= pmver('Test::Requires','any version') };
 eval { $v .= pmver('Test::Requires::Env','any version') };
+eval { $v .= pmver('Try::Tiny','any version') };
 eval { $v .= pmver('XML::Compile::SOAP11','any version') };
 eval { $v .= pmver('XML::Compile::SOAP::WSS','0.12') };
 eval { $v .= pmver('XML::Compile::Transport::SOAPHTTP','any version') };
