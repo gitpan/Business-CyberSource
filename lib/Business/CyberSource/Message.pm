@@ -3,13 +3,10 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007001'; # TRIAL VERSION
+our $VERSION = '0.006011'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
-with qw(
-	Business::CyberSource::Role::MerchantReferenceCode
-);
 
 use MooseX::ABC 0.06;
 
@@ -36,7 +33,7 @@ Business::CyberSource::Message - Abstract Message Class;
 
 =head1 VERSION
 
-version 0.007001
+version 0.006011
 
 =head1 ATTRIBUTES
 
@@ -48,14 +45,6 @@ has been submitted to CyberSource by a L<Business::CyberSource::Client>.
 =head1 EXTENDS
 
 L<Business::CyberSource::MessagePart>
-
-=head1 WITH
-
-=over
-
-=item L<Business::CyberSource::Role::MerchantReferenceCode>
-
-=back
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@
       "Caleb Cushing <xenoterracide@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300024, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300025, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "artistic_2"
    ],
@@ -27,16 +27,19 @@
       },
       "develop" : {
          "requires" : {
-            "Test::File::ShareDir" : "0"
+            "Test::File::ShareDir" : "0",
+            "version" : "0.9901"
          }
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
             "Class::Load" : "0.20",
             "Config" : "0",
             "DateTime::Format::W3CDTF" : "0.06",
             "Exception::Base" : "0",
             "File::ShareDir::ProjectDistDir" : "0",
+            "Hash::Merge" : "0",
             "LWP::Protocol::https" : "0",
             "Module::Load" : "0",
             "Moose" : "0",
@@ -49,10 +52,11 @@
             "MooseX::RemoteHelper::CompositeSerialization" : "0",
             "MooseX::SetOnce" : "0.200001",
             "MooseX::StrictConstructor" : "0",
+            "MooseX::Traits" : "0",
             "MooseX::Types" : "0",
             "MooseX::Types::Common::Numeric" : "0.001003",
             "MooseX::Types::Common::String" : "0.001005",
-            "MooseX::Types::CreditCard" : "0.001001",
+            "MooseX::Types::CreditCard" : "0.002",
             "MooseX::Types::DateTime" : "0",
             "MooseX::Types::DateTime::W3C" : "0",
             "MooseX::Types::Email" : "0",
@@ -61,7 +65,6 @@
             "MooseX::Types::Moose" : "0",
             "MooseX::Types::NetAddr::IP" : "0",
             "MooseX::Types::Path::Class" : "0",
-            "Try::Tiny" : "0",
             "XML::Compile::SOAP11" : "0",
             "XML::Compile::SOAP::WSS" : "0.12",
             "XML::Compile::Transport::SOAPHTTP" : "0",
@@ -91,7 +94,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/xenoterracide/Business-CyberSource/issues"
@@ -103,6 +106,6 @@
          "web" : "https://github.com/xenoterracide/Business-CyberSource"
       }
    },
-   "version" : "0.007001"
+   "version" : "0.006011"
 }
 

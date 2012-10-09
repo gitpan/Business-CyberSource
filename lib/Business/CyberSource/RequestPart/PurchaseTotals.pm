@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007001'; # TRIAL VERSION
+our $VERSION = '0.006011'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -15,6 +15,7 @@ with qw(
 );
 
 use MooseX::Types::Common::Numeric qw( PositiveOrZeroNum );
+
 
 has total => (
 	isa         => PositiveOrZeroNum,
@@ -39,7 +40,7 @@ Business::CyberSource::RequestPart::PurchaseTotals - Purchase Totals
 
 =head1 VERSION
 
-version 0.007001
+version 0.006011
 
 =head1 ATTRIBUTES
 

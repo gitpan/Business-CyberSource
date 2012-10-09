@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007001'; # TRIAL VERSION
+our $VERSION = '0.006011'; # VERSION
 
 use Moose;
 
@@ -18,7 +18,7 @@ use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
 
 use Config;
 use Class::Load 0.20 qw( load_class );
-use Module::Load     qw( load       );
+use Module::Load     qw( load );
 
 use XML::Compile::SOAP::WSS 0.12;
 use XML::Compile::WSDL11;
@@ -28,18 +28,20 @@ use XML::Compile::Transport::SOAPHTTP;
 sub run_transaction {
 	my ( $self, $request ) = @_;
 
-	confess 'request undefined'         unless defined $request;
-	confess 'request not an object'     unless blessed $request;
-	confess 'request can not serialize' unless $request->can('serialize');
+	confess 'Not a Business::CyberSource::Request'
+		unless defined $request
+			&& blessed $request
+			&& $request->isa('Business::CyberSource::Request')
+			;
 
 	if ( $self->has_rules && ! $self->rules_is_empty ) {
-		my $result;
+		my $answer;
 		RULE: foreach my $rule ( @{ $self->_rules } ) {
-			$result = $rule->run( $request );
-			last RULE if defined $result;
+			$answer = $rule->run( $request );
+			last RULE if defined $answer;
 		}
-		return $self->_response_factory->create( $result, $request )
-			if defined $result
+		return $self->_response_factory->create( $request, $answer )
+			if defined $answer
 			;
 	}
 
@@ -69,13 +71,13 @@ sub run_transaction {
 		Carp::carp "\n< " . $trace->response->as_string;
 	}
 
-	$request->_trace( $trace ) if $request->can('_trace');
+	$request->_trace( $trace );
 
 	if ( $answer->{Fault} ) {
 		confess 'SOAP Fault: ' . $answer->{Fault}->{faultstring};
 	}
 
-	return $self->_response_factory->create( $answer->{result}, $request );
+	return $self->_response_factory->create( $request, $answer );
 }
 
 sub _build_soap_client {
@@ -154,10 +156,7 @@ has _response_factory => (
 	is       => 'ro',
 	lazy     => 1,
 	default  => sub {
-		my $self = shift;
-		return load_class('Business::CyberSource::Factory::Response')
-			->new({ _client => $self })
-			;
+		return load_class('Business::CyberSource::Factory::Response')->new;
 	},
 );
 
@@ -199,12 +198,12 @@ has debug => (
 	},
 );
 
-has _dumper_package => (
-	isa      => NonEmptySimpleStr,
-	is       => 'ro',
-	lazy     => 1,
-	init_arg => 'dumper_package',
-	default  => sub { return 'Data::Dumper'; },
+has dumper_package => (
+	isa     => NonEmptySimpleStr,
+	reader  => '_dumper_package',
+	is      => 'ro',
+	lazy    => 1,
+	default => sub { return 'Data::Dumper'; },
 );
 
 has production => (
@@ -303,7 +302,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.007001
+version 0.006011
 
 =head1 SYNOPSIS
 

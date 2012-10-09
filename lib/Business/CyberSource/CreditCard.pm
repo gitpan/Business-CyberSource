@@ -1,20 +1,30 @@
-package Business::CyberSource::ResponsePart::PurchaseTotals;
+package Business::CyberSource::CreditCard;
 use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007001'; # TRIAL VERSION
+our $VERSION = '0.006011'; # VERSION
 
 use Moose;
-extends 'Business::CyberSource::MessagePart';
-with qw(
-	Business::CyberSource::Role::Currency
-	Business::CyberSource::Role::ForeignCurrency
-);
+extends 'Business::CyberSource::RequestPart::Card';
+
+use Carp qw( cluck );
+
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $self = shift;
+
+	cluck 'DEPRECATED: just a thin wrapper around '
+		. 'Business::CyberSource::RequestPart::Card use that instead'
+		;
+
+	return $self->$orig( @_ );
+};
 
 __PACKAGE__->meta->make_immutable;
 1;
-# ABSTRACT: PurchaseTotals part of response
+
+# ABSTRACT: A Credit Card Value Object
 
 __END__
 
@@ -22,11 +32,15 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::ResponsePart::PurchaseTotals - PurchaseTotals part of response
+Business::CyberSource::CreditCard - A Credit Card Value Object
 
 =head1 VERSION
 
-version 0.007001
+version 0.006011
+
+=head1 DESCRIPTION
+
+Just a L<Business::CyberSource::RequestPart::Card>, use that instead.
 
 =head1 BUGS
 
