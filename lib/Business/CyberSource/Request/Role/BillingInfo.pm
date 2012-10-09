@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007000'; # TRIAL VERSION
+our $VERSION = '0.007001'; # TRIAL VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -97,7 +97,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version 0.007000
+version 0.007001
 
 =head1 ATTRIBUTES
 

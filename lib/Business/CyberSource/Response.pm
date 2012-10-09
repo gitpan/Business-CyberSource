@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.007000'; # TRIAL VERSION
+our $VERSION = '0.007001'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::Message';
@@ -12,6 +12,7 @@ with qw(
 	Business::CyberSource::Response::Role::ReasonCode
 
 	Business::CyberSource::Response::Role::Authorization
+	Business::CyberSource::Response::Role::Accept
 );
 
 use MooseX::Aliases;
@@ -28,18 +29,20 @@ use MooseX::Types::CyberSource qw(
 
 use Moose::Util::TypeConstraints;
 
+
 # DRAGONS! yes evil, but necesary for backwards compat
 our $AUTOLOAD;
 
 sub AUTOLOAD { ## no critic ( ClassHierarchies::ProhibitAutoloading )
 	my $self = shift;
 
-	my $called = $AUTOLOAD =~ s/.*:://r; ## no critic ( RegularExpressions::RequireExtendedFormatting )
+	my $called = $AUTOLOAD;
+	$called =~ s/.*:://; ## no critic ( RegularExpressions::RequireExtendedFormatting )
 
 	load 'Carp';
 	Carp::carp 'DEPRECATED: please call '
 		. $called
-		. ' on the nested object you desire'
+		. ' on the appropriate nested object'
 		;
 
 	my @nested = ( qw(
@@ -63,6 +66,7 @@ sub AUTOLOAD { ## no critic ( ClassHierarchies::ProhibitAutoloading )
 			last if $val;
 		}
 	}
+	confess 'unable to delegate, was not a valid method' unless defined $val;
 	return $val;
 }
 
@@ -101,6 +105,7 @@ has purchase_totals => (
 	coerce      => 1,
 	handles     => [ qw( currency ) ],
 );
+
 
 has auth => (
 	isa         => AuthReply,
@@ -299,6 +304,24 @@ sub _build_reason_text {
 	return $reason{$reason_code};
 }
 
+around [qw(
+	avs_code
+	avs_code_raw
+	auth_code
+	auth_record
+	cv_code
+	cv_code_raw
+)] => sub {
+	my $orig = shift;
+	my $self = shift;
+	load 'Carp';
+	Carp::carp 'DEPRECATED: please call method'
+		. ' on the appropriate nested object'
+		;
+
+	return $self->$orig( @_ );
+};
+
 __PACKAGE__->meta->make_immutable;
 1;
 
@@ -314,7 +337,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version 0.007000
+version 0.007001
 
 =head1 DESCRIPTION
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007000'; # TRIAL VERSION
+our $VERSION = '0.007001'; # TRIAL VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -16,7 +16,7 @@ has amount => (
 );
 
 1;
-# ABSTRACT: Role for ReasonCode
+# ABSTRACT: Role for Amount
 
 __END__
 
@@ -24,11 +24,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Amount - Role for ReasonCode
+Business::CyberSource::Response::Role::Amount - Role for Amount
 
 =head1 VERSION
 
-version 0.007000
+version 0.007001
 
 =head1 BUGS
 

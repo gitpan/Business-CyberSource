@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.007000'; # TRIAL VERSION
+our $VERSION = '0.007001'; # TRIAL VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -49,7 +49,7 @@ Business::CyberSource::Response::Role::ReasonCode - Role for ReasonCode
 
 =head1 VERSION
 
-version 0.007000
+version 0.007001
 
 =for Pod::Coverage request_specific_reason_code has_request_specific_reason_code
 

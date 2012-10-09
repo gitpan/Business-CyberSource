@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007000'; # TRIAL VERSION
+our $VERSION = '0.007001'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -29,7 +29,39 @@ Business::CyberSource::ResponsePart::Reply - Generic Reply part of response
 
 =head1 VERSION
 
-version 0.007000
+version 0.007001
+
+=head1 ATTRIBUTES
+
+=head2 amount
+
+=head2 reason_code
+
+=head2 reconciliation_id
+
+=head2 processor_response
+
+=head2 datetime
+
+=head1 EXTENDS
+
+L<Business::CyberSource::MessagePart>
+
+=head1 WITH
+
+=over
+
+=item L<Business::CyberSource::Response::Role::ReasonCode>
+
+=item L<Business::CyberSource::Response::Role::ReconciliationID>
+
+=item L<Business::CyberSource::Response::Role::Amount>
+
+=item L<Business::CyberSource::Response::Role::ProcessorResponse>
+
+=item L<Business::CyberSource::Response::Role::RequestDateTime>
+
+=back
 
 =head1 BUGS
 
