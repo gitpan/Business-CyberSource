@@ -1,27 +1,26 @@
-package Business::CyberSource::Request::Role::BillingInfo;
+package Business::CyberSource::Response::Role::RequestDateTime;
 use strict;
 use warnings;
 use namespace::autoclean;
+use Module::Load qw( load );
 
 our $VERSION = '0.007002'; # TRIAL VERSION
 
 use Moose::Role;
-use MooseX::Aliases;
 use MooseX::RemoteHelper;
-use MooseX::Types::CyberSource qw( BillTo );
+use MooseX::Types::CyberSource qw( DateTimeFromW3C );
 
-has bill_to => (
-	isa         => BillTo,
-	remote_name => 'billTo',
-	alias       => ['billing_info'],
+has datetime => (
+	isa         => DateTimeFromW3C,
+	remote_name => 'requestDateTime',
 	is          => 'ro',
-	required    => 1,
 	coerce      => 1,
+	predicate   => 'has_datetime',
 );
 
 1;
 
-# ABSTRACT: Role for requests that require "bill to" information
+# ABSTRACT: Role to provide datetime attribute
 
 __END__
 
@@ -29,11 +28,16 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request::Role::BillingInfo - Role for requests that require "bill to" information
+Business::CyberSource::Response::Role::RequestDateTime - Role to provide datetime attribute
 
 =head1 VERSION
 
 version 0.007002
+
+=head1 DESCRIPTION
+
+Several responses include a datetime that has a key name of C<requestDateTime>
+this role is provided for those response sections.
 
 =head1 BUGS
 

@@ -1,5 +1,27 @@
 Revision history for Business-CyberSource
 
+0.007002  2012-10-15
+	- documentation improvements
+	- more backwards compatability cleanup
+	[DEPRECATIONS]
+	- is_success entirely
+
+0.007001  2012-10-09
+	- remove use of 5.14+ code
+	- update documentation
+	[DEPRECATIONS]
+	- do not check roles in CyberSource Response these are implementation
+	  details now
+
+0.007000  2012-10-08
+	[NEWS]
+	- Tax Service should now be fully supported
+	- massive refactoring of Response objects to use MooseX::RemoteHelper
+	  improvments
+	[DEPRECATIONS]
+	- response object is now composed of sub objects
+	- response factory api changed
+
 0.006011  2012-10-09
 	- use MooseX::Types::CreditCard 0.002
 
@@ -10,7 +32,6 @@ Revision history for Business-CyberSource
 0.006009  2012-10-04
 	[FEATURE]
 	- added is_accept and is_reject to response
-	[DEPRECATIONS]
 	- is_success in the future will mean a non error state (accept or reject)
 
 0.006008  2012-09-26
