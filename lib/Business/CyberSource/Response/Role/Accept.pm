@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007002'; # TRIAL VERSION
+our $VERSION = '0.007003'; # TRIAL VERSION
 
 use Moose::Role;
 
@@ -21,7 +21,7 @@ Business::CyberSource::Response::Role::Accept - role for handling accepted trans
 
 =head1 VERSION
 
-version 0.007002
+version 0.007003
 
 =head1 BUGS
 

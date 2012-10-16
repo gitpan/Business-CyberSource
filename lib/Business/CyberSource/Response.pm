@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.007002'; # TRIAL VERSION
+our $VERSION = '0.007003'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::Message';
@@ -120,6 +120,12 @@ has auth => (
 		auth_record
 		cv_code
 		cv_code_raw
+		has_avs_code
+		has_avs_code_raw
+		has_auth_code_raw
+		has_auth_record_raw
+		has_cv_code
+		has_cv_code_raw
 	)],
 );
 
@@ -304,22 +310,24 @@ sub _build_reason_text {
 	return $reason{$reason_code};
 }
 
-around [qw(
+before [qw(
 	avs_code
 	avs_code_raw
 	auth_code
 	auth_record
 	cv_code
 	cv_code_raw
+	has_avs_code
+	has_avs_code_raw
+	has_auth_code_raw
+	has_auth_record_raw
+	has_cv_code
+	has_cv_code_raw
 )] => sub {
-	my $orig = shift;
-	my $self = shift;
 	load 'Carp';
 	Carp::carp 'DEPRECATED: please call method'
-		. ' on the appropriate nested object'
+		. ' on the ->auth object'
 		;
-
-	return $self->$orig( @_ );
 };
 
 before is_success => sub {
@@ -342,7 +350,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version 0.007002
+version 0.007003
 
 =head1 SYNOPSIS
 

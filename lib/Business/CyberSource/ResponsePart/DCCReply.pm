@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007002'; # TRIAL VERSION
+our $VERSION = '0.007003'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -53,7 +53,7 @@ Business::CyberSource::ResponsePart::DCCReply - Reply section for DCC
 
 =head1 VERSION
 
-version 0.007002
+version 0.007003
 
 =head1 EXTENDS
 
