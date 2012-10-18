@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006012'; # VERSION
+our $VERSION = '0.007004'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request::Credit';
@@ -34,7 +34,7 @@ Business::CyberSource::Request::StandAloneCredit - CyberSource Credit Request Ob
 
 =head1 VERSION
 
-version 0.006012
+version 0.007004
 
 =head1 SYNOPSIS
 
@@ -69,11 +69,11 @@ version 0.006012
 
 This object allows you to create a request for a standalone credit.
 
-=head2 inherits
+=head1 EXTENDS
 
 L<Business::CyberSource::Request::Credit>
 
-=head2 composes
+=head1 WITH
 
 =over
 

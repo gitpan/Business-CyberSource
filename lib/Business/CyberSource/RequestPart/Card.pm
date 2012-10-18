@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006012'; # VERSION
+our $VERSION = '0.007004'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -206,7 +206,11 @@ Business::CyberSource::RequestPart::Card - Credit Card Helper Class
 
 =head1 VERSION
 
-version 0.006012
+version 0.007004
+
+=head1 EXTENDS
+
+L<Business::CyberSource::MessagePart>
 
 =head1 ATTRIBUTES
 
@@ -313,10 +317,6 @@ before setting up your system to work with Santander
 cards, contact the CyberSource UK Support Group.
 
 =back
-
-=head1 EXTENDS
-
-L<Business::CyberSource::MessagePart>
 
 =head1 BUGS
 

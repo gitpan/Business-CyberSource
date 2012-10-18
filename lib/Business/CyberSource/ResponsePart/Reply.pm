@@ -1,4 +1,4 @@
-package Business::CyberSource::RequestPart::PurchaseTotals;
+package Business::CyberSource::ResponsePart::Reply;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -7,27 +7,17 @@ our $VERSION = '0.007004'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
-with    'MooseX::RemoteHelper::CompositeSerialization';
-
 with qw(
-	Business::CyberSource::Role::Currency
-	Business::CyberSource::Role::ForeignCurrency
-);
-
-use MooseX::Types::Common::Numeric qw( PositiveOrZeroNum );
-
-has total => (
-	isa         => PositiveOrZeroNum,
-	remote_name => 'grandTotalAmount',
-	traits      => [ 'SetOnce' ],
-	is          => 'rw',
-	predicate   => 'has_total',
-
+	Business::CyberSource::Response::Role::ReasonCode
+	Business::CyberSource::Response::Role::ReconciliationID
+	Business::CyberSource::Response::Role::Amount
+	Business::CyberSource::Response::Role::ProcessorResponse
+	Business::CyberSource::Response::Role::RequestDateTime
 );
 
 __PACKAGE__->meta->make_immutable;
 1;
-# ABSTRACT: Purchase Totals
+# ABSTRACT: Generic Reply part of response
 
 __END__
 
@@ -35,7 +25,7 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::RequestPart::PurchaseTotals - Purchase Totals
+Business::CyberSource::ResponsePart::Reply - Generic Reply part of response
 
 =head1 VERSION
 
@@ -49,19 +39,29 @@ L<Business::CyberSource::MessagePart>
 
 =over
 
-=item L<Business::CyberSource::Role::Currency>
+=item L<Business::CyberSource::Response::Role::ReasonCode>
 
-=item L<Business::CyberSource::Role::ForeignCurrency>
+=item L<Business::CyberSource::Response::Role::ReconciliationID>
+
+=item L<Business::CyberSource::Response::Role::Amount>
+
+=item L<Business::CyberSource::Response::Role::ProcessorResponse>
+
+=item L<Business::CyberSource::Response::Role::RequestDateTime>
 
 =back
 
 =head1 ATTRIBUTES
 
-=head2 total
+=head2 amount
 
-Grand total for the order. You must include either this field or
-L<Item unit price|Business::CyberSource::RequestPart::Item/"unit_price"> in your
-request.
+=head2 reason_code
+
+=head2 reconciliation_id
+
+=head2 processor_response
+
+=head2 datetime
 
 =head1 BUGS
 

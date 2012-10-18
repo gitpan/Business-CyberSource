@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.006012'; # VERSION
+our $VERSION = '0.007004'; # TRIAL VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -156,7 +156,11 @@ Business::CyberSource::RequestPart::BillTo - BillTo information
 
 =head1 VERSION
 
-version 0.006012
+version 0.007004
+
+=head1 EXTENDS
+
+L<Business::CyberSource::MessagePart>
 
 =head1 ATTRIBUTES
 
@@ -207,10 +211,6 @@ Postal code for the billing address. The postal code must consist of 5 to 9
 digits.
 
 Required if C<country> is "US" or "CA".
-
-=head1 EXTENDS
-
-L<Business::CyberSource::MessagePart>
 
 =for Pod::Coverage BUILD
 

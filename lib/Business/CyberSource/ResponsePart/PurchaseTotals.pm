@@ -1,4 +1,4 @@
-package Business::CyberSource::RequestPart::Service::AuthReversal;
+package Business::CyberSource::ResponsePart::PurchaseTotals;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -6,23 +6,15 @@ use namespace::autoclean;
 our $VERSION = '0.007004'; # TRIAL VERSION
 
 use Moose;
-extends 'Business::CyberSource::RequestPart::Service';
-
-use MooseX::Types::CyberSource qw( RequestID );
-
-has request_id => (
-	isa         => RequestID,
-	remote_name => 'authRequestID',
-	predicate   => 'has_request_id',
-	is          => 'rw',
-	required    => 1,
-	traits      => ['SetOnce'],
+extends 'Business::CyberSource::MessagePart';
+with qw(
+	Business::CyberSource::Role::Currency
+	Business::CyberSource::Role::ForeignCurrency
 );
 
 __PACKAGE__->meta->make_immutable;
 1;
-
-# ABSTRACT: AuthReversal Service
+# ABSTRACT: PurchaseTotals part of response
 
 __END__
 
@@ -30,17 +22,39 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::RequestPart::Service::AuthReversal - AuthReversal Service
+Business::CyberSource::ResponsePart::PurchaseTotals - PurchaseTotals part of response
 
 =head1 VERSION
 
 version 0.007004
 
+=head1 EXTENDS
+
+L<Business::CyberSource::MessagePart>
+
+=head1 WITH
+
+=over
+
+=item L<Business::CyberSource::Role::Currency>
+
+=item L<Business::CyberSource::Role::ForeignCurrency>
+
+=back
+
 =head1 ATTRIBUTES
 
-=head2 request_id
+=head2 currency
 
-The L<request_id|Business::CyberSource::Response/"request_id"> for the authorization that you want to reverse.
+=head2 foreign_currency
+
+Billing currency returned by the DCC service. For the possible values, see the ISO currency codes
+
+=head2 foreign_amount
+
+=head2 exchange_rate
+
+=head2 exchange_rate_timestamp
 
 =head1 BUGS
 
