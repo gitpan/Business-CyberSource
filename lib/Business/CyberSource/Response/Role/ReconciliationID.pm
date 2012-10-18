@@ -3,16 +3,14 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007003'; # TRIAL VERSION
+our $VERSION = '0.006012'; # VERSION
 
 use Moose::Role;
-use MooseX::RemoteHelper;
 
 has reconciliation_id => (
-	isa         => 'Str',
-	remote_name => 'reconciliationID',
-	is          => 'ro',
-	predicate   => 'has_reconciliation_id',
+	required => 1,
+	is       => 'ro',
+	isa      => 'Str',
 );
 
 1;
@@ -29,7 +27,7 @@ Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identif
 
 =head1 VERSION
 
-version 0.007003
+version 0.006012
 
 =head1 ATTRIBUTES
 

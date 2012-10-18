@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007003'; # TRIAL VERSION
+our $VERSION = '0.006012'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -14,7 +14,6 @@ has reference_code => (
 	remote_name => 'merchantReferenceCode',
 	required    => 1,
 	is          => 'ro',
-	predicate   => 'has_reference_code',
 );
 
 1;
@@ -31,7 +30,7 @@ Business::CyberSource::Role::MerchantReferenceCode - Generic implementation of M
 
 =head1 VERSION
 
-version 0.007003
+version 0.006012
 
 =head1 ATTRIBUTES
 

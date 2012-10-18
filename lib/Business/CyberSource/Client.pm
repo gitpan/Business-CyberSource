@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007003'; # TRIAL VERSION
+our $VERSION = '0.006012'; # VERSION
 
 use Moose;
 
@@ -18,9 +18,9 @@ use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
 
 use Config;
 use Class::Load 0.20 qw( load_class );
-use Module::Load     qw( load       );
+use Module::Load     qw( load );
 
-use XML::Compile::SOAP::WSS 0.12;
+use XML::Compile::SOAP::WSS 1.00;
 use XML::Compile::WSDL11;
 use XML::Compile::SOAP11;
 use XML::Compile::Transport::SOAPHTTP;
@@ -28,30 +28,28 @@ use XML::Compile::Transport::SOAPHTTP;
 sub run_transaction {
 	my ( $self, $request ) = @_;
 
-	confess 'request undefined'         unless defined $request;
-	confess 'request not an object'     unless blessed $request;
-	confess 'request can not serialize' unless $request->can('serialize');
+	confess 'Not a Business::CyberSource::Request'
+		unless defined $request
+			&& blessed $request
+			&& $request->isa('Business::CyberSource::Request')
+			;
 
 	if ( $self->has_rules && ! $self->rules_is_empty ) {
-		my $result;
+		my $answer;
 		RULE: foreach my $rule ( @{ $self->_rules } ) {
-			$result = $rule->run( $request );
-			last RULE if defined $result;
+			$answer = $rule->run( $request );
+			last RULE if defined $answer;
 		}
-		return $self->_response_factory->create( $result, $request )
-			if defined $result
+		return $self->_response_factory->create( $request, $answer )
+			if defined $answer
 			;
 	}
 
-	my ( $call, $security ) = @{ $self->_soap_client };
-
 	my %request = (
-		wsse_Security         => $security,
 		merchantID            => $self->_username,
 		clientEnvironment     => $self->env,
 		clientLibrary         => $self->name,
 		clientLibraryVersion  => $self->version,
-		merchantReferenceCode => $request->reference_code,
 		%{ $request->serialize },
 	);
 
@@ -62,35 +60,39 @@ sub run_transaction {
 		Carp::carp( 'REQUEST HASH: ' . Dumper( \%request ) );
 	}
 
-	my ( $answer, $trace ) = $call->( %request );
+	my ( $answer, $trace ) = $self->_soap_client->( %request );
 
 	if ( $self->debug ) {
 		Carp::carp "\n> " . $trace->request->as_string;
 		Carp::carp "\n< " . $trace->response->as_string;
 	}
 
-	$request->_trace( $trace ) if $request->can('_trace');
+	$request->_trace( $trace );
 
 	if ( $answer->{Fault} ) {
 		confess 'SOAP Fault: ' . $answer->{Fault}->{faultstring};
 	}
 
-	return $self->_response_factory->create( $answer->{result}, $request );
+	return $self->_response_factory->create( $request, $answer );
 }
 
 sub _build_soap_client {
 	my $self = shift;
+	# order in this subroutine matters changing it may break stuff
 
 	my $wss = XML::Compile::SOAP::WSS->new( version => '1.1' );
 
 	my $wsdl = XML::Compile::WSDL11->new( $self->cybs_wsdl->stringify );
 	$wsdl->importDefinitions( $self->cybs_xsd->stringify );
 
+	$wss->basicAuth(
+		username => $self->_username,
+		password => $self->_password,
+	);
+
 	my $call = $wsdl->compileClient('runTransaction');
 
-	my $security = $wss->wsseBasicAuth( $self->_username, $self->_password );
-
-	return [ $call, $security ];
+	return $call;
 }
 
 sub _build_cybs_wsdl {
@@ -143,9 +145,10 @@ sub _build__rules {
 }
 
 has _soap_client => (
-	isa      => 'ArrayRef',
+	isa      => 'CodeRef',
 	is       => 'ro',
 	lazy     => 1,
+	init_arg => undef,
 	builder  => '_build_soap_client',
 );
 
@@ -154,10 +157,7 @@ has _response_factory => (
 	is       => 'ro',
 	lazy     => 1,
 	default  => sub {
-		my $self = shift;
-		return load_class('Business::CyberSource::Factory::Response')
-			->new({ _client => $self })
-			;
+		return load_class('Business::CyberSource::Factory::Response')->new;
 	},
 );
 
@@ -199,12 +199,12 @@ has debug => (
 	},
 );
 
-has _dumper_package => (
-	isa      => NonEmptySimpleStr,
-	is       => 'ro',
-	lazy     => 1,
-	init_arg => 'dumper_package',
-	default  => sub { return 'Data::Dumper'; },
+has dumper_package => (
+	isa     => NonEmptySimpleStr,
+	reader  => '_dumper_package',
+	is      => 'ro',
+	lazy    => 1,
+	default => sub { return 'Data::Dumper'; },
 );
 
 has production => (
@@ -303,7 +303,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.007003
+version 0.006012
 
 =head1 SYNOPSIS
 

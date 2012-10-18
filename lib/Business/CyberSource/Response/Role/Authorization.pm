@@ -3,17 +3,36 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007003'; # TRIAL VERSION
+our $VERSION = '0.006012'; # VERSION
 
 use Moose::Role;
 with qw(
+	Business::CyberSource::Response::Role::ProcessorResponse
 	Business::CyberSource::Response::Role::AVS
 	Business::CyberSource::Response::Role::CVN
 );
 
+use MooseX::SetOnce 0.200001;
+
+use MooseX::Types::CyberSource qw( _VarcharSeven );
+
+has auth_code => (
+	isa       => _VarcharSeven,
+	predicate => 'has_auth_code',
+	traits    => ['SetOnce'],
+	is        => 'rw',
+);
+
+has auth_record => (
+	isa       => 'Str',
+	predicate => 'has_auth_record',
+	traits    => ['SetOnce'],
+	is        => 'rw',
+);
+
 1;
 
-# ABSTRACT: DEPRECATED NOOP will be removed
+# ABSTRACT: CyberSource Authorization Response only attributes
 
 __END__
 
@@ -21,11 +40,33 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::Authorization - DEPRECATED NOOP will be removed
+Business::CyberSource::Response::Role::Authorization - CyberSource Authorization Response only attributes
 
 =head1 VERSION
 
-version 0.007003
+version 0.006012
+
+=head1 DESCRIPTION
+
+If the transaction did Authorization then this role is applied
+
+=head2 composes
+
+=over
+
+=item L<Business::CyberSource::Response::Role::ProcessorResponse>
+
+=item L<Business::CyberSource::Response::Role::AVS>
+
+=item L<Business::CyberSource::Response::Role::CVN>
+
+=back
+
+=head1 ATTRIBUTES
+
+=head2 auth_code
+
+=head2 auth_record
 
 =head1 BUGS
 
