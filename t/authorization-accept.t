@@ -2,10 +2,10 @@ use strict;
 use warnings;
 use Test::More;
 
-use Class::Load 0.20 qw( load_class );
+use Class::Load qw( load_class );
 use FindBin; use lib "$FindBin::Bin/lib";
 
-my $t = new_ok( load_class('Test::Business::CyberSource') );
+my $t = load_class('Test::Business::CyberSource')->new;
 
 my $client = $t->resolve( service => '/client/object'    );
 
@@ -31,10 +31,5 @@ ok( $ret->request_id,     'request_id exists'    );
 ok( $ret->request_token,  'request_token exists' );
 ok( $ret->auth_record,    'auth_record exists'   );
 is( $ret->processor_response, '00','processor_response');
-
-ok ! ref $ret->request_id, 'request_id is not a reference';
-
-ok $ret->has_trace,  'response has trace';
-isa_ok $ret->trace,  'XML::Compile::SOAP::Trace';
 
 done_testing;

@@ -4,7 +4,7 @@
       "Caleb Cushing <xenoterracide@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300027, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300028, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "artistic_2"
    ],
@@ -27,6 +27,7 @@
       },
       "develop" : {
          "requires" : {
+            "Bread::Board" : "0.25",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::Pod" : "1.41",
@@ -36,11 +37,13 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
             "Class::Load" : "0.20",
             "Config" : "0",
             "DateTime::Format::W3CDTF" : "0.06",
             "Exception::Base" : "0",
             "File::ShareDir::ProjectDistDir" : "0",
+            "Hash::Merge" : "0",
             "LWP::Protocol::https" : "0",
             "Module::Load" : "0",
             "Moose" : "0",
@@ -53,6 +56,7 @@
             "MooseX::RemoteHelper::CompositeSerialization" : "0",
             "MooseX::SetOnce" : "0.200001",
             "MooseX::StrictConstructor" : "0",
+            "MooseX::Traits" : "0",
             "MooseX::Types" : "0",
             "MooseX::Types::Common::Numeric" : "0.001003",
             "MooseX::Types::Common::String" : "0.001005",
@@ -65,7 +69,6 @@
             "MooseX::Types::Moose" : "0",
             "MooseX::Types::NetAddr::IP" : "0",
             "MooseX::Types::Path::Class" : "0",
-            "Try::Tiny" : "0",
             "XML::Compile::SOAP11" : "0",
             "XML::Compile::SOAP::WSS" : "1.00",
             "XML::Compile::Transport::SOAPHTTP" : "0",
@@ -85,7 +88,6 @@
             "File::Find" : "0",
             "File::Temp" : "0",
             "FindBin" : "0",
-            "Module::Load::Conditional" : "0",
             "Module::Runtime" : "0",
             "Test::Fatal" : "0",
             "Test::Moose" : "0",
@@ -95,7 +97,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/xenoterracide/Business-CyberSource/issues"
@@ -107,6 +109,6 @@
          "web" : "https://github.com/xenoterracide/Business-CyberSource"
       }
    },
-   "version" : "0.007004"
+   "version" : "0.006013"
 }
 

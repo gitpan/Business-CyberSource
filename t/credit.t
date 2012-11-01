@@ -5,9 +5,9 @@ use Test::More;
 use Class::Load qw( load_class );
 use FindBin; use lib "$FindBin::Bin/lib";
 
-my $t = new_ok( load_class('Test::Business::CyberSource') );
+my $t = load_class('Test::Business::CyberSource')->new;
 
-my $client      = $t->resolve( service => '/client/object'      );
+my $client = $t->resolve( service => '/client/object' );
 
 my $creditc = load_class('Business::CyberSource::Request::Credit');
 
@@ -35,6 +35,5 @@ is( $ret->amount,         '3000.00', 'check amount'        );
 
 ok( $ret->request_id,    'check request_id exists'    );
 ok( $ret->datetime,      'check datetime exists'      );
-
 
 done_testing;

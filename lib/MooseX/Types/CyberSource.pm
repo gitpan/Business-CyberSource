@@ -4,7 +4,7 @@ use warnings;
 use Class::Load 0.20 qw( load_class );
 use namespace::autoclean;
 
-our $VERSION = '0.007004'; # TRIAL VERSION
+our $VERSION = '0.006013'; # VERSION
 
 use MooseX::Types -declare => [ qw(
 	AVSResult
@@ -13,7 +13,6 @@ use MooseX::Types -declare => [ qw(
 	CvIndicator
 	CvResults
 	DCCIndicator
-	DCCSupported
 
 	Decision
 	Items
@@ -29,20 +28,10 @@ use MooseX::Types -declare => [ qw(
 	BillTo
 	BusinessRules
 
-	ResPurchaseTotals
-	AuthReply
-	TaxReply
-	DCCReply
-	Reply
-
-	TaxReplyItems
-	TaxReplyItem
-
 	RequestID
 
 	ExpirationDate
-
-	DateTimeFromW3C
+	CreditCard
 
 	_VarcharOne
 	_VarcharSeven
@@ -54,12 +43,10 @@ use MooseX::Types -declare => [ qw(
 
 use MooseX::Types::Common::Numeric qw( PositiveOrZeroNum                       );
 use MooseX::Types::Common::String  qw( NonEmptySimpleStr                       );
-use MooseX::Types::Moose           qw( Int Num Str HashRef ArrayRef Bool       );
+use MooseX::Types::Moose           qw( Int Num Str HashRef ArrayRef            );
 use MooseX::Types::Locale::Country qw( Alpha2Country Alpha3Country CountryName );
-use MooseX::Types::DateTime        qw(                                         );
-use MooseX::Types::DateTime::W3C   qw( DateTimeW3C                             );
+use MooseX::Types::DateTime;
 
-my $varchar_message = 'string is empty or longer than ';
 
 enum Decision, [ qw( ACCEPT REJECT ERROR REVIEW ) ];
 
@@ -93,27 +80,17 @@ enum CvResults, [ qw( D I M N P S U X 1 2 3 ) ];
 
 enum AVSResult, [ qw( A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 ) ];
 
-my $prefix = 'Business::CyberSource::';
-my $req    =  $prefix . 'RequestPart::';
-my $res    =  $prefix . 'ResponsePart::';
-
-my $itc = $req . 'Item';
-my $ptc = $req . 'PurchaseTotals';
-my $svc = $req . 'Service';
-my $cdc = $req . 'Card';
-my $btc = $req . 'BillTo';
-my $brc = $req . 'BusinessRules';
-my $ars = $req . 'Service::AuthReversal';
-my $cps = $req . 'Service::Capture';
-my $cds = $req . 'Service::Credit';
-my $txs = $req . 'Service::Tax';
-
-my $res_pt_c = $res . 'PurchaseTotals';
-my $res_ar_c = $res . 'AuthReply';
-my $res_re_c = $res . 'Reply';
-my $res_dc_c = $res . 'DCCReply';
-my $res_tr_c = $res . 'TaxReply';
-my $res_ti_c = $res . 'TaxReply::Item';
+my $prefix = 'Business::CyberSource::RequestPart::';
+my $itc = $prefix . 'Item';
+my $ptc = $prefix . 'PurchaseTotals';
+my $svc = $prefix . 'Service';
+my $cdc = $prefix . 'Card';
+my $btc = $prefix . 'BillTo';
+my $brc = $prefix . 'BusinessRules';
+my $ars = $prefix . 'Service::AuthReversal';
+my $cps = $prefix . 'Service::Capture';
+my $cds = $prefix . 'Service::Credit';
+my $txs = $prefix . 'Service::Tax';
 
 class_type Item,                { class => $itc };
 class_type PurchaseTotals,      { class => $ptc };
@@ -126,38 +103,20 @@ class_type CaptureService,      { class => $cps };
 class_type CreditService,       { class => $cds };
 class_type TaxService,          { class => $txs };
 
-class_type ResPurchaseTotals,   { class => $res_pt_c };
-class_type AuthReply,           { class => $res_ar_c };
-class_type Reply,               { class => $res_re_c };
-class_type DCCReply,            { class => $res_dc_c };
-class_type TaxReply,            { class => $res_tr_c };
-class_type TaxReplyItem,        { class => $res_ti_c };
+coerce Item,                from HashRef, via { load_class( $itc )->new( $_ ) };
+coerce PurchaseTotals,      from HashRef, via { load_class( $ptc )->new( $_ ) };
+coerce Service,             from HashRef, via { load_class( $svc )->new( $_ ) };
+coerce AuthReversalService, from HashRef, via { load_class( $ars )->new( $_ ) };
+coerce CaptureService,      from HashRef, via { load_class( $cps )->new( $_ ) };
+coerce CreditService,       from HashRef, via { load_class( $cds )->new( $_ ) };
+coerce TaxService,          from HashRef, via { load_class( $txs )->new( $_ ) };
+coerce Card,                from HashRef, via { load_class( $cdc )->new( $_ ) };
+coerce BillTo,              from HashRef, via { load_class( $btc )->new( $_ ) };
+coerce BusinessRules,       from HashRef, via { load_class( $brc )->new( $_ ) };
 
-coerce Item,                from HashRef, via { load_class( $itc      )->new( $_ ) };
-coerce PurchaseTotals,      from HashRef, via { load_class( $ptc      )->new( $_ ) };
-coerce Service,             from HashRef, via { load_class( $svc      )->new( $_ ) };
-coerce AuthReversalService, from HashRef, via { load_class( $ars      )->new( $_ ) };
-coerce CaptureService,      from HashRef, via { load_class( $cps      )->new( $_ ) };
-coerce CreditService,       from HashRef, via { load_class( $cds      )->new( $_ ) };
-coerce TaxService,          from HashRef, via { load_class( $txs      )->new( $_ ) };
-coerce Card,                from HashRef, via { load_class( $cdc      )->new( $_ ) };
-coerce BillTo,              from HashRef, via { load_class( $btc      )->new( $_ ) };
-coerce BusinessRules,       from HashRef, via { load_class( $brc      )->new( $_ ) };
-coerce ResPurchaseTotals,   from HashRef, via { load_class( $res_pt_c )->new( $_ ) };
-coerce AuthReply,           from HashRef, via { load_class( $res_ar_c )->new( $_ ) };
-coerce TaxReply,            from HashRef, via { load_class( $res_tr_c )->new( $_ ) };
-coerce DCCReply,            from HashRef, via { load_class( $res_dc_c )->new( $_ ) };
-coerce TaxReplyItem,        from HashRef, via { load_class( $res_ti_c )->new( $_ ) };
-coerce Reply,               from HashRef, via { load_class( $res_re_c )->new( $_ ) };
-
-subtype CountryCode,     as Alpha2Country;
-subtype ExpirationDate,  as MooseX::Types::DateTime::DateTime;
-subtype DateTimeFromW3C, as MooseX::Types::DateTime::DateTime;
-subtype DCCSupported,    as Bool;
-subtype TaxReplyItems,   as ArrayRef[TaxReplyItem];
-subtype Items,           as ArrayRef[Item];
-
-coerce DCCSupported, from Str, via  { return $_ eq 'TRUE' ? 1 : 0 };
+subtype CountryCode,
+	as Alpha2Country
+	;
 
 coerce CountryCode,
 	from Alpha3Country,
@@ -182,6 +141,16 @@ coerce CountryCode,
 
 enum DCCIndicator, [ qw( 1 2 3 ) ];
 
+class_type CreditCard, { class => 'Business::CyberSource::CreditCard' };
+
+coerce CreditCard,
+	from HashRef,
+	via {
+		return use_module('Business::CyberSource::CreditCard')->new( $_ );
+	};
+
+subtype ExpirationDate, as MooseX::Types::DateTime::DateTime;
+
 coerce ExpirationDate,
 	from HashRef,
 	via {
@@ -190,71 +159,50 @@ coerce ExpirationDate,
 
 subtype RequestID,
 	as NonEmptySimpleStr,
-	where { length $_ <= 29 },
-	message { $varchar_message . '29' }
+	where { length $_ <= 29 }
 	;
 
-
-coerce TaxReplyItems,
-	from ArrayRef[HashRef],
-	via {
-		my $items = $_;
-
-		my @items = map { load_class( $res_ti_c )->new( $_ ) } @{ $items };
-		return \@items;
-	};
+subtype Items, as ArrayRef[Item];
 
 coerce Items,
 	from ArrayRef[HashRef],
 	via {
+		load_class( $itc );
+
 		my $items = $_;
 
-		my @items = map { load_class($itc)->new( $_ ) } @{ $items };
+		my @items = map { $itc->new( $_ ) } @{ $items };
 		return \@items;
-	};
-
-
-coerce DateTimeFromW3C,
-	from DateTimeW3C,
-	via {
-		return load_class('DateTime::Format::W3CDTF')
-			->new->parse_datetime( $_ );
 	};
 
 subtype _VarcharOne,
 	as NonEmptySimpleStr,
-	where { length $_ <= 1 },
-	message { $varchar_message . '1' }
+	where { length $_ <= 1 }
 	;
 
 subtype _VarcharSeven,
 	as NonEmptySimpleStr,
-	where { length $_ <= 7 },
-	message { $varchar_message . '7' }
+	where { length $_ <= 7 }
 	;
 
 subtype _VarcharTen,
 	as NonEmptySimpleStr,
-	where { length $_ <= 10 },
-	message { $varchar_message . '10' }
+	where { length $_ <= 10 }
 	;
 
 subtype _VarcharTwenty,
 	as NonEmptySimpleStr,
-	where { length $_ <= 20 },
-	message { $varchar_message . '20' }
+	where { length $_ <= 20 }
 	;
 
 subtype _VarcharFifty,
 	as NonEmptySimpleStr,
-	where { length $_ <= 50 },
-	message { $varchar_message . '50' }
+	where { length $_ <= 50 }
 	;
 
 subtype _VarcharSixty,
 	as NonEmptySimpleStr,
-	where { length $_ <= 60 },
-	message { $varchar_message . '60' }
+	where { length $_ <= 60 }
 	;
 1;
 
@@ -270,7 +218,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version 0.007004
+version 0.006013
 
 =head1 SYNOPSIS
 
