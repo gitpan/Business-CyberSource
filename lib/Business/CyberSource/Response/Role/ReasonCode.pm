@@ -1,25 +1,43 @@
-package Business::CyberSource::Role::MerchantReferenceCode;
+package Business::CyberSource::Response::Role::ReasonCode;
 use strict;
 use warnings;
 use namespace::autoclean;
+use Module::Load qw( load );
 
 our $VERSION = '0.007005'; # TRIAL VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
-use MooseX::Types::CyberSource qw( _VarcharFifty );
+use MooseX::Types::Common::String 0.001005 qw( NumericCode );
 
-has reference_code => (
-	isa         => _VarcharFifty,
-	remote_name => 'merchantReferenceCode',
+has reason_code => (
+	isa         => NumericCode,
+	remote_name => 'reasonCode',
 	required    => 1,
 	is          => 'ro',
-	predicate   => 'has_reference_code',
+	predicate   => 'has_reason_code',
 );
 
-1;
+sub has_request_specific_reason_code {
+	my $self = shift;
 
-# ABSTRACT: Generic implementation of MerchantReferenceCode
+	load 'Carp';
+	Carp::carp 'DEPRECATED: please call has_reason_code';
+
+	return $self->has_reason_code
+}
+
+sub request_specific_reason_code {
+	my $self = shift;
+
+	load 'Carp';
+	Carp::carp 'DEPRECATED: please call reason_code';
+
+	return $self->reason_code
+}
+
+1;
+# ABSTRACT: Role for ReasonCode
 
 __END__
 
@@ -27,19 +45,13 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Role::MerchantReferenceCode - Generic implementation of MerchantReferenceCode
+Business::CyberSource::Response::Role::ReasonCode - Role for ReasonCode
 
 =head1 VERSION
 
 version 0.007005
 
-=head1 ATTRIBUTES
-
-=head2 reference_code
-
-Merchant-generated order reference or tracking number. CyberSource recommends
-that you send a unique value for each transaction so that you can perform
-meaningful searches for the transaction.
+=for Pod::Coverage request_specific_reason_code has_request_specific_reason_code
 
 =head1 BUGS
 

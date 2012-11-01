@@ -1,4 +1,4 @@
-package Business::CyberSource::Message;
+package Business::CyberSource::ResponsePart::Reply;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -8,23 +8,16 @@ our $VERSION = '0.007005'; # TRIAL VERSION
 use Moose;
 extends 'Business::CyberSource::MessagePart';
 with qw(
-	Business::CyberSource::Role::MerchantReferenceCode
-);
-
-use MooseX::ABC 0.06;
-
-has trace => (
-	isa       => 'XML::Compile::SOAP::Trace',
-	predicate => 'has_trace',
-	traits    => [ 'SetOnce' ],
-	is        => 'rw',
-	writer    => '_trace',
+	Business::CyberSource::Response::Role::ReasonCode
+	Business::CyberSource::Response::Role::ReconciliationID
+	Business::CyberSource::Response::Role::Amount
+	Business::CyberSource::Response::Role::ProcessorResponse
+	Business::CyberSource::Response::Role::RequestDateTime
 );
 
 __PACKAGE__->meta->make_immutable;
 1;
-
-# ABSTRACT: Abstract Message Class;
+# ABSTRACT: Generic Reply part of response
 
 __END__
 
@@ -32,7 +25,7 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Message - Abstract Message Class;
+Business::CyberSource::ResponsePart::Reply - Generic Reply part of response
 
 =head1 VERSION
 
@@ -46,16 +39,29 @@ L<Business::CyberSource::MessagePart>
 
 =over
 
-=item L<Business::CyberSource::Role::MerchantReferenceCode>
+=item L<Business::CyberSource::Response::Role::ReasonCode>
+
+=item L<Business::CyberSource::Response::Role::ReconciliationID>
+
+=item L<Business::CyberSource::Response::Role::Amount>
+
+=item L<Business::CyberSource::Response::Role::ProcessorResponse>
+
+=item L<Business::CyberSource::Response::Role::RequestDateTime>
 
 =back
 
 =head1 ATTRIBUTES
 
-=head2 trace
+=head2 amount
 
-A L<XML::Compile::SOAP::Trace> object which is populated only after the object
-has been submitted to CyberSource by a L<Business::CyberSource::Client>.
+=head2 reason_code
+
+=head2 reconciliation_id
+
+=head2 processor_response
+
+=head2 datetime
 
 =head1 BUGS
 

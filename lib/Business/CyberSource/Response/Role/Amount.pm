@@ -1,4 +1,4 @@
-package Business::CyberSource::Request::Role::TaxService;
+package Business::CyberSource::Response::Role::Amount;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -6,22 +6,17 @@ use namespace::autoclean;
 our $VERSION = '0.007005'; # TRIAL VERSION
 
 use Moose::Role;
-use MooseX::SetOnce;
 use MooseX::RemoteHelper;
 
-use MooseX::Types::CyberSource qw( TaxService );
-
-has tax_service => (
-	isa         => TaxService,
-	remote_name => 'taxService',
+has amount => (
+	isa         => 'Num',
+	remote_name => 'amount',
 	is          => 'rw',
-	traits      => ['SetOnce'],
-	coerce      => 1,
+	predicate   => 'has_amount',
 );
 
 1;
-
-# ABSTRACT: Tax Service
+# ABSTRACT: Role for Amount
 
 __END__
 
@@ -29,18 +24,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request::Role::TaxService - Tax Service
+Business::CyberSource::Response::Role::Amount - Role for Amount
 
 =head1 VERSION
 
 version 0.007005
-
-=head1 ATTRIBUTES
-
-=head2 tax_service
-
-L<Business::CyberSource::RequestPart::Service::Tax> you can pass an empty hash
-ref to the constructor, just to get the service to run.
 
 =head1 BUGS
 

@@ -1,27 +1,26 @@
-package Business::CyberSource::Request::Role::TaxService;
+package Business::CyberSource::Response::Role::RequestDateTime;
 use strict;
 use warnings;
 use namespace::autoclean;
+use Module::Load qw( load );
 
 our $VERSION = '0.007005'; # TRIAL VERSION
 
 use Moose::Role;
-use MooseX::SetOnce;
 use MooseX::RemoteHelper;
+use MooseX::Types::CyberSource qw( DateTimeFromW3C );
 
-use MooseX::Types::CyberSource qw( TaxService );
-
-has tax_service => (
-	isa         => TaxService,
-	remote_name => 'taxService',
-	is          => 'rw',
-	traits      => ['SetOnce'],
+has datetime => (
+	isa         => DateTimeFromW3C,
+	remote_name => 'requestDateTime',
+	is          => 'ro',
 	coerce      => 1,
+	predicate   => 'has_datetime',
 );
 
 1;
 
-# ABSTRACT: Tax Service
+# ABSTRACT: Role to provide datetime attribute
 
 __END__
 
@@ -29,18 +28,16 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Request::Role::TaxService - Tax Service
+Business::CyberSource::Response::Role::RequestDateTime - Role to provide datetime attribute
 
 =head1 VERSION
 
 version 0.007005
 
-=head1 ATTRIBUTES
+=head1 DESCRIPTION
 
-=head2 tax_service
-
-L<Business::CyberSource::RequestPart::Service::Tax> you can pass an empty hash
-ref to the constructor, just to get the service to run.
+Several responses include a datetime that has a key name of C<requestDateTime>
+this role is provided for those response sections.
 
 =head1 BUGS
 
