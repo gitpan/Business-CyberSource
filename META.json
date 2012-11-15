@@ -98,15 +98,16 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/xenoterracide/Business-CyberSource/issues"
+         "mailto" : "development@hostgator.com",
+         "web" : "https://github.com/hostgator/business-cybersource/issues"
       },
-      "homepage" : "http://search.cpan.org/dist/Business-CyberSource/",
+      "homepage" : "https://metacpan.org/release/Business-CyberSource",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/xenoterracide/Business-CyberSource.git",
-         "web" : "https://github.com/xenoterracide/Business-CyberSource"
+         "url" : "git://github.com/hostgator/business-cybersource.git",
+         "web" : "https://github.com/hostgator/business-cybersource"
       }
    },
-   "version" : "0.007006"
+   "version" : "0.007007"
 }
 

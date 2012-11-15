@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.007006'; # VERSION
+our $VERSION = '0.007007'; # VERSION
 
 1;
 
@@ -19,7 +19,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.007006
+version 0.007007
 
 =head1 DESCRIPTION
 
@@ -209,7 +209,8 @@ for the help with getting L<XML::Compile::SOAP::WSS> working.
 =head1 BUGS
 
 Please report any bugs or feature requests on the bugtracker website
-https://github.com/xenoterracide/Business-CyberSource/issues
+https://github.com/hostgator/business-cybersource/issues or by email to
+development@hostgator.com.
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
@@ -221,7 +222,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2012 by HostGator.com.
+This software is Copyright (c) 2012 by L<HostGator.com|http://hostgator.com>.
 
 This is free software, licensed under:
 
