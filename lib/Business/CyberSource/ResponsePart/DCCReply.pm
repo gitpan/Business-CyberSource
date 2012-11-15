@@ -1,9 +1,10 @@
 package Business::CyberSource::ResponsePart::DCCReply;
 use strict;
 use warnings;
+use Module::Load 'load';
 use namespace::autoclean;
 
-our $VERSION = '0.007005'; # TRIAL VERSION
+our $VERSION = '0.007006'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -13,13 +14,31 @@ with qw(
 
 use MooseX::Types::CyberSource qw( DCCSupported );
 
-has dcc_supported => (
+sub has_dcc_supported {
+	my $self = shift;
+
+	load 'Carp';
+	Carp::carp 'DEPRECATED: please call has_supported';
+
+	return $self->has_supported;
+}
+
+sub dcc_supported {
+	my $self = shift;
+
+	load 'Carp';
+	Carp::carp 'DEPRECATED: please call supported';
+
+	return $self->supported;
+}
+
+has supported => (
 	isa         => DCCSupported,
 	remote_name => 'dccSupported',
 	is          => 'ro',
 	coerce      => 1,
 	required    => 1,
-	predicate   => 'has_dcc_supported',
+	predicate   => 'has_supported',
 );
 
 has margin_rate_percentage => (
@@ -53,7 +72,7 @@ Business::CyberSource::ResponsePart::DCCReply - Reply section for DCC
 
 =head1 VERSION
 
-version 0.007005
+version 0.007006
 
 =head1 EXTENDS
 
@@ -69,7 +88,7 @@ L<Business::CyberSource::MessagePart>
 
 =head1 ATTRIBUTES
 
-=head2 dcc_supported
+=head2 supported
 
 B<Type:> C<Bool>
 

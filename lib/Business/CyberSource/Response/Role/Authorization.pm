@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007005'; # TRIAL VERSION
+our $VERSION = '0.007006'; # VERSION
 
 use Moose::Role;
 with qw(
@@ -25,7 +25,7 @@ Business::CyberSource::Response::Role::Authorization - DEPRECATED NOOP will be r
 
 =head1 VERSION
 
-version 0.007005
+version 0.007006
 
 =head1 BUGS
 

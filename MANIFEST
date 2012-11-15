@@ -80,6 +80,7 @@ t/authorization-error.t
 t/authorization-items.t
 t/authorization-reject.t
 t/authorization-tax-service.t
+t/backcompat.t
 t/bad-credentials.t
 t/capture-reject.t
 t/capture.t
