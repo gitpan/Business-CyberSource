@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007007'; # VERSION
+our $VERSION = '0.007008'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -28,8 +28,11 @@ use Moose::Util::TypeConstraints;
 sub BUILD { ## no critic ( Subroutines::RequireFinalReturn )
 	my $self = shift;
 	if ( $self->country eq 'US' or $self->country eq 'CA' ) {
-		confess 'postal code is required for US or Canada'
+		confess 'postal_code is required for US or Canada'
 			unless $self->has_postal_code;
+
+		confess 'state is required for US or Canada'
+			unless $self->has_state;
 	}
 }
 
@@ -156,7 +159,7 @@ Business::CyberSource::RequestPart::BillTo - BillTo information
 
 =head1 VERSION
 
-version 0.007007
+version 0.007008
 
 =head1 EXTENDS
 
