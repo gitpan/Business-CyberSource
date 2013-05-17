@@ -13,17 +13,7 @@ install_share dist => "share";
 my %WriteMakefileArgs = (
   "ABSTRACT" => "Perl interface to the CyberSource Simple Order SOAP API",
   "AUTHOR" => "Caleb Cushing <xenoterracide\@gmail.com>",
-  "BUILD_REQUIRES" => {
-    "DateTime" => 0,
-    "File::Find" => 0,
-    "File::Temp" => 0,
-    "FindBin" => 0,
-    "Test::Fatal" => 0,
-    "Test::Moose" => 0,
-    "Test::More" => "0.88",
-    "Test::Requires" => 0,
-    "Test::Requires::Env" => 0
-  },
+  "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30",
     "File::ShareDir::Install" => "0.03"
@@ -33,6 +23,7 @@ my %WriteMakefileArgs = (
   "LICENSE" => "artistic_2",
   "NAME" => "Business::CyberSource",
   "PREREQ_PM" => {
+    "Business::CreditCard" => 0,
     "Class::Load" => "0.20",
     "Config" => 0,
     "DateTime::Format::W3CDTF" => "0.06",
@@ -72,12 +63,38 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.007010",
+  "TEST_REQUIRES" => {
+    "Business::CreditCard" => "0.32",
+    "DateTime" => 0,
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "FindBin" => 0,
+    "Test::Fatal" => 0,
+    "Test::Method" => 0,
+    "Test::Moose" => 0,
+    "Test::More" => "0.88",
+    "Test::Requires" => 0,
+    "Test::Requires::Env" => 0
+  },
+  "VERSION" => "0.007011",
   "test" => {
     "TESTS" => "t/*.t"
   }
 );
 
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
   my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};

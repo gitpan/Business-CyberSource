@@ -49,6 +49,7 @@ sub pmver {
 }
 
 eval { $v .= pmver('Bread::Board','0.25') };
+eval { $v .= pmver('Business::CreditCard','0.32') };
 eval { $v .= pmver('Class::Load','0.20') };
 eval { $v .= pmver('Config','any version') };
 eval { $v .= pmver('DateTime','any version') };
@@ -86,8 +87,10 @@ eval { $v .= pmver('MooseX::Types::NetAddr::IP','any version') };
 eval { $v .= pmver('MooseX::Types::Path::Class','any version') };
 eval { $v .= pmver('MooseX::UndefTolerant','any version') };
 eval { $v .= pmver('Pod::Coverage::TrustPod','any version') };
+eval { $v .= pmver('Test::CPAN::Changes','0.19') };
 eval { $v .= pmver('Test::CPAN::Meta','any version') };
 eval { $v .= pmver('Test::Fatal','any version') };
+eval { $v .= pmver('Test::Method','any version') };
 eval { $v .= pmver('Test::Moose','any version') };
 eval { $v .= pmver('Test::More','0.88') };
 eval { $v .= pmver('Test::Pod','1.41') };
