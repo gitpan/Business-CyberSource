@@ -3,12 +3,11 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose::Role;
 with qw(
 	Business::CyberSource::Role::ForeignCurrency
-	Business::CyberSource::Response::Role::Accept
 );
 
 has dcc_supported => (
@@ -43,7 +42,7 @@ Business::CyberSource::Response::Role::DCC - Role that provides attributes speci
 
 =head1 VERSION
 
-version 0.007011
+version 0.008000
 
 =head1 ATTRIBUTES
 

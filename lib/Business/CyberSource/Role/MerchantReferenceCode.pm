@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -31,7 +31,7 @@ Business::CyberSource::Role::MerchantReferenceCode - Generic implementation of M
 
 =head1 VERSION
 
-version 0.007011
+version 0.008000
 
 =head1 ATTRIBUTES
 

@@ -3,13 +3,10 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose;
 use MooseX::StrictConstructor;
-use MooseX::ABC 0.06;
-
-#requires 'create';
 
 __PACKAGE__->meta->make_immutable;
 1;
@@ -26,7 +23,7 @@ Business::CyberSource::Factory - Factory Base Class
 
 =head1 VERSION
 
-version 0.007011
+version 0.008000
 
 =head1 BUGS
 

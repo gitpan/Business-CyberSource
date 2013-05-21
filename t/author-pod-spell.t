@@ -24,7 +24,7 @@ datetime
 merchantID
 ip
 cid
-cvn
+CVN
 cvc
 cvv
 login
@@ -73,7 +73,6 @@ Item
 BusinessRules
 Authorization
 DCCReply
-CVN
 ProcessorResponse
 ReconciliationID
 BillTo
@@ -93,7 +92,6 @@ AuthReply
 ExpiredCard
 Tax
 BillingInfo
-Accept
 Card
 CreditCardInfo
 ForeignCurrency

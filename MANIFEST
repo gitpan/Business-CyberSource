@@ -37,11 +37,7 @@ lib/Business/CyberSource/RequestPart/Service/Capture.pm
 lib/Business/CyberSource/RequestPart/Service/Credit.pm
 lib/Business/CyberSource/RequestPart/Service/Tax.pm
 lib/Business/CyberSource/Response.pm
-lib/Business/CyberSource/Response/Role/AVS.pm
-lib/Business/CyberSource/Response/Role/Accept.pm
 lib/Business/CyberSource/Response/Role/Amount.pm
-lib/Business/CyberSource/Response/Role/Authorization.pm
-lib/Business/CyberSource/Response/Role/CVN.pm
 lib/Business/CyberSource/Response/Role/DCC.pm
 lib/Business/CyberSource/Response/Role/ProcessorResponse.pm
 lib/Business/CyberSource/Response/Role/ReasonCode.pm
@@ -80,7 +76,6 @@ t/authorization-error.t
 t/authorization-items.t
 t/authorization-reject.t
 t/authorization-tax-service.t
-t/backcompat.t
 t/bad-credentials.t
 t/capture-reject.t
 t/capture.t

@@ -3,16 +3,12 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose;
 use MooseX::StrictConstructor;
-use MooseX::ABC 0.06;
 
 use Class::Load qw( load_class );
-
-requires 'run';
-
 
 sub debug {
 	my ( $self, $message ) = shift;
@@ -49,7 +45,7 @@ Business::CyberSource::Rule - Abstract Rule Base
 
 =head1 VERSION
 
-version 0.007011
+version 0.008000
 
 =head1 METHODS
 

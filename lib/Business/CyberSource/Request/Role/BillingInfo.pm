@@ -2,8 +2,9 @@ package Business::CyberSource::Request::Role::BillingInfo;
 use strict;
 use warnings;
 use namespace::autoclean;
+use Module::Load 'load';
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose::Role;
 use MooseX::Aliases;
@@ -19,6 +20,11 @@ has bill_to => (
 	coerce      => 1,
 );
 
+before billing_info => sub {
+	load Carp;
+	Carp::cluck 'DEPRECATED: call is_accept instead';
+};
+
 1;
 
 # ABSTRACT: Role for requests that require "bill to" information
@@ -33,7 +39,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version 0.007011
+version 0.008000
 
 =head1 BUGS
 

@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.007011'; # VERSION
+our $VERSION = '0.008000'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -17,24 +17,6 @@ has reason_code => (
 	is          => 'ro',
 	predicate   => 'has_reason_code',
 );
-
-sub has_request_specific_reason_code {
-	my $self = shift;
-
-	load 'Carp';
-	Carp::carp 'DEPRECATED: please call has_reason_code';
-
-	return $self->has_reason_code
-}
-
-sub request_specific_reason_code {
-	my $self = shift;
-
-	load 'Carp';
-	Carp::carp 'DEPRECATED: please call reason_code';
-
-	return $self->reason_code
-}
 
 1;
 # ABSTRACT: Role for ReasonCode
@@ -49,9 +31,7 @@ Business::CyberSource::Response::Role::ReasonCode - Role for ReasonCode
 
 =head1 VERSION
 
-version 0.007011
-
-=for Pod::Coverage request_specific_reason_code has_request_specific_reason_code
+version 0.008000
 
 =head1 BUGS
 

@@ -3,7 +3,7 @@ NAME
     SOAP API
 
 VERSION
-    version 0.007011
+    version 0.008000
 
 DESCRIPTION
     This library is a Perl interface to the CyberSource Simple Order SOAP
