@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load 'load';
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Message';
@@ -12,7 +12,6 @@ with qw(
 	Business::CyberSource::Response::Role::ReasonCode
 );
 
-use MooseX::Aliases;
 use MooseX::Types::Common::String 0.001005 qw( NonEmptySimpleStr );
 use MooseX::Types::CyberSource qw(
 	Decision
@@ -50,8 +49,6 @@ has request_token => (
 	required    => 1,
 	is          => 'ro',
 );
-
-# accepted
 
 has purchase_totals => (
 	isa         => ResPurchaseTotals,
@@ -125,7 +122,6 @@ has is_accept => (
 	is       => 'ro',
 	lazy     => 1,
 	init_arg => undef,
-	alias    => [ qw( accepted is_accepted ) ],
 	default  => sub {
 		my $self = shift;
 		return $self->decision eq 'ACCEPT' ? 1 : 0;
@@ -241,11 +237,6 @@ sub _build_reason_text {
 	return $reason{$reason_code};
 }
 
-before [ qw( accepted is_accepted ) ] => sub {
-	load Carp;
-	Carp::cluck 'DEPRECATED: call is_accept instead';
-};
-
 __PACKAGE__->meta->make_immutable;
 1;
 
@@ -261,7 +252,7 @@ Business::CyberSource::Response - Response Object
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 SYNOPSIS
 
@@ -422,7 +413,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

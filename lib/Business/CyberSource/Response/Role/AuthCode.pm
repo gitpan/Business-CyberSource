@@ -1,4 +1,4 @@
-package Business::CyberSource::Response::Role::ReconciliationID;
+package Business::CyberSource::Response::Role::AuthCode;
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -7,17 +7,17 @@ our $VERSION = '0.009000'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
+use MooseX::Types::CyberSource qw( _VarcharSeven );
 
-has reconciliation_id => (
-	isa         => 'Str',
-	remote_name => 'reconciliationID',
+has auth_code => (
+	isa         => _VarcharSeven,
+	remote_name => 'authorizationCode',
+	predicate   => 'has_auth_code',
 	is          => 'ro',
-	predicate   => 'has_reconciliation_id',
 );
 
 1;
-
-# ABSTRACT: Reconciliation Identifier
+# ABSTRACT: Authorization Code
 
 __END__
 
@@ -25,15 +25,11 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identifier
+Business::CyberSource::Response::Role::AuthCode - Authorization Code
 
 =head1 VERSION
 
 version 0.009000
-
-=head1 ATTRIBUTES
-
-=head2 reconciliation_id
 
 =head1 BUGS
 

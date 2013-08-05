@@ -4,26 +4,19 @@ use warnings;
 use namespace::autoclean;
 use Module::Load 'load';
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 use Moose::Role;
-use MooseX::Aliases;
 use MooseX::RemoteHelper;
 use MooseX::Types::CyberSource qw( BillTo );
 
 has bill_to => (
 	isa         => BillTo,
 	remote_name => 'billTo',
-	alias       => ['billing_info'],
 	is          => 'ro',
 	required    => 1,
 	coerce      => 1,
 );
-
-before billing_info => sub {
-	load Carp;
-	Carp::cluck 'DEPRECATED: call is_accept instead';
-};
 
 1;
 
@@ -39,7 +32,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 BUGS
 
@@ -56,7 +49,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 1;
 
@@ -19,7 +19,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 DESCRIPTION
 
@@ -42,15 +42,19 @@ documented, or are missing here, please file a bug. I'll be happy to add them,
 but due to the size of the upstream API, I have not had time to cover all the features
 and some are currently undocumented.
 
+=encoding utf8
+
 =head1 ENVIRONMENT
 
-all environment variables are prefixed with C<PERL_BUSINESS_CYBERSOURCE_>
+=head2 Debugging
 
-=head2 DEBUG
-
-causes all requests to be C<carp>ed to STDERR
+Supports L<MooseY::RemoteHelper::Role::Client>s C<REMOTE_CLIENT_DEBUG>
+variable. This can be set to either C<0>, C<1>, C<2>, for varying levels of
+verbosity.
 
 =head2 Testing
+
+all environment variables are prefixed with C<PERL_BUSINESS_CYBERSOURCE_>
 
 =head3 Credentials
 
@@ -91,10 +95,10 @@ A test credit card number provided by your your credit card processor
 	use Business::CyberSource::Request::Capture;
 
 	my $client = Business::CyberSource::Client->new({
-		username   => 'Merchant ID',
-		password   => 'API Key',
-		production => 0,
-		debug      => 1, # do not set in production as it prints sensative
+		user  => 'Merchant ID',
+		pass  => 'API Key',
+		test  => 1,
+		debug => 1, # do not set in production as it prints sensative
                          # information
 	});
 
@@ -133,7 +137,7 @@ A test credit card number provided by your your credit card processor
 
 	my $auth_response;
 	try {
-		$auth_response = $client->run_transaction( $auth_request );
+		$auth_response = $client->submit( $auth_request );
 	}
 	catch {
 		carp $_;
@@ -158,7 +162,7 @@ A test credit card number provided by your your credit card processor
 
 		my $capture_response;
 		try {
-			$capture_response = $client->run_transaction( $capture_request );
+			$capture_response = $client->submit( $capture_request );
 		}
 		catch {
 			carp $_;
@@ -177,7 +181,8 @@ L<Sale|Business::CyberSource::Request::Sale>. Most common Reasons for
 Exceptions would be bad input into the request object (which validates things)
 or CyberSource just randomly throwing an ERROR, in which case you can usually
 just retry later. You don't have to print the response on error during
-development, you can easily just use the L<DEBUG Environment variable|/"DEBUG">
+development, you can easily just use the C<REMOTE_CLIENT_DEBUG> Environment
+variable.
 
 =head1 ACKNOWLEDGMENTS
 
@@ -186,6 +191,14 @@ development, you can easily just use the L<DEBUG Environment variable|/"DEBUG">
 =item * Mark Overmeer
 
 for the help with getting L<XML::Compile::SOAP::WSS> working.
+
+=item * L<HostGator|http://hostgator.com>
+
+funding initial development.
+
+=item * L<GüdTech|http://gudtech.com>
+
+funding further development.
 
 =back
 
@@ -214,7 +227,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

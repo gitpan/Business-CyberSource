@@ -4,7 +4,7 @@ use warnings;
 use Class::Load 0.20 qw( load_class );
 use namespace::autoclean;
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 use MooseX::Types -declare => [ qw(
 	AVSResult
@@ -43,6 +43,8 @@ use MooseX::Types -declare => [ qw(
 
 	DateTimeFromW3C
 
+	Client
+
 	_VarcharOne
 	_VarcharSeven
 	_VarcharTen
@@ -52,7 +54,7 @@ use MooseX::Types -declare => [ qw(
 ) ];
 
 use MooseX::Types::Common::Numeric qw( PositiveOrZeroNum                       );
-use MooseX::Types::Common::String  qw( NonEmptySimpleStr                       );
+use MooseX::Types::Common::String  qw( NonEmptySimpleStr SimpleStr             );
 use MooseX::Types::Moose           qw( Int Num Str HashRef ArrayRef            );
 use MooseX::Types::Locale::Country qw( Alpha2Country Alpha3Country CountryName );
 use MooseX::Types::DateTime        qw(                                         );
@@ -88,7 +90,7 @@ enum CardTypeCode, [ qw(
 
 enum CvIndicator, [ qw( 0 1 2 9 ) ];
 
-enum CvResults, [ qw( D I M N P S U X 1 2 3 ) ];
+enum CvResults, [ qw( D I M N P S U X 1 2 3 ),'' ];
 
 enum AVSResult, [ qw( A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 ) ];
 
@@ -114,6 +116,8 @@ my $res_dc_c = $res . 'DCCReply';
 my $res_tr_c = $res . 'TaxReply';
 my $res_ti_c = $res . 'TaxReply::Item';
 
+my $client = 'Business::CyberSource::Client';
+
 class_type Item,                { class => $itc };
 class_type PurchaseTotals,      { class => $ptc };
 class_type Service,             { class => $svc };
@@ -132,6 +136,8 @@ class_type DCCReply,            { class => $res_dc_c };
 class_type TaxReply,            { class => $res_tr_c };
 class_type TaxReplyItem,        { class => $res_ti_c };
 
+class_type Client,              { class => $client   };
+
 coerce Item,                from HashRef, via { load_class( $itc      )->new( $_ ) };
 coerce PurchaseTotals,      from HashRef, via { load_class( $ptc      )->new( $_ ) };
 coerce Service,             from HashRef, via { load_class( $svc      )->new( $_ ) };
@@ -148,12 +154,14 @@ coerce TaxReply,            from HashRef, via { load_class( $res_tr_c )->new( $_
 coerce DCCReply,            from HashRef, via { load_class( $res_dc_c )->new( $_ ) };
 coerce TaxReplyItem,        from HashRef, via { load_class( $res_ti_c )->new( $_ ) };
 coerce Reply,               from HashRef, via { load_class( $res_re_c )->new( $_ ) };
+coerce Client,              from HashRef, via { load_class( $client   )->new( $_ ) };
 
 subtype CountryCode,     as Alpha2Country;
 subtype ExpirationDate,  as MooseX::Types::DateTime::DateTime;
 subtype DateTimeFromW3C, as MooseX::Types::DateTime::DateTime;
 subtype TaxReplyItems,   as ArrayRef[TaxReplyItem];
 subtype Items,           as ArrayRef[Item];
+
 
 coerce CountryCode,
 	from Alpha3Country,
@@ -230,7 +238,7 @@ subtype _VarcharSeven,
 	;
 
 subtype _VarcharTen,
-	as NonEmptySimpleStr,
+	as SimpleStr,
 	where { length $_ <= 10 },
 	message { $varchar_message . '10' }
 	;
@@ -266,7 +274,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 SYNOPSIS
 
@@ -301,6 +309,10 @@ LOCALE_CODE_ALPHA_3
 =head1 TYPES
 
 =over
+
+=item * C<Client>
+
+L<Business::CyberSource::Client>
 
 =item * C<Decision>
 
@@ -372,7 +384,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

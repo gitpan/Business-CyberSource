@@ -4,11 +4,12 @@ use warnings;
 use namespace::autoclean;
 use Class::Load 0.20 qw( load_class );
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
 with qw(
+	Business::CyberSource::Response::Role::AuthCode
 	Business::CyberSource::Response::Role::ReconciliationID
 	Business::CyberSource::Response::Role::ReasonCode
 	Business::CyberSource::Response::Role::Amount
@@ -16,19 +17,12 @@ with qw(
 );
 
 use MooseX::Types::CyberSource   qw(
-	_VarcharSeven
 	_VarcharTen
 	AVSResult
 	CvResults
 	DateTimeFromW3C
 );
 
-has auth_code => (
-	isa         => _VarcharSeven,
-	remote_name => 'authorizationCode',
-	predicate   => 'has_auth_code',
-	is          => 'ro',
-);
 
 has auth_record => (
 	isa         => 'Str',
@@ -87,7 +81,7 @@ Business::CyberSource::ResponsePart::AuthReply - Reply section for Authorization
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 ATTRIBUTES
 
@@ -166,7 +160,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

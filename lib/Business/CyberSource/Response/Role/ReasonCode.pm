@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.008000'; # VERSION
+our $VERSION = '0.009000'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -31,7 +31,7 @@ Business::CyberSource::Response::Role::ReasonCode - Role for ReasonCode
 
 =head1 VERSION
 
-version 0.008000
+version 0.009000
 
 =head1 BUGS
 
@@ -48,7 +48,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by L<HostGator.com|http://hostgator.com>.
+This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

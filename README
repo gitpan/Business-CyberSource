@@ -3,7 +3,7 @@ NAME
     SOAP API
 
 VERSION
-    version 0.008000
+    version 0.009000
 
 DESCRIPTION
     This library is a Perl interface to the CyberSource Simple Order SOAP
@@ -26,12 +26,14 @@ DESCRIPTION
     cover all the features and some are currently undocumented.
 
 ENVIRONMENT
-    all environment variables are prefixed with "PERL_BUSINESS_CYBERSOURCE_"
-
-  DEBUG
-    causes all requests to be "carp"ed to STDERR
+  Debugging
+    Supports MooseY::RemoteHelper::Role::Clients "REMOTE_CLIENT_DEBUG"
+    variable. This can be set to either 0, 1, 2, for varying levels of
+    verbosity.
 
   Testing
+    all environment variables are prefixed with "PERL_BUSINESS_CYBERSOURCE_"
+
    Credentials
    USERNAME
    PASSWORD
@@ -60,10 +62,10 @@ EXAMPLE
             use Business::CyberSource::Request::Capture;
 
             my $client = Business::CyberSource::Client->new({
-                    username   => 'Merchant ID',
-                    password   => 'API Key',
-                    production => 0,
-                    debug      => 1, # do not set in production as it prints sensative
+                    user  => 'Merchant ID',
+                    pass  => 'API Key',
+                    test  => 1,
+                    debug => 1, # do not set in production as it prints sensative
                              # information
             });
 
@@ -102,7 +104,7 @@ EXAMPLE
 
             my $auth_response;
             try {
-                    $auth_response = $client->run_transaction( $auth_request );
+                    $auth_response = $client->submit( $auth_request );
             }
             catch {
                     carp $_;
@@ -127,7 +129,7 @@ EXAMPLE
 
                     my $capture_response;
                     try {
-                            $capture_response = $client->run_transaction( $capture_request );
+                            $capture_response = $client->submit( $capture_request );
                     }
                     catch {
                             carp $_;
@@ -146,12 +148,20 @@ EXAMPLE
     into the request object (which validates things) or CyberSource just
     randomly throwing an ERROR, in which case you can usually just retry
     later. You don't have to print the response on error during development,
-    you can easily just use the DEBUG Environment variable
+    you can easily just use the "REMOTE_CLIENT_DEBUG" Environment variable.
 
 ACKNOWLEDGMENTS
     *   Mark Overmeer
 
         for the help with getting XML::Compile::SOAP::WSS working.
+
+    *   HostGator <http://hostgator.com>
+
+        funding initial development.
+
+    *   GüdTech <http://gudtech.com>
+
+        funding further development.
 
 SEE ALSO
     *   Checkout::CyberSource::SOAP
@@ -169,8 +179,8 @@ AUTHOR
     Caleb Cushing <xenoterracide@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is Copyright (c) 2013 by HostGator.com
-    <http://hostgator.com>.
+    This software is Copyright (c) 2013 by Caleb Cushing
+    <xenoterracide@gmail.com>.
 
     This is free software, licensed under:
 
