@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose;
 with 'MooseY::RemoteHelper::Role::Client';
@@ -18,7 +18,7 @@ use MooseX::Types::Path::Class qw( File Dir );
 use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
 
 use Config;
-use Class::Load 0.20 qw( load_class );
+use Module::Runtime  qw( use_module );
 use Module::Load     qw( load       );
 
 use XML::Compile::SOAP::WSS 1.04;
@@ -149,7 +149,7 @@ sub _build_cybs_wsdl {
 	my $dir = $self->test ? 'test' : 'production';
 
 	load 'File::ShareDir::ProjectDistDir', 'dist_file';
-	return load_class('Path::Class::File')->new(
+	return use_module('Path::Class::File')->new(
 			dist_file(
 				'Business-CyberSource',
 				$dir
@@ -167,7 +167,7 @@ sub _build_cybs_xsd {
 	my $dir = $self->test ? 'test' : 'production';
 
 	load 'File::ShareDir::ProjectDistDir', 'dist_file';
-	return load_class('Path::Class::File')->new(
+	return use_module('Path::Class::File')->new(
 			dist_file(
 				'Business-CyberSource',
 				$dir
@@ -206,7 +206,7 @@ has _response_factory => (
 	lazy     => 1,
 	default  => sub {
 		return
-			load_class('Business::CyberSource::Factory::Response')
+			use_module('Business::CyberSource::Factory::Response')
 			->new;
 	},
 );
@@ -216,7 +216,7 @@ has _rule_factory => (
 	is       => 'ro',
 	lazy     => 1,
 	default  => sub {
-		return load_class('Business::CyberSource::Factory::Rule')->new;
+		return use_module('Business::CyberSource::Factory::Rule')->new;
 	},
 );
 
@@ -315,7 +315,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 SYNOPSIS
 

@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 1;
 
@@ -19,7 +19,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 DESCRIPTION
 
@@ -62,8 +62,8 @@ all environment variables are prefixed with C<PERL_BUSINESS_CYBERSOURCE_>
 
 =head4 PASSWORD
 
-set's the L<username|Busines::CyberSource::Client/"username"> and
-L<password|Busines::CyberSource::Client/"password"> in the client for running
+set's the L<username|Busines::CyberSource::Client/"user"> and
+L<password|Busines::CyberSource::Client/"pass"> in the client for running
 tests.
 
 =head3 Direct Currency Conversion

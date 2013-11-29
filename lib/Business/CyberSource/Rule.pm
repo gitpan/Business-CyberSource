@@ -3,17 +3,17 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose;
 use MooseX::StrictConstructor;
 
-use Class::Load qw( load_class );
+use Module::Runtime qw( use_module );
 
 sub debug {
 	my ( $self, $message ) = shift;
 
-	load_class 'Carp';
+	use_module 'Carp';
 	our @CARP_NOT = ( __PACKAGE__, blessed( $self->client ) );
 
 	$message //= blessed( $self ) . ' matched';
@@ -45,7 +45,7 @@ Business::CyberSource::Rule - Abstract Rule Base
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 METHODS
 

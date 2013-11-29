@@ -2,9 +2,9 @@ package Business::CyberSource::ResponsePart::AuthReply;
 use strict;
 use warnings;
 use namespace::autoclean;
-use Class::Load 0.20 qw( load_class );
+use Module::Runtime  qw( use_module );
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -81,7 +81,7 @@ Business::CyberSource::ResponsePart::AuthReply - Reply section for Authorization
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 ATTRIBUTES
 

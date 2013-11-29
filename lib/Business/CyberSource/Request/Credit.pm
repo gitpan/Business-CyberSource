@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request';
@@ -14,10 +14,10 @@ with qw(
 
 use MooseX::Types::CyberSource qw( BillTo Card CreditService);
 
-use Class::Load qw( load_class );
+use Module::Runtime qw( use_module );
 
 sub _build_service {
-	load_class('Business::CyberSource::RequestPart::Service::Credit');
+	use_module('Business::CyberSource::RequestPart::Service::Credit');
 	return Business::CyberSource::RequestPart::Service::Credit->new;
 }
 
@@ -57,7 +57,7 @@ Business::CyberSource::Request::Credit - CyberSource Credit Request Object
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 SYNOPSIS
 

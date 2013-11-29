@@ -1,90 +1,99 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.011
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.037
 
-use Test::More 0.88;
+use Test::More  tests => 52 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
-use Capture::Tiny qw{ capture };
-
-my @module_files = qw(
-lib/Business/CyberSource.pm
-lib/Business/CyberSource/Client.pm
-lib/Business/CyberSource/Factory.pm
-lib/Business/CyberSource/Factory/Request.pm
-lib/Business/CyberSource/Factory/Response.pm
-lib/Business/CyberSource/Factory/Rule.pm
-lib/Business/CyberSource/Message.pm
-lib/Business/CyberSource/MessagePart.pm
-lib/Business/CyberSource/Request.pm
-lib/Business/CyberSource/Request/AuthReversal.pm
-lib/Business/CyberSource/Request/Authorization.pm
-lib/Business/CyberSource/Request/Capture.pm
-lib/Business/CyberSource/Request/Credit.pm
-lib/Business/CyberSource/Request/DCC.pm
-lib/Business/CyberSource/Request/FollowOnCredit.pm
-lib/Business/CyberSource/Request/Role/BillingInfo.pm
-lib/Business/CyberSource/Request/Role/CreditCardInfo.pm
-lib/Business/CyberSource/Request/Role/DCC.pm
-lib/Business/CyberSource/Request/Role/TaxService.pm
-lib/Business/CyberSource/Request/Sale.pm
-lib/Business/CyberSource/Request/StandAloneCredit.pm
-lib/Business/CyberSource/RequestPart/BillTo.pm
-lib/Business/CyberSource/RequestPart/BusinessRules.pm
-lib/Business/CyberSource/RequestPart/Card.pm
-lib/Business/CyberSource/RequestPart/Item.pm
-lib/Business/CyberSource/RequestPart/PurchaseTotals.pm
-lib/Business/CyberSource/RequestPart/Service.pm
-lib/Business/CyberSource/RequestPart/Service/AuthReversal.pm
-lib/Business/CyberSource/RequestPart/Service/Capture.pm
-lib/Business/CyberSource/RequestPart/Service/Credit.pm
-lib/Business/CyberSource/RequestPart/Service/Tax.pm
-lib/Business/CyberSource/Response.pm
-lib/Business/CyberSource/Response/Role/Amount.pm
-lib/Business/CyberSource/Response/Role/AuthCode.pm
-lib/Business/CyberSource/Response/Role/DCC.pm
-lib/Business/CyberSource/Response/Role/ProcessorResponse.pm
-lib/Business/CyberSource/Response/Role/ReasonCode.pm
-lib/Business/CyberSource/Response/Role/ReconciliationID.pm
-lib/Business/CyberSource/Response/Role/RequestDateTime.pm
-lib/Business/CyberSource/ResponsePart/AuthReply.pm
-lib/Business/CyberSource/ResponsePart/DCCReply.pm
-lib/Business/CyberSource/ResponsePart/PurchaseTotals.pm
-lib/Business/CyberSource/ResponsePart/Reply.pm
-lib/Business/CyberSource/ResponsePart/TaxReply.pm
-lib/Business/CyberSource/ResponsePart/TaxReply/Item.pm
-lib/Business/CyberSource/Role/Currency.pm
-lib/Business/CyberSource/Role/ForeignCurrency.pm
-lib/Business/CyberSource/Role/MerchantReferenceCode.pm
-lib/Business/CyberSource/Rule.pm
-lib/Business/CyberSource/Rule/ExpiredCard.pm
-lib/Business/CyberSource/Rule/RequestIDisZero.pm
-lib/MooseX/Types/CyberSource.pm
+my @module_files = (
+    'Business/CyberSource.pm',
+    'Business/CyberSource/Client.pm',
+    'Business/CyberSource/Factory.pm',
+    'Business/CyberSource/Factory/Request.pm',
+    'Business/CyberSource/Factory/Response.pm',
+    'Business/CyberSource/Factory/Rule.pm',
+    'Business/CyberSource/Message.pm',
+    'Business/CyberSource/MessagePart.pm',
+    'Business/CyberSource/Request.pm',
+    'Business/CyberSource/Request/AuthReversal.pm',
+    'Business/CyberSource/Request/Authorization.pm',
+    'Business/CyberSource/Request/Capture.pm',
+    'Business/CyberSource/Request/Credit.pm',
+    'Business/CyberSource/Request/DCC.pm',
+    'Business/CyberSource/Request/FollowOnCredit.pm',
+    'Business/CyberSource/Request/Role/BillingInfo.pm',
+    'Business/CyberSource/Request/Role/CreditCardInfo.pm',
+    'Business/CyberSource/Request/Role/DCC.pm',
+    'Business/CyberSource/Request/Role/TaxService.pm',
+    'Business/CyberSource/Request/Sale.pm',
+    'Business/CyberSource/Request/StandAloneCredit.pm',
+    'Business/CyberSource/RequestPart/BillTo.pm',
+    'Business/CyberSource/RequestPart/BusinessRules.pm',
+    'Business/CyberSource/RequestPart/Card.pm',
+    'Business/CyberSource/RequestPart/Item.pm',
+    'Business/CyberSource/RequestPart/PurchaseTotals.pm',
+    'Business/CyberSource/RequestPart/Service.pm',
+    'Business/CyberSource/RequestPart/Service/AuthReversal.pm',
+    'Business/CyberSource/RequestPart/Service/Capture.pm',
+    'Business/CyberSource/RequestPart/Service/Credit.pm',
+    'Business/CyberSource/RequestPart/Service/Tax.pm',
+    'Business/CyberSource/Response.pm',
+    'Business/CyberSource/Response/Role/Amount.pm',
+    'Business/CyberSource/Response/Role/AuthCode.pm',
+    'Business/CyberSource/Response/Role/DCC.pm',
+    'Business/CyberSource/Response/Role/ProcessorResponse.pm',
+    'Business/CyberSource/Response/Role/ReasonCode.pm',
+    'Business/CyberSource/Response/Role/ReconciliationID.pm',
+    'Business/CyberSource/Response/Role/RequestDateTime.pm',
+    'Business/CyberSource/ResponsePart/AuthReply.pm',
+    'Business/CyberSource/ResponsePart/DCCReply.pm',
+    'Business/CyberSource/ResponsePart/PurchaseTotals.pm',
+    'Business/CyberSource/ResponsePart/Reply.pm',
+    'Business/CyberSource/ResponsePart/TaxReply.pm',
+    'Business/CyberSource/ResponsePart/TaxReply/Item.pm',
+    'Business/CyberSource/Role/Currency.pm',
+    'Business/CyberSource/Role/ForeignCurrency.pm',
+    'Business/CyberSource/Role/MerchantReferenceCode.pm',
+    'Business/CyberSource/Rule.pm',
+    'Business/CyberSource/Rule/ExpiredCard.pm',
+    'Business/CyberSource/Rule/RequestIDisZero.pm',
+    'MooseX/Types/CyberSource.pm'
 );
 
-my @scripts = qw(
 
-);
 
 # no fake home requested
+
+my $inc_switch = -d 'blib' ? '-Mblib' : '-Ilib';
+
+use File::Spec;
+use IPC::Open3;
+use IO::Handle;
 
 my @warnings;
 for my $lib (@module_files)
 {
-    my ($stdout, $stderr, $exit) = capture {
-        system($^X, '-Mblib', '-e', qq{require qq[$lib]});
-    };
+    # see L<perlfaq8/How can I capture STDERR from an external command?>
+    open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
+    my $stderr = IO::Handle->new;
+
+    my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");
+    binmode $stderr, ':crlf' if $^O eq 'MSWin32';
+    my @_warnings = <$stderr>;
+    waitpid($pid, 0);
     is($?, 0, "$lib loaded ok");
-    warn $stderr if $stderr;
-    push @warnings, $stderr if $stderr;
+
+    if (@_warnings)
+    {
+        warn @_warnings;
+        push @warnings, @_warnings;
+    }
 }
+
+
 
 is(scalar(@warnings), 0, 'no warnings found') if $ENV{AUTHOR_TESTING};
 
 
-
-
-
-done_testing;

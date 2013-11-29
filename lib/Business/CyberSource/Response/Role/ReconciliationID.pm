@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -29,7 +29,7 @@ Business::CyberSource::Response::Role::ReconciliationID - Reconciliation Identif
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 ATTRIBUTES
 

@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load 'load';
 
-our $VERSION = '0.009000'; # VERSION
+our $VERSION = '0.009001'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -32,7 +32,7 @@ Business::CyberSource::Request::Role::BillingInfo - Role for requests that requi
 
 =head1 VERSION
 
-version 0.009000
+version 0.009001
 
 =head1 BUGS
 
