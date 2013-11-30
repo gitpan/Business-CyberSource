@@ -78,7 +78,7 @@ my %WriteMakefileArgs = (
     "Test::Requires::Env" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.009001",
+  "VERSION" => "0.009002",
   "test" => {
     "TESTS" => "t/*.t t/auth-reversal/*.t t/authorization/*.t t/capture/*.t t/credit/*.t t/dcc/*.t t/model/*.t t/sale/*.t"
   }

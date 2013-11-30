@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.009001'; # VERSION
+our $VERSION = '0.009002'; # VERSION
 
 1;
 
@@ -13,13 +13,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.009001
+version 0.009002
 
 =head1 DESCRIPTION
 
@@ -41,8 +43,6 @@ If there are features that are part of CyberSource's API but are not
 documented, or are missing here, please file a bug. I'll be happy to add them,
 but due to the size of the upstream API, I have not had time to cover all the features
 and some are currently undocumented.
-
-=encoding utf8
 
 =head1 ENVIRONMENT
 
@@ -220,6 +220,10 @@ https://github.com/xenoterracide/business-cybersource/issues
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
 feature.
+
+=head1 CONTRIBUTOR
+
+Carl Carstenson <ccarstenson@hostgator.com>
 
 =head1 AUTHOR
 

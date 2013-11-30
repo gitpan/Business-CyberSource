@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.009001'; # VERSION
+our $VERSION = '0.009002'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -26,13 +26,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Business::CyberSource::Response::Role::RequestDateTime - Role to provide datetime attribute
 
 =head1 VERSION
 
-version 0.009001
+version 0.009002
 
 =head1 DESCRIPTION
 

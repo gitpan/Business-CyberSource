@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009001'; # VERSION
+our $VERSION = '0.009002'; # VERSION
 
 use Moose;
 use MooseX::StrictConstructor;
@@ -39,13 +39,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Business::CyberSource::Rule - Abstract Rule Base
 
 =head1 VERSION
 
-version 0.009001
+version 0.009002
 
 =head1 METHODS
 
