@@ -1,16 +1,23 @@
+use 5.006;
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.037
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.043
 
-use Test::More  tests => 52 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More  tests => 61 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
 my @module_files = (
     'Business/CyberSource.pm',
     'Business/CyberSource/Client.pm',
-    'Business/CyberSource/Factory.pm',
+    'Business/CyberSource/Exception.pm',
+    'Business/CyberSource/Exception/AttributeIsRequiredNotToBeSet.pm',
+    'Business/CyberSource/Exception/ItemsOrTotal.pm',
+    'Business/CyberSource/Exception/NotACreditCard.pm',
+    'Business/CyberSource/Exception/Response.pm',
+    'Business/CyberSource/Exception/SOAPFault.pm',
+    'Business/CyberSource/Exception/UnableToDetectCardTypeCode.pm',
     'Business/CyberSource/Factory/Request.pm',
     'Business/CyberSource/Factory/Response.pm',
     'Business/CyberSource/Factory/Rule.pm',
@@ -42,7 +49,9 @@ my @module_files = (
     'Business/CyberSource/Response.pm',
     'Business/CyberSource/Response/Role/Amount.pm',
     'Business/CyberSource/Response/Role/AuthCode.pm',
+    'Business/CyberSource/Response/Role/Base.pm',
     'Business/CyberSource/Response/Role/DCC.pm',
+    'Business/CyberSource/Response/Role/ElectronicVerification.pm',
     'Business/CyberSource/Response/Role/ProcessorResponse.pm',
     'Business/CyberSource/Response/Role/ReasonCode.pm',
     'Business/CyberSource/Response/Role/ReconciliationID.pm',
@@ -56,6 +65,7 @@ my @module_files = (
     'Business/CyberSource/Role/Currency.pm',
     'Business/CyberSource/Role/ForeignCurrency.pm',
     'Business/CyberSource/Role/MerchantReferenceCode.pm',
+    'Business/CyberSource/Role/Traceable.pm',
     'Business/CyberSource/Rule.pm',
     'Business/CyberSource/Rule/ExpiredCard.pm',
     'Business/CyberSource/Rule/RequestIDisZero.pm',
@@ -72,11 +82,12 @@ use File::Spec;
 use IPC::Open3;
 use IO::Handle;
 
+open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
+
 my @warnings;
 for my $lib (@module_files)
 {
     # see L<perlfaq8/How can I capture STDERR from an external command?>
-    open my $stdin, '<', File::Spec->devnull or die "can't open devnull: $!";
     my $stderr = IO::Handle->new;
 
     my $pid = open3($stdin, '>&STDERR', $stderr, $^X, $inc_switch, '-e', "require q[$lib]");

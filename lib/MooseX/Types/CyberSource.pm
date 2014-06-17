@@ -4,10 +4,11 @@ use warnings;
 use Module::Runtime 'use_module';
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use MooseX::Types -declare => [ qw(
 	AVSResult
+    ElectronicVerificationResult
 	CardTypeCode
 	CountryCode
 	CvIndicator
@@ -93,6 +94,8 @@ enum CvIndicator, [ qw( 0 1 2 9 ) ];
 enum CvResults, [ qw( D I M N P S U X 1 2 3 ),'' ];
 
 enum AVSResult, [ qw( A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 1 2 ) ];
+
+enum ElectronicVerificationResult, [ qw( N P R S U Y 2) ];
 
 my $prefix = 'Business::CyberSource::';
 my $req    =  $prefix . 'RequestPart::';
@@ -276,7 +279,7 @@ MooseX::Types::CyberSource - Moose Types specific to CyberSource
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 SYNOPSIS
 
@@ -386,7 +389,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

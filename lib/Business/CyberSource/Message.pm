@@ -3,20 +3,13 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
 with qw(
+	Business::CyberSource::Role::Traceable
 	Business::CyberSource::Role::MerchantReferenceCode
-);
-
-has trace => (
-	isa       => 'XML::Compile::SOAP::Trace',
-	predicate => 'has_trace',
-	traits    => [ 'SetOnce' ],
-	is        => 'rw',
-	writer    => '_trace',
 );
 
 __PACKAGE__->meta->make_immutable;
@@ -36,7 +29,7 @@ Business::CyberSource::Message - Abstract Message Class;
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 EXTENDS
 
@@ -49,13 +42,6 @@ L<Business::CyberSource::MessagePart>
 =item L<Business::CyberSource::Role::MerchantReferenceCode>
 
 =back
-
-=head1 ATTRIBUTES
-
-=head2 trace
-
-A L<XML::Compile::SOAP::Trace> object which is populated only after the object
-has been submitted to CyberSource by a L<Business::CyberSource::Client>.
 
 =head1 BUGS
 
@@ -72,7 +58,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

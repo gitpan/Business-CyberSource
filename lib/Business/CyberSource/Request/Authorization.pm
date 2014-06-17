@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request';
@@ -43,7 +43,7 @@ Business::CyberSource::Request::Authorization - CyberSource Authorization Reques
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 SYNOPSIS
 
@@ -140,7 +140,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

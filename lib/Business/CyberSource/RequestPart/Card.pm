@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -20,16 +20,9 @@ use MooseX::Types::CreditCard 0.002 qw(
 	CardExpiration
 );
 
-use Exception::Base (
-	'Business::CyberSource::Card::Exception' => {
-		has               => [qw( type )],
-		string_attributes => [qw( type message )],
-	},
-	verbosity => 4,
-	ignore_package => [ __PACKAGE__ ],
-);
-
 use Module::Runtime qw( use_module );
+
+our @CARP_NOT = ( __PACKAGE__, qw( Class::MOP::Method::Wrapped ) );
 
 sub _build_type {
 	my $self = shift;
@@ -37,7 +30,8 @@ sub _build_type {
 	use_module('Business::CreditCard');
 	my $ct = Business::CreditCard::cardtype( $self->account_number );
 
-	Exception::Base->throw( message => $ct )
+	die ## no critic ( ErrorHandling::RequireCarping )
+		use_module('Business::CyberSource::Exception::NotACreditCard')->new
 		if $ct =~ /not a credit card/ixms
 		;
 
@@ -90,13 +84,10 @@ sub _build_card_type_code {
 		:                                  undef
 		;
 
-	Business::CyberSource::Card::Exception->throw(
-		message => 'card type code was unable to be detected please define it'
-			. ' manually'
-			,
-		type => $self->type,
-	)
-	unless $code;
+	my $exception_ns = 'Business::CyberSource::Exception::';
+	die ## no critic ( ErrorHandling::RequireCarping )
+		use_module( $exception_ns . 'UnableToDetectCardTypeCode')
+		->new( type => $self->type) unless $code;
 
 	return $code;
 }
@@ -191,6 +182,21 @@ has _expiration_year => (
 	default     => sub { $_[0]->expiration->year },
 );
 
+foreach my $attr ( qw(
+	credit_card_number
+	card_number
+	cvn cvv cvv2
+	cvc2 cid name
+	full_name
+	card_holder ) ) {
+	my $deprecated = sub {
+		warnings::warnif('deprecated', # this is due to Moose::Exception conflict
+			"$attr deprecated check the perldoc for the actual attribute"
+		);
+	};
+
+	before( $attr, $deprecated );
+}
 __PACKAGE__->meta->make_immutable;
 1;
 # ABSTRACT: Credit Card Helper Class
@@ -207,7 +213,7 @@ Business::CyberSource::RequestPart::Card - Credit Card Helper Class
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 EXTENDS
 
@@ -334,7 +340,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

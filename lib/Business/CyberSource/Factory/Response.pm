@@ -4,90 +4,29 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
-extends 'Business::CyberSource::Factory';
-
 use Module::Runtime  qw( use_module );
-use Try::Tiny;
+use Type::Params     qw( compile    );
+use Types::Standard  qw( HashRef Optional );
+use Type::Utils      qw( class_type role_type );
 
-use Exception::Base (
-	'Business::CyberSource::Exception' => {
-		has => [ qw( answer ) ],
-	},
-	'Business::CyberSource::Response::Exception' => {
-		isa => 'Business::CyberSource::Exception',
-		has => [qw(
-			decision
-			reason_text
-			reason_code
-			request_id
-			request_token
-			trace
-			is_error
-			is_accept
-			is_reject
-		)],
-		string_attributes => [ qw( message decision reason_text ) ],
-	},
-	verbosity      => 4,
-	ignore_package => [ __PACKAGE__, 'Business::CyberSource::Client' ],
-);
+sub create { ## no critic ( RequireArgUnpacking )
+	state $class     = class_type { class => __PACKAGE__ };
+	state $traceable = role_type 'Business::CyberSource::Role::Traceable';
+	state $check     = compile( $class, HashRef, Optional[$traceable]);
+	my ( $self, $result , $request ) = $check->( @_ );
 
-sub create {
-	my ( $self, $result , $request ) = @_;
+	$result->{http_trace}
+		= $request->http_trace
+		if $request && $request->has_http_trace;
 
-	$result->{trace} = $request->trace
-		if defined $request
-		&& blessed $request
-		&& $request->can('has_trace')
-		&& $request->can('trace')
-		&& $request->has_trace
-		;
+	die ## no critic ( ErrorHandling::RequireCarping )
+		use_module('Business::CyberSource::Exception::Response')
+		->new( $result ) if $result->{decision} eq 'ERROR';
 
-	my $response
-		= try {
-			use_module('Business::CyberSource::Response')->new( $result );
-		}
-		catch {
-			my %exception = (
-				message       => 'BUG! please report: ' . $_,
-				reason_code   => $result->{reasonCode},
-				value         => $result->{reasonCode},
-				decision      => $result->{decision},
-				request_id    => $result->{requestID},
-				request_token => $result->{requestToken},
-				trace         => $result->{trace},
-			);
-
-			$exception{reason_text}
-				= use_module('Business::CyberSource::Response')
-				->_build_reason_text( $result->{reasonCode} )
-				;
-
-			Business::CyberSource::Response::Exception->throw( %exception );
-		};
-
-	if ( blessed $response && $response->is_error ) {
-		my %exception = (
-			message       => 'message from CyberSource\'s API',
-			reason_text   => $response->reason_text,
-			reason_code   => $response->reason_code,
-			value         => $response->reason_code,
-			decision      => $response->decision,
-			request_id    => $response->request_id,
-			request_token => $response->request_token,
-			is_error      => $response->is_error,
-			is_accept     => $response->is_accept,
-			is_reject     => $response->is_reject,
-		);
-		$exception{trace} = $response->trace if $response->has_trace;
-
-		Business::CyberSource::Response::Exception->throw( %exception );
-	}
-
-	return $response;
+	return use_module('Business::CyberSource::Response')->new( $result );
 }
 
 1;
@@ -106,7 +45,7 @@ Business::CyberSource::Factory::Response - A Response Factory
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 METHODS
 
@@ -132,7 +71,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

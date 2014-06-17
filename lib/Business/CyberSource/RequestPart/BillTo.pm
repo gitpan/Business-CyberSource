@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -22,16 +22,27 @@ use MooseX::Types::CyberSource qw(
 	_VarcharSixty
 );
 
+use Moose::Util 'throw_exception';
 use Moose::Util::TypeConstraints;
 
 sub BUILD { ## no critic ( Subroutines::RequireFinalReturn )
 	my $self = shift;
 	if ( $self->country eq 'US' or $self->country eq 'CA' ) {
-		confess 'postal_code is required for US or Canada'
-			unless $self->has_postal_code;
+		throw_exception(AttributeIsRequired =>
+			attribute_name => 'postal_code',
+			class_name     => __PACKAGE__,
+			message        => 'Attribute ('
+				. 'postal_code'
+				. ') is required for US or Canada',
+		) unless $self->has_postal_code;
 
-		confess 'state is required for US or Canada'
-			unless $self->has_state;
+		throw_exception(AttributeIsRequired =>
+			attribute_name => 'state',
+			class_name     => __PACKAGE__,
+			message        => 'Attribute ('
+				. 'state'
+				. ') is required for US or Canada',
+		) unless $self->has_state;
 	}
 }
 
@@ -143,6 +154,17 @@ has ip => (
 	},
 );
 
+foreach my $attr (qw( street province zip phone ) ) {
+
+	my $deprecated = sub {
+		warnings::warnif('deprecated', # this is due to Moose::Exception conflict
+			"$attr deprecated check the perldoc for the actual attribute"
+		);
+	};
+
+	before( $attr, $deprecated );
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
 
@@ -160,7 +182,7 @@ Business::CyberSource::RequestPart::BillTo - BillTo information
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 EXTENDS
 
@@ -203,7 +225,7 @@ City of the billing address.
 
 =head2 state
 
-State or province of the billing address. Use the two-character codes. alias: C<province>
+State or province of the billing address. Use the two-character codes.
 
 =head2 country
 
@@ -233,7 +255,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 

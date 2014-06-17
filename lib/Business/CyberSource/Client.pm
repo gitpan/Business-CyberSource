@@ -4,22 +4,20 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.009002'; # VERSION
+our $VERSION = '0.010000'; # VERSION
 
 use Moose;
 with 'MooseY::RemoteHelper::Role::Client';
 
 use Moose::Util::TypeConstraints;
-
-use MooseX::StrictConstructor;
-
-use MooseX::Types::Moose   qw( HashRef Str );
-use MooseX::Types::Path::Class qw( File Dir );
+use MooseX::Types::Moose          qw( HashRef Str );
 use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
+use Type::Utils                   qw( duck_type class_type          );
 
 use Config;
-use Module::Runtime  qw( use_module );
-use Module::Load     qw( load       );
+use Type::Params    qw( compile    );
+use Module::Runtime qw( use_module );
+use Module::Load    qw( load       );
 
 use XML::Compile::SOAP::WSS 1.04;
 use XML::Compile::WSDL11;
@@ -28,55 +26,10 @@ use XML::Compile::Transport::SOAPHTTP;
 
 our @CARP_NOT = ( __PACKAGE__, qw( Class::MOP::Method::Wrapped ) );
 
-around BUILDARGS => sub {
-    my $orig  = shift;
-    my $class = shift;
-
-	my $args = $class->$orig( @_ );
-
-	if ( exists $args->{username} ) {
-		warnings::warnif('deprecated',
-			'`username` is deprecated, use `user` instead'
-		);
-
-		$args->{user} = delete $args->{username};
-	}
-
-	if ( exists $args->{password} ) {
-		warnings::warnif('deprecated',
-			'`password` is deprecated, use `pass` instead'
-		);
-
-		$args->{pass} = delete $args->{password};
-	}
-
-	if ( exists $args->{production} ) {
-		warnings::warnif('deprecated',
-			'`production` is deprecated, use `test` instead'
-		);
-
-		$args->{test} = delete( $args->{production} ) ? 0 : 1;
-	}
-
-	return $args;
-};
-
-sub run_transaction {
-	my ( $self, $request ) = @_;
-
-	warnings::warnif('deprecated',
-		'run_transaction is deprecated, use submit instead'
-	);
-
-	return $self->submit( $request );
-}
-
-sub submit {
-	my ( $self, $request ) = @_;
-
-	confess 'request undefined'         unless defined $request;
-	confess 'request not an object'     unless blessed $request;
-	confess 'request can not serialize' unless $request->can('serialize');
+sub submit { ## no critic ( Subroutines::RequireArgUnpacking )
+	state $class = class_type { class => __PACKAGE__ };
+	state $check = compile( $class, duck_type(['serialize']));
+	my ( $self, $request ) = $check->( @_ );
 
 	if ( $self->has_rules && ! $self->rules_is_empty ) {
 		my $result;
@@ -111,10 +64,12 @@ sub submit {
 		Carp::carp "\n< " . $trace->response->as_string;
 	}
 
-	$request->_trace( $trace ) if $request->can('_trace');
+	$request->_http_trace( $trace );
 
 	if ( $answer->{Fault} ) {
-		confess 'SOAP Fault: ' . $answer->{Fault}->{faultstring};
+		die ## no critic ( ErrorHandling::RequireCarping )
+			use_module('Business::CyberSource::Exception::SOAPFault')
+			->new( $answer->{Fault} );
 	}
 
 	if ( $self->debug >= 1 ) {
@@ -130,8 +85,8 @@ sub _build_soap_client {
 
 	my $wss = XML::Compile::SOAP::WSS->new( version => '1.1' );
 
-	my $wsdl = XML::Compile::WSDL11->new( $self->cybs_wsdl->stringify );
-	$wsdl->importDefinitions( $self->cybs_xsd->stringify );
+	my $wsdl = XML::Compile::WSDL11->new( $self->cybs_wsdl );
+	$wsdl->importDefinitions( $self->cybs_xsd );
 
 	$wss->basicAuth(
 		username => $self->user,
@@ -149,15 +104,13 @@ sub _build_cybs_wsdl {
 	my $dir = $self->test ? 'test' : 'production';
 
 	load 'File::ShareDir::ProjectDistDir', 'dist_file';
-	return use_module('Path::Class::File')->new(
-			dist_file(
-				'Business-CyberSource',
-				$dir
-				. '/'
-				. 'CyberSourceTransaction_'
-				. $self->cybs_api_version
-				. '.wsdl'
-			)
+	return dist_file(
+			'Business-CyberSource',
+			$dir
+			. '/'
+			. 'CyberSourceTransaction_'
+			. $self->_version_for_filename
+			. '.wsdl'
 		);
 }
 
@@ -167,15 +120,13 @@ sub _build_cybs_xsd {
 	my $dir = $self->test ? 'test' : 'production';
 
 	load 'File::ShareDir::ProjectDistDir', 'dist_file';
-	return use_module('Path::Class::File')->new(
-			dist_file(
-				'Business-CyberSource',
-				$dir
-				. '/'
-				. 'CyberSourceTransaction_'
-				. $self->cybs_api_version
-				. '.xsd'
-			)
+	return dist_file(
+			'Business-CyberSource',
+			$dir
+			. '/'
+			. 'CyberSourceTransaction_'
+			. $self->_version_for_filename
+			. '.xsd'
 		);
 }
 
@@ -190,6 +141,13 @@ sub _build__rules {
 		} $self->list_rules;
 
 	return \@rules;
+}
+
+sub _version_for_filename {
+	my $self = shift;
+	my $version = $self->cybs_api_version;
+	$version =~ s/\./_/xms;
+	return $version;
 }
 
 has _soap_client => (
@@ -284,18 +242,16 @@ has cybs_api_version => (
 );
 
 has cybs_wsdl => (
-	required  => 0,
 	lazy      => 1,
 	is        => 'ro',
-	isa       => File,
+	isa       => 'Str',
 	builder   => '_build_cybs_wsdl',
 );
 
 has cybs_xsd => (
-	required => 0,
 	lazy     => 1,
 	is       => 'ro',
-	isa      => File,
+	isa      => 'Str',
 	builder  => '_build_cybs_xsd',
 );
 
@@ -317,7 +273,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.009002
+version 0.010000
 
 =head1 SYNOPSIS
 
@@ -350,10 +306,6 @@ L<MooseY::RemoteHelper::Role::Client>
 
 Takes a L<Business::CyberSource::Request> subclass as a parameter and returns
 a L<Business::CyberSource::Response>
-
-=head2 run_transaction
-
-DEPRECATED, use L</submit>
 
 =head1 ATTRIBUTES
 
@@ -439,7 +391,7 @@ Caleb Cushing <xenoterracide@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2013 by Caleb Cushing <xenoterracide@gmail.com>.
+This software is Copyright (c) 2014 by Caleb Cushing <xenoterracide@gmail.com>.
 
 This is free software, licensed under:
 
