@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Runtime  qw( use_module );
 
-our $VERSION = '0.010000'; # VERSION
+our $VERSION = '0.010001'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -90,7 +90,7 @@ Business::CyberSource::ResponsePart::TaxReply - Reply section for Tax Service
 
 =head1 VERSION
 
-version 0.010000
+version 0.010001
 
 =head1 ATTRIBUTES
 

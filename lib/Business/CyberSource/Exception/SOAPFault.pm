@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010000'; # VERSION
+our $VERSION = '0.010001'; # VERSION
 
 use Moose;
 use MooseX::RemoteHelper;
@@ -23,7 +23,7 @@ has $_ => (
 
 __PACKAGE__->meta->make_immutable;
 1;
-# ABSTRACT: Card number is not a valid credit card
+# ABSTRACT: CyberSource API threw a SOAP Fault
 
 __END__
 
@@ -33,11 +33,24 @@ __END__
 
 =head1 NAME
 
-Business::CyberSource::Exception::SOAPFault - Card number is not a valid credit card
+Business::CyberSource::Exception::SOAPFault - CyberSource API threw a SOAP Fault
 
 =head1 VERSION
 
-version 0.010000
+version 0.010001
+
+=head1 DESCRIPTION
+
+This usually means a credentials problem or something is wrong on
+CyberSource's end
+
+=head1 ATTRIBUTES
+
+=head2 faultstring
+
+description of error
+
+=head2 faultcode
 
 =head1 BUGS
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010000'; # VERSION
+our $VERSION = '0.010001'; # VERSION
 
 use Moose;
 use Module::Runtime qw( use_module );
@@ -45,7 +45,7 @@ Business::CyberSource::Rule - Abstract Rule Base
 
 =head1 VERSION
 
-version 0.010000
+version 0.010001
 
 =head1 METHODS
 
