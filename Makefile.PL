@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker 6.30;
 use File::ShareDir::Install;
 $File::ShareDir::Install::INCLUDE_DOTFILES = 1;
 $File::ShareDir::Install::INCLUDE_DOTDIRS = 1;
-install_share dist => "share";
+install_share dist => "share\/dist\/Business\-CyberSource";
 
 
 my %WriteMakefileArgs = (
@@ -27,7 +27,7 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "Business::CreditCard" => "0.32",
     "DateTime::Format::W3CDTF" => "0.06",
-    "File::ShareDir::ProjectDistDir" => 0,
+    "File::ShareDir::ProjectDistDir" => "1.000",
     "LWP::Protocol::https" => 0,
     "Module::Load" => 0,
     "Module::Runtime" => 0,
@@ -86,7 +86,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "version" => 0
   },
-  "VERSION" => "0.010002",
+  "VERSION" => "0.010003",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -98,7 +98,7 @@ my %FallbackPrereqs = (
   "DateTime" => 0,
   "DateTime::Format::W3CDTF" => "0.06",
   "ExtUtils::MakeMaker" => 0,
-  "File::ShareDir::ProjectDistDir" => 0,
+  "File::ShareDir::ProjectDistDir" => "1.000",
   "File::Spec" => 0,
   "File::Spec::Functions" => 0,
   "FindBin" => 0,

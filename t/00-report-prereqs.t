@@ -63,7 +63,7 @@ my $static_prereqs = do { my $x = {
                       'requires' => {
                                       'Business::CreditCard' => '0.32',
                                       'DateTime::Format::W3CDTF' => '0.06',
-                                      'File::ShareDir::ProjectDistDir' => '0',
+                                      'File::ShareDir::ProjectDistDir' => '1.000',
                                       'LWP::Protocol::https' => '0',
                                       'Module::Load' => '0',
                                       'Module::Runtime' => '0',

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010002'; # VERSION
+our $VERSION = '0.010003'; # VERSION
 
 use Moose;
 extends 'MooseY::RemoteHelper::MessagePart';
@@ -26,7 +26,7 @@ Business::CyberSource::MessagePart - Things that all portions of a message have 
 
 =head1 VERSION
 
-version 0.010002
+version 0.010003
 
 =head1 BUGS
 

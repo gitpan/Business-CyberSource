@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010002'; # VERSION
+our $VERSION = '0.010003'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::RequestPart::Service';
@@ -36,7 +36,7 @@ Business::CyberSource::RequestPart::Service::AuthReversal - AuthReversal Service
 
 =head1 VERSION
 
-version 0.010002
+version 0.010003
 
 =head1 ATTRIBUTES
 

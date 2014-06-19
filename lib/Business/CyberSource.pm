@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.010002'; # VERSION
+our $VERSION = '0.010003'; # VERSION
 
 1;
 
@@ -21,7 +21,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.010002
+version 0.010003
 
 =head1 DESCRIPTION
 
@@ -119,7 +119,7 @@ someone is using C<die> on a string.
 				bill_to => {
 					first_name  => 'Caleb',
 					last_name   => 'Cushing',
-					street      => '100 somewhere st',
+					street1     => '100 somewhere st',
 					city        => 'Houston',
 					state       => 'TX',
 					postal_code => '77064',

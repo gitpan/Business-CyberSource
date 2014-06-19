@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010002'; # VERSION
+our $VERSION = '0.010003'; # VERSION
 
 use Moose;
 use namespace::autoclean;
@@ -39,7 +39,7 @@ Business::CyberSource::Exception::Response - response thrown as an object becaus
 
 =head1 VERSION
 
-version 0.010002
+version 0.010003
 
 =head1 SYNOPSIS
 

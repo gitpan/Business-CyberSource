@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010002'; # VERSION
+our $VERSION = '0.010003'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -154,8 +154,25 @@ has ip => (
 	},
 );
 
-foreach my $attr (qw( street province zip phone ) ) {
+my @deprecated = ( qw( street province zip phone ) );
+around BUILDARGS => sub {
+	my $orig = shift;
+	my $self = shift;
 
+	my $args = $self->$orig( @_ );
+
+	foreach my $attr (@deprecated ) {
+		if ( exists $args->{$attr} ) {
+			warnings::warnif('deprecated', # this is due to Moose::Exception conflict
+				"$attr deprecated check the perldoc for the actual attribute"
+			);
+		}
+	}
+
+	return $args;
+};
+
+foreach my $attr (@deprecated ) {
 	my $deprecated = sub {
 		warnings::warnif('deprecated', # this is due to Moose::Exception conflict
 			"$attr deprecated check the perldoc for the actual attribute"
@@ -182,7 +199,7 @@ Business::CyberSource::RequestPart::BillTo - BillTo information
 
 =head1 VERSION
 
-version 0.010002
+version 0.010003
 
 =head1 EXTENDS
 

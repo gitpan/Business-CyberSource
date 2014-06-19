@@ -69,10 +69,10 @@ lib/Business/CyberSource/Rule/ExpiredCard.pm
 lib/Business/CyberSource/Rule/RequestIDisZero.pm
 lib/MooseX/Types/CyberSource.pm
 perlcritic.rc
-share/production/CyberSourceTransaction_1_71.wsdL
-share/production/CyberSourceTransaction_1_71.xsd
-share/test/CyberSourceTransaction_1_71.wsdl
-share/test/CyberSourceTransaction_1_71.xsd
+share/dist/Business-CyberSource/production/CyberSourceTransaction_1_71.wsdL
+share/dist/Business-CyberSource/production/CyberSourceTransaction_1_71.xsd
+share/dist/Business-CyberSource/test/CyberSourceTransaction_1_71.wsdl
+share/dist/Business-CyberSource/test/CyberSourceTransaction_1_71.xsd
 t/00-compile.t
 t/00-report-prereqs.t
 t/auth-reversal.t
