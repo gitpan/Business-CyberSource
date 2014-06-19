@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Runtime  qw( use_module );
 
-our $VERSION = '0.010001'; # VERSION
+our $VERSION = '0.010002'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -84,7 +84,7 @@ Business::CyberSource::ResponsePart::AuthReply - Reply section for Authorization
 
 =head1 VERSION
 
-version 0.010001
+version 0.010002
 
 =head1 ATTRIBUTES
 

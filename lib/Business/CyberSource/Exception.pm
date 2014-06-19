@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010001'; # VERSION
+our $VERSION = '0.010002'; # VERSION
 
 use Moose;
 extends 'Moose::Exception';
@@ -39,7 +39,7 @@ Business::CyberSource::Exception - base exception
 
 =head1 VERSION
 
-version 0.010001
+version 0.010002
 
 =head1 BUGS
 

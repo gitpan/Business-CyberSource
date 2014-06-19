@@ -3,7 +3,7 @@ package Business::CyberSource::Response::Role::ElectronicVerification;
 use strict;
 use warnings;
 
-our $VERSION = '0.010001'; # VERSION
+our $VERSION = '0.010002'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -105,7 +105,7 @@ Business::CyberSource::Response::Role::ElectronicVerification - Electronic Verif
 
 =head1 VERSION
 
-version 0.010001
+version 0.010002
 
 =head1 DESCRIPTION
 
