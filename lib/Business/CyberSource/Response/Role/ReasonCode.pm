@@ -4,7 +4,7 @@ use warnings;
 use namespace::autoclean;
 use Module::Load qw( load );
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -33,7 +33,7 @@ Business::CyberSource::Response::Role::ReasonCode - Role for ReasonCode
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 BUGS
 

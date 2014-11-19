@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Exception';
@@ -29,7 +29,7 @@ Business::CyberSource::Exception::ItemsOrTotal - You must set Items or total
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 BUGS
 

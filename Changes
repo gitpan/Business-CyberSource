@@ -1,5 +1,8 @@
 Revision history for Business-CyberSource
 
+0.010004  2014-11-18
+	- remove  Moose::Util::TypeConstraints from ::Client GH #2
+
 0.010003  2014-06-19
 	- use strict mode for ::ProjectDistDir
 		- fixes isolated bugs in certain deployments, if you haven't had

@@ -2,7 +2,7 @@ package Business::CyberSource::Role::Traceable;
 use strict;
 use warnings;
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 use Moose::Role;
 use MooseX::SetOnce;
@@ -42,7 +42,7 @@ Business::CyberSource::Role::Traceable - provides http_trace
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 METHODS
 

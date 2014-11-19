@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 1;
 
@@ -21,7 +21,7 @@ Business::CyberSource - Perl interface to the CyberSource Simple Order SOAP API
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 DESCRIPTION
 
@@ -261,6 +261,8 @@ patch to an existing test-file that illustrates the bug or desired
 feature.
 
 =head1 CONTRIBUTORS
+
+=for stopwords Carl Carstenson Robert Stone
 
 =over 4
 

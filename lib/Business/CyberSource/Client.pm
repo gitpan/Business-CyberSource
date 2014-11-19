@@ -4,12 +4,11 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 use Moose;
 with 'MooseY::RemoteHelper::Role::Client';
 
-use Moose::Util::TypeConstraints;
 use Type::Utils                   qw( duck_type      );
 use Type::Params                  qw( compile Invocant );
 use MooseX::Types::Common::String qw( NonEmptyStr NonEmptySimpleStr );
@@ -271,7 +270,7 @@ Business::CyberSource::Client - User Agent Responsible for transmitting the Resp
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 SYNOPSIS
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010003'; # VERSION
+our $VERSION = '0.010004'; # VERSION
 
 use Moose::Role;
 use MooseX::RemoteHelper;
@@ -30,7 +30,7 @@ Business::CyberSource::Response::Role::Amount - Role for Amount
 
 =head1 VERSION
 
-version 0.010003
+version 0.010004
 
 =head1 BUGS
 
