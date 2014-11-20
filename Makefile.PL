@@ -58,7 +58,7 @@ my %WriteMakefileArgs = (
     "MooseY::RemoteHelper::MessagePart" => 0,
     "MooseY::RemoteHelper::Role::Client" => 0,
     "Type::Params" => 0,
-    "Type::Utils" => 0,
+    "Type::Utils" => "0.040",
     "Types::Standard" => 0,
     "XML::Compile::SOAP11" => 0,
     "XML::Compile::SOAP::WSS" => "1.04",
@@ -84,7 +84,7 @@ my %WriteMakefileArgs = (
     "Test::Requires" => 0,
     "lib" => 0
   },
-  "VERSION" => "0.010004",
+  "VERSION" => "0.010005",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -137,7 +137,7 @@ my %FallbackPrereqs = (
   "Test::More" => 0,
   "Test::Requires" => 0,
   "Type::Params" => 0,
-  "Type::Utils" => 0,
+  "Type::Utils" => "0.040",
   "Types::Standard" => 0,
   "XML::Compile::SOAP11" => 0,
   "XML::Compile::SOAP::WSS" => "1.04",

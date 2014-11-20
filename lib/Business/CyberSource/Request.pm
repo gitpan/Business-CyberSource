@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010004'; # VERSION
+our $VERSION = '0.010005'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Message';
@@ -129,7 +129,7 @@ Business::CyberSource::Request - Abstract Request Class
 
 =head1 VERSION
 
-version 0.010004
+version 0.010005
 
 =head1 DESCRIPTION
 

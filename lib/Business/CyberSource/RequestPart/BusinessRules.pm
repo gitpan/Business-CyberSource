@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010004'; # VERSION
+our $VERSION = '0.010005'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::MessagePart';
@@ -101,7 +101,7 @@ Business::CyberSource::RequestPart::BusinessRules - Business Rules
 
 =head1 VERSION
 
-version 0.010004
+version 0.010005
 
 =head1 EXTENDS
 

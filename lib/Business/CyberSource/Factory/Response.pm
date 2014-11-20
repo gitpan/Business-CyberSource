@@ -4,13 +4,13 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010004'; # VERSION
+our $VERSION = '0.010005'; # VERSION
 
 use Moose;
-use Module::Runtime  qw( use_module       );
-use Type::Params     qw( compile Invocant );
-use Types::Standard  qw( HashRef Optional );
-use Type::Utils      qw( role_type        );
+use Module::Runtime   qw( use_module       );
+use Type::Params      qw( compile Invocant );
+use Types::Standard   qw( HashRef Optional );
+use Type::Utils 0.040 qw( role_type        );
 
 sub create { ## no critic ( RequireArgUnpacking )
 	state $traceable = role_type 'Business::CyberSource::Role::Traceable';
@@ -44,7 +44,7 @@ Business::CyberSource::Factory::Response - A Response Factory
 
 =head1 VERSION
 
-version 0.010004
+version 0.010005
 
 =head1 METHODS
 

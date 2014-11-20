@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use namespace::autoclean;
 
-our $VERSION = '0.010004'; # VERSION
+our $VERSION = '0.010005'; # VERSION
 
 use Moose;
 extends 'Business::CyberSource::Request';
@@ -33,7 +33,7 @@ Business::CyberSource::Request::AuthReversal - CyberSource Reverse Authorization
 
 =head1 VERSION
 
-version 0.010004
+version 0.010005
 
 =head1 SYNOPSIS
 
